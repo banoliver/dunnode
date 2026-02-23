@@ -91,6 +91,7 @@
     body.brightMode .btn.btnSave{ opacity: .35; pointer-events: none; }
     body.brightMode .btn.btnDirty{ border-color: rgba(180,130,10,.50); background: rgba(255,208,92,.22); color: var(--text); opacity: 1; pointer-events: auto; }
     body.brightMode .btn.btnDirty:hover{ background: rgba(255,208,92,.35); }
+    body.brightMode .req{ color: rgba(200,60,60,.6); }
     body.brightMode .toggle{
       background: rgba(255,255,255,.7);
       border-color: rgba(0,0,0,.16);
@@ -383,6 +384,7 @@
     .btn.btnSave{ opacity: .35; pointer-events: none; font-weight: 600; }
     .btn.btnDirty{ border-color: rgba(255,208,92,.55); background: rgba(255,208,92,.16); color: var(--text); font-weight: 700; opacity: 1; pointer-events: auto; }
     .btn.btnDirty:hover{ background: rgba(255,208,92,.26); }
+    .req{ color: rgba(239,130,130,.7); font-weight: 700; margin-left: 2px; font-size: 11px; }
     .btn.btnDanger{ border-color: rgba(239,68,68,.5); color: #ef4444; }
     .btn.btnDanger:hover{ background: rgba(239,68,68,.15); }
     .autoTag{ display:inline-block; font-size:9px; padding:1px 5px; border-radius:6px; background:rgba(59,130,246,.15); color:rgba(130,180,255,.8); vertical-align:middle; margin-left:6px; pointer-events:none; letter-spacing:.3px; user-select:none; transition: opacity .15s; white-space:nowrap; flex-shrink:0; }
@@ -2270,7 +2272,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.3.8</span>
+<span id="appVersionLabel">v1.3.9</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -2363,7 +2365,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </div>
 <div class="modalBody">
 <div class="kv" style="grid-template-columns: 110px 1fr;">
-<div class="k">Label</div>
+<div class="k">Label<span class="req">*</span></div>
 <div class="v"><input class="inp" id="createLabel" placeholder=""/></div>
 <div class="k">ID <span class="autoTag" id="createIdAuto">auto</span></div>
 <div class="v" style="display:flex;align-items:center;gap:0;">
@@ -2376,8 +2378,9 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 <div class="v crOpt" id="crColorV" style="display:none">
 <div id="createColors" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
 <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
-<input type="color" id="createColorPicker" value="#3b82f6" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;"/>
-<input class="inp" id="createColorHex" placeholder="#3b82f6" style="flex:1;"/>
+<input type="color" id="createColorPicker" value="#3b82f6" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;opacity:.3;"/>
+<input class="inp" id="createColorHex" placeholder="optional" style="flex:1;"/>
+<label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="createColorOn"/> Apply</label>
 <span class="layoutReset" id="createColorReset" title="Reset color" style="opacity:.35;cursor:pointer;font-size:13px;color:var(--muted);transition:opacity .15s;">↺</span>
 </div>
 </div>
@@ -2503,12 +2506,12 @@ Created by Olivér Bán<br/>
 <div style="border-top:1px solid var(--border);margin-top:16px;padding-top:14px;">
 <div style="font-size:11px;opacity:.4;margin-bottom:10px;text-align:center;">Preview — hover or click to test</div>
 <div id="hlTester" style="display:flex;align-items:center;justify-content:center;gap:0;user-select:none;padding:10px 4px;">
-<div id="hlTesterSource" class="hlTesterNode" style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s, border-color .15s;position:relative;z-index:1;">source_id</div>
+<div id="hlTesterSource" class="hlTesterNode" style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s, border-color .15s;position:relative;z-index:1;">Source</div>
 <svg id="hlTesterArrow" width="70" height="24" viewBox="0 0 70 24" style="flex-shrink:0;overflow:visible;cursor:pointer;margin-right:-6px;">
 <line x1="2" y1="12" x2="58" y2="12" stroke="var(--line)" stroke-width="1.5" id="hlTesterLine" style="transition:stroke .15s;"/>
 <polygon points="56,7 66,12 56,17" fill="var(--line)" id="hlTesterHead" style="transition:fill .15s;"/>
 </svg>
-<div id="hlTesterTarget" class="hlTesterNode" style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s, border-color .15s;position:relative;z-index:1;">target_id</div>
+<div id="hlTesterTarget" class="hlTesterNode" style="padding:8px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s, border-color .15s;position:relative;z-index:1;">Target</div>
 </div>
 </div>
 <div id="hlColorsEditorActions" style="display:none;margin-top:14px;padding-top:10px;border-top:1px solid var(--border);">
@@ -2565,7 +2568,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.3.8';
+const APP_VERSION = '1.3.9';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -2577,7 +2580,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.3.8", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.3.9", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -4583,7 +4586,7 @@ function normalizeNodeTags(node){
   return node.tags;
 }
 function tagColor(tag){
-  return (tag && tag.color) ? tag.color : DEFAULT_TAG_COLOR;
+  return (tag && tag.color && tag.colorEnabled !== false) ? tag.color : DEFAULT_TAG_COLOR;
 }
 function tagAbbr(tag){
   if(!tag) return '';
@@ -4650,7 +4653,7 @@ function openTransformCreateModal(opts={}){
     placeholder: 'e.g. Trim whitespace',
     hint: 'ID is generated from the label. You can override it.',
     taken,
-    onCommit: ({label, id, abbr, note, _autoId, _autoAbbr})=>{
+    onCommit: ({label, id, abbr, note, color, _autoId, _autoAbbr})=>{
       const finalAbbr = (abbr||'').trim() || label.replace(/\s+/g,'').slice(0,2).toUpperCase();
       const finalNote = (note||'').trim();
       // Read params from create modal
@@ -4673,6 +4676,7 @@ function openTransformCreateModal(opts={}){
       const cat2 = ensureTransformCatalog();
       recordChange();
       const entry = { id, label, abbr: finalAbbr, note: finalNote, _autoId, _autoAbbr };
+      if(color) { entry.color = color; entry.colorEnabled = true; }
       if(newParams.length) entry.params = newParams;
       cat2.push(entry);
       renderAll();
@@ -4769,7 +4773,7 @@ const TAG_COLOR_PRESETS = [
 ];
 
 // Build preset swatch row that syncs with a color input
-function buildColorSwatches(container, targetInput){
+function buildColorSwatches(container, targetInput, applyCheckbox, dirtyFn){
   if(!container) return;
   container.innerHTML = '';
   TAG_COLOR_PRESETS.forEach(p=>{
@@ -4784,8 +4788,10 @@ function buildColorSwatches(container, targetInput){
         targetInput.style.opacity = '1';
         targetInput.dispatchEvent(new Event('input', {bubbles:true}));
       }
+      if(applyCheckbox) applyCheckbox.checked = true;
       container.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
       s.classList.add('sel');
+      if(dirtyFn) dirtyFn();
     });
     container.appendChild(s);
   });
@@ -4810,7 +4816,7 @@ function openTagCreateModal(opts={}){
       const finalNote = (note||'').trim();
       const cat2 = ensureTagCatalog();
       recordChange();
-      cat2.push({ id, label, abbr: finalAbbr, color: finalColor, note: finalNote, priority: nextTagPriority(), _autoId, _autoAbbr });
+      cat2.push({ id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: finalNote, priority: nextTagPriority(), _autoId, _autoAbbr });
       // Attach to node if requested
       if(__tagCreateCtx.attachNodeId){
         const node = IDX?.nodeById?.get(__tagCreateCtx.attachNodeId);
@@ -5153,8 +5159,8 @@ const CREATE_FIELDS = {
   column:          { color: true, note: true },
   node:            { note: true, tags: true, customAttrs: true },
   tag:             { abbr: true, color: true, note: true },
-  transform:       { abbr: true, note: true, params: true },
-  customAttr:      { abbr: true, multi: true, note: true },
+  transform:       { abbr: true, color: true, note: true, params: true },
+  customAttr:      { abbr: true, color: true, multi: true, note: true },
   customAttrValue: { abbr: true, color: true, note: true },
 };
 
@@ -5196,7 +5202,7 @@ function _populateCreateTagSel(){
     const v = sel.value; if(!v) return;
     sel.value = '';
     if(v==='__new__'){
-      _openCatalogFromCreateModal('tags');
+      _openNestedCreateFromNodeCreate('tag');
       return;
     }
     __createTags.push(v);
@@ -5240,7 +5246,7 @@ function _populateCreateAttrSel(){
     const aid = attrSel.value;
     if(aid==='__new__'){
       attrSel.value = '';
-      _openCatalogFromCreateModal('attrs');
+      _openNestedCreateFromNodeCreate('customAttr');
       return;
     }
     const a = cat.find(x=>x.id===aid);
@@ -5254,7 +5260,7 @@ function _populateCreateAttrSel(){
     if(!aid || aid==='__new__') return;
     if(vid==='__new__'){
       valSel.value = '';
-      _openCatalogFromCreateModal('attrs');
+      _openNestedCreateFromNodeCreate('customAttrValue', { aid });
       return;
     }
     if(!vid) return;
@@ -5374,6 +5380,144 @@ function _openCatalogFromCreateModal(which){
   });
 }
 
+// Open a nested create modal from within the node create modal
+// (e.g. "+ New tag…", "+ New attribute…", "+ New value…")
+function _openNestedCreateFromNodeCreate(kind, extraCtx){
+  const createModal = document.getElementById('createModal');
+  const createMask = document.getElementById('createMask');
+
+  // Save full create-node-modal state
+  const saved = {
+    ctx: __createCtx,
+    tags: [...__createTags],
+    customAttrs: JSON.parse(JSON.stringify(__createCustomAttrs)),
+    selectedColor: __createSelectedColor,
+    label: document.getElementById('createLabel')?.value || '',
+    idInput: document.getElementById('createIdInput')?.value || '',
+    abbr: document.getElementById('createAbbr')?.value || '',
+    note: document.getElementById('createNote')?.value || '',
+    multi: document.getElementById('createMulti')?.checked || false,
+    colorOn: document.getElementById('createColorOn')?.checked || false,
+  };
+
+  // Silently close current create modal
+  __createCtx = null;
+  createModal?.classList.remove('active');
+  createMask?.classList.remove('active');
+
+  function restoreNodeCreate(){
+    openCreateModal(saved.ctx);
+    // Restore collected tags/attrs
+    const tagCat = ensureTagCatalog();
+    const tagCatIds = new Set(tagCat.map(t=>t.id));
+    __createTags = saved.tags.filter(tid=>tagCatIds.has(tid));
+    const attrCat = ensureCustomAttributeCatalog();
+    const attrCatIds = new Set(attrCat.map(a=>a.id));
+    const cleanedAttrs = saved.customAttrs;
+    for(const aid of Object.keys(cleanedAttrs)){
+      if(!attrCatIds.has(aid)){ delete cleanedAttrs[aid]; continue; }
+      const a = attrCat.find(x=>x.id===aid);
+      const valIds = new Set((a?.values||[]).map(v=>v.id));
+      cleanedAttrs[aid] = (cleanedAttrs[aid]||[]).filter(vid=>valIds.has(vid));
+      if(!cleanedAttrs[aid].length) delete cleanedAttrs[aid];
+    }
+    __createCustomAttrs = cleanedAttrs;
+    // Restore form field values
+    const lEl = document.getElementById('createLabel');
+    const iEl = document.getElementById('createIdInput');
+    const nEl = document.getElementById('createNote');
+    if(lEl) lEl.value = saved.label;
+    if(iEl) iEl.value = saved.idInput;
+    if(nEl) nEl.value = saved.note;
+    // Refresh chips and dropdowns
+    _renderCreateTagChips();
+    _populateCreateTagSel();
+    _renderCreateAttrChips();
+    _populateCreateAttrSel();
+  }
+
+  // Track whether restoreNodeCreate was already called by onCommit
+  let _nestedRestored = false;
+  const _restore = ()=>{
+    if(_nestedRestored) return;
+    _nestedRestored = true;
+    restoreNodeCreate();
+  };
+
+  if(kind === 'tag'){
+    const cat = ensureTagCatalog();
+    const taken = new Set(cat.map(t=>t?.id).filter(Boolean));
+    openCreateModal({
+      kind: 'tag',
+      title: 'Create tag',
+      placeholder: 'e.g. Screening',
+      hint: 'ID is generated from the label.',
+      taken,
+      onCommit: ({label, id, abbr, note, color, _autoId, _autoAbbr})=>{
+        const finalAbbr = (abbr||'').trim() || label.slice(0,1).toUpperCase();
+        const finalColor = color || DEFAULT_TAG_COLOR;
+        recordChange();
+        ensureTagCatalog().push({ id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: (note||'').trim(), priority: nextTagPriority(), _autoId, _autoAbbr });
+        saved.tags.push(id);
+        renderAll();
+        _restore();
+      }
+    });
+  } else if(kind === 'customAttr'){
+    const cat = ensureCustomAttributeCatalog();
+    const taken = new Set(cat.map(a=>a?.id).filter(Boolean));
+    openCreateModal({
+      kind: 'customAttr',
+      title: 'Add custom attribute',
+      placeholder: 'Attribute label…',
+      hint: 'ID is generated from the label.',
+      taken,
+      onCommit: ({label, id, abbr, note, color, multi, _autoId, _autoAbbr})=>{
+        const entry = { id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), multi: !!multi, values: [], _autoId, _autoAbbr };
+        if(color){ entry.color = color; entry.colorEnabled = true; }
+        recordChange();
+        ensureCustomAttributeCatalog().push(entry);
+        renderAll();
+        _restore();
+      }
+    });
+  } else if(kind === 'customAttrValue'){
+    const aid = extraCtx?.aid;
+    const a = ensureCustomAttributeCatalog().find(x=>x.id===aid);
+    if(!a){ restoreNodeCreate(); return; }
+    if(!Array.isArray(a.values)) a.values = [];
+    const taken = new Set(a.values.map(v=>v?.id).filter(Boolean));
+    openCreateModal({
+      kind: 'customAttrValue',
+      title: `Add value to ${a.label||a.id}`,
+      placeholder: 'Value label…',
+      hint: 'ID is generated from the value label.',
+      taken,
+      onCommit: ({label, id, note, color, abbr, _autoId, _autoAbbr})=>{
+        let maxVP = 0;
+        a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
+        const vObj = { id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr };
+        if(abbr) vObj.abbr = abbr;
+        if(color){ vObj.color = color; vObj.colorEnabled = true; }
+        recordChange();
+        a.values.push(vObj);
+        // Auto-add the new value to the node's custom attrs being assembled
+        if(!saved.customAttrs[aid]) saved.customAttrs[aid] = [];
+        if(a.multi){
+          if(!saved.customAttrs[aid].includes(id)) saved.customAttrs[aid].push(id);
+        } else {
+          saved.customAttrs[aid] = [id];
+        }
+        renderAll();
+        _restore();
+      }
+    });
+  }
+
+  // If user cancels nested create, restore node create on close
+  _watchModalClose(createModal, ()=> _restore());
+}
+
 function openCreateModal(ctx){
   __createCtx = ctx;
   __createSelectedColor = TAG_COLOR_PRESETS[0].value;
@@ -5483,53 +5627,81 @@ function openCreateModal(ctx){
     if(attrMgrBtn) attrMgrBtn.onclick = ()=> _openCatalogFromCreateModal('attrs');
   }
 
-  // Build color swatches for tags
+  // Build color swatches
   if(fields.color && colorsEl){
     colorsEl.innerHTML = '';
+    const colorPicker = document.getElementById('createColorPicker');
+    const colorOnCb = document.getElementById('createColorOn');
+    const isAlwaysColor = (ctx.kind === 'tag'); // tags always have color
+    const _dirtyKick = ()=>{ if(ok && ok.__dirtyUpdate) ok.__dirtyUpdate(); };
+
+    // Initialize Apply state
+    if(colorOnCb){
+      colorOnCb.checked = isAlwaysColor;
+    }
+    if(colorPicker){
+      colorPicker.value = __createSelectedColor || DEFAULT_TAG_COLOR;
+      colorPicker.style.opacity = isAlwaysColor ? '1' : '.3';
+    }
+    if(colorHex){
+      colorHex.value = isAlwaysColor ? (__createSelectedColor || DEFAULT_TAG_COLOR) : '';
+    }
+
     TAG_COLOR_PRESETS.forEach(p=>{
       const s = document.createElement('div');
-      s.className = 'swatch' + (p.value===__createSelectedColor ? ' sel' : '');
+      s.className = 'swatch' + (isAlwaysColor && p.value===__createSelectedColor ? ' sel' : '');
       s.style.background = p.value;
       s.title = p.name + ' ' + p.value;
       s.addEventListener('click', (e)=>{
         e.stopPropagation();
         __createSelectedColor = p.value;
         if(colorHex) colorHex.value = p.value;
-        if(colorPicker) colorPicker.value = p.value;
+        if(colorPicker){ colorPicker.value = p.value; colorPicker.style.opacity = '1'; }
+        if(colorOnCb) colorOnCb.checked = true;
         colorsEl.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
         s.classList.add('sel');
+        _dirtyKick();
       });
       colorsEl.appendChild(s);
     });
-    const colorPicker = document.getElementById('createColorPicker');
     if(colorPicker){
-      colorPicker.value = __createSelectedColor || DEFAULT_TAG_COLOR;
       colorPicker.addEventListener('input', ()=>{
         __createSelectedColor = colorPicker.value;
         if(colorHex) colorHex.value = colorPicker.value;
+        colorPicker.style.opacity = '1';
+        if(colorOnCb) colorOnCb.checked = true;
         colorsEl.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+        _dirtyKick();
       });
     }
     if(colorHex){
-      colorHex.value = __createSelectedColor || DEFAULT_TAG_COLOR;
       colorHex.oninput = ()=>{
         const v = (colorHex.value||'').trim();
         if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
           __createSelectedColor = v;
-          if(colorPicker) colorPicker.value = v;
+          if(colorPicker){ colorPicker.value = v; colorPicker.style.opacity = '1'; }
+          if(colorOnCb) colorOnCb.checked = true;
           colorsEl.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
         }
+        _dirtyKick();
       };
+    }
+    if(colorOnCb){
+      colorOnCb.addEventListener('change', ()=>{
+        if(colorPicker) colorPicker.style.opacity = colorOnCb.checked ? '1' : '.3';
+        _dirtyKick();
+      });
     }
     const colorResetBtn = document.getElementById('createColorReset');
     if(colorResetBtn){
       colorResetBtn.onclick = ()=>{
-        __createSelectedColor = DEFAULT_TAG_COLOR;
-        if(colorPicker) colorPicker.value = DEFAULT_TAG_COLOR;
-        if(colorHex) colorHex.value = DEFAULT_TAG_COLOR;
+        __createSelectedColor = isAlwaysColor ? DEFAULT_TAG_COLOR : '';
+        if(colorPicker){ colorPicker.value = DEFAULT_TAG_COLOR; colorPicker.style.opacity = isAlwaysColor ? '1' : '.3'; }
+        if(colorHex) colorHex.value = isAlwaysColor ? DEFAULT_TAG_COLOR : '';
+        if(colorOnCb) colorOnCb.checked = isAlwaysColor;
         colorsEl.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
-        const first = colorsEl.querySelector('.swatch');
-        if(first) first.classList.add('sel');
+        if(isAlwaysColor){ const first = colorsEl.querySelector('.swatch'); if(first) first.classList.add('sel'); }
+        _dirtyKick();
       };
     }
   }
@@ -5610,7 +5782,10 @@ function openCreateModal(ctx){
   if(ok){
     const modalBody = modal?.querySelector('.modalBody');
     if(modalBody){
-      const updateDirty = ()=>{ ok.classList.toggle('btnDirty', createModalIsDirty()); };
+      const updateDirty = ()=>{ 
+        const hasLabel = !!(document.getElementById('createLabel')?.value||'').trim();
+        ok.classList.toggle('btnDirty', createModalIsDirty() && hasLabel);
+      };
       // Remove old listeners by cloning approach: just add fresh ones (they stack but it's harmless for short-lived modals)
       modalBody.addEventListener('input', updateDirty);
       modalBody.addEventListener('change', updateDirty);
@@ -5673,7 +5848,10 @@ function commitCreateModal(){
   const result = { label: raw, id, _autoId: __lastAutoId !== '' };
   if(fields.abbr) { result.abbr = (abbrEl?.value||'').trim(); result._autoAbbr = __lastAutoAbbr !== ''; }
   if(fields.note || true) result.note = (noteEl?.value||'').trim(); // always pass note
-  if(fields.color) result.color = __createSelectedColor || (colorHex?.value||'').trim() || DEFAULT_TAG_COLOR;
+  if(fields.color) {
+    const colorOn = document.getElementById('createColorOn')?.checked;
+    if(colorOn) result.color = __createSelectedColor || (colorHex?.value||'').trim() || DEFAULT_TAG_COLOR;
+  }
   if(fields.multi) result.multi = !!multiEl?.checked;
   if(fields.tags && __createTags.length) result.tags = [...__createTags];
   if(fields.customAttrs && Object.keys(__createCustomAttrs).length){
@@ -5695,18 +5873,25 @@ function createModalIsDirty(){
   // Check params rows for transforms
   const paramsContainer = document.getElementById('createParamsRows');
   const hasParams = paramsContainer && paramsContainer.querySelectorAll('.trParamRow').length > 0;
-  return !!(label || note || abbr || hasParams || (__createTags && __createTags.length) || (__createCustomAttrs && Object.keys(__createCustomAttrs).length));
+  // Check color Apply checkbox
+  const colorOn = document.getElementById('createColorOn')?.checked;
+  const fields = CREATE_FIELDS[__createCtx?.kind] || {};
+  const isAlwaysColor = (__createCtx?.kind === 'tag');
+  const colorDirty = fields.color && !isAlwaysColor && !!colorOn;
+  return !!(label || note || abbr || hasParams || colorDirty || (__createTags && __createTags.length) || (__createCustomAttrs && Object.keys(__createCustomAttrs).length));
 }
+const CREATE_KIND_LABELS = { column:'column', node:'node', tag:'tag', transform:'transform', customAttr:'custom attribute', customAttrValue:'custom attribute value' };
 async function guardedCloseCreateModal(){
   if(createModalIsDirty()){
-    const ok = await customConfirm('Discard new ' + (__createCtx?.kind || 'item') + '?');
+    const kind = CREATE_KIND_LABELS[__createCtx?.kind] || __createCtx?.kind || 'item';
+    const ok = await customConfirm('Discard new ' + kind + '?');
     if(!ok) return;
   }
   closeCreateModal();
 }
 // wire create modal
 document.getElementById('createCloseBtn')?.addEventListener('click', guardedCloseCreateModal);
-document.getElementById('createCancelBtn')?.addEventListener('click', guardedCloseCreateModal);
+document.getElementById('createCancelBtn')?.addEventListener('click', ()=> closeCreateModal());
 document.getElementById('createMask')?.addEventListener('click', guardedCloseCreateModal);
 document.getElementById('createOkBtn')?.addEventListener('click', commitCreateModal);
 document.getElementById('createLabel')?.addEventListener('keydown', (e)=>{
@@ -6622,7 +6807,7 @@ function renderFilterEditCard(f, idx){
 
   return `<div class="catCard filterEditCard" data-fid="${escapeHtml(f.id)}" style="margin-bottom:8px;padding:12px 14px;border-radius:10px;border:2px solid var(--accent);background:var(--panel);">
     <div class="kv" style="grid-template-columns:50px 1fr;margin-bottom:8px;">
-      <div class="k">Label</div><div class="v"><input class="inp feLabel" value="${escapeHtml(f.label||'')}" placeholder="Filter name…" style="font-size:13px;font-weight:700;"/></div>
+      <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp feLabel" value="${escapeHtml(f.label||'')}" placeholder="Filter name…" style="font-size:13px;font-weight:700;"/></div>
       <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v" style="display:flex;align-items:center;"><input class="inp feId" value="${__filterIsNew ? '' : escapeHtml(f.id||'')}" placeholder="auto" style="font-family:var(--mono);font-size:11px;flex:1;"/></div>
     </div>
     <div class="feRules">${rulesHtml}</div>
@@ -7175,7 +7360,14 @@ function wireFilterEditCard(container){
   card.querySelector('.feSave')?.addEventListener('click', ()=>{
     const newLabel = card.querySelector('.feLabel').value.trim();
     if(!newLabel){ customAlert('Please enter a label.'); card.querySelector('.feLabel')?.focus(); return; }
-    if(__filterIsNew) recordChange(); else pushUndo();
+    if(__filterIsNew){
+      // Remove placeholder before snapshot so undo doesn't include it
+      const cat = ensureFilterCatalog();
+      const fi = cat.indexOf(filter);
+      if(fi >= 0) cat.splice(fi, 1);
+      recordChange();
+      if(fi >= 0) cat.splice(fi, 0, filter);
+    } else pushUndo();
     filter.label = newLabel;
     filter.note = card.querySelector('.feNote').value.trim();
     filter._autoId = card.__filterAutoId ? card.__filterAutoId() : false;
@@ -7252,7 +7444,7 @@ function wireFilterEditCard(container){
     updateFilterBadge();
     refreshViewer();
   });
-  wireDirtyHighlight(card, card.querySelector('.feSave'), filterFormIsDirty);
+  wireDirtyHighlight(card, card.querySelector('.feSave'), filterFormIsDirty, ()=> !!(card.querySelector('.feLabel')?.value||'').trim());
 
   // Auto-id from label: keep updating as long as user hasn't manually edited the ID
   {
@@ -7468,7 +7660,7 @@ function getEdgeSchemeColor(edge){
     val = trs.length ? transformRefId(trs[0]) : '—';
     if(val !== '—'){
       const t = ensureTransformCatalog().find(x=>x.id===val);
-      if(t && t.color) customColor = t.color;
+      if(t && t.color && t.colorEnabled !== false) customColor = t.color;
     }
   } else if(scheme === 'srcTag'){
     const node = IDX?.nodeById?.get(edge.from);
@@ -7476,7 +7668,7 @@ function getEdgeSchemeColor(edge){
     val = tags.length ? tags[0] : '—';
     if(val !== '—'){
       const t = tagById(val);
-      if(t && t.color) customColor = t.color;
+      if(t && t.color && t.colorEnabled !== false) customColor = t.color;
     }
   } else if(scheme === 'tgtTag'){
     const node = IDX?.nodeById?.get(edge.to);
@@ -7484,7 +7676,7 @@ function getEdgeSchemeColor(edge){
     val = tags.length ? tags[0] : '—';
     if(val !== '—'){
       const t = tagById(val);
-      if(t && t.color) customColor = t.color;
+      if(t && t.color && t.colorEnabled !== false) customColor = t.color;
     }
   } else if(scheme.startsWith('srcAttr:')){
     const attrId = scheme.slice(8);
@@ -7996,8 +8188,8 @@ function applyHighlight(){
         // Collapsed groups stand in for their children — always highlight + un-dim
         el.classList.add('connected');
         el.classList.remove('dimmed');
-      } else if(state.selectionDim === 'keepParents'){
-        // Parents dim mode: expanded groups get subtle highlight + un-dimmed
+      } else if(state.selectionDim === 'keepParents' || state.selectionDim === 'off'){
+        // Parents/Off mode: expanded groups get subtle highlight + un-dimmed
         el.classList.add('connected');
         el.classList.add('connectedParent');
         el.classList.remove('dimmed');
@@ -12053,9 +12245,9 @@ function openHelp(){
   <li><b>Transforms</b> &mdash; reusable data conversion steps attached to mappings (e.g. Trim, Uppercase). Supports per-instance parameters.</li>
   <li><b>Custom attributes</b> &mdash; domain metadata on nodes (e.g. Data Type, Sensitivity). Each attribute can have its own <b>color</b> (inherited by values without their own). Each value has a color with an <b>Apply</b> checkbox &mdash; unchecked values inherit from the attribute color. Enable "Display on node" per attribute to show value pills on tree nodes. Pill order: Tags &gt; Attribute priority &gt; Value priority.</li>
   <li><b>Filters</b> &mdash; rule-based visual highlights (see section 4 above). Also managed from the ▤ catalog toolbar group.</li>
-  <li><b>Inline editing</b> &mdash; click <b>Add</b> to create items directly inside the catalog list. Click any existing item to edit it in place.</li>
+  <li><b>Inline editing</b> &mdash; click <b>Add</b> to create items directly inside the catalog list. Click any existing item to edit it in place. When creating a node, selecting "+ New tag…" or "+ New attribute…" opens a nested create modal &mdash; the node form is saved and restored automatically.</li>
   <li><b>Auto-ID &amp; abbreviation</b> &mdash; ID and abbreviation auto-generate from the label as you type. A blue <b style="font-size:9px;padding:1px 4px;border-radius:4px;background:rgba(59,130,246,.15);color:rgba(130,180,255,.8);">auto</b> badge shows when a field is linked. Edit the field to override; clear it to re-link.</li>
-  <li><b>Save / Cancel / Delete</b> &mdash; Save activates when you make changes. New items have no Delete button. Label is required to save.</li>
+  <li><b>Save / Cancel / Delete</b> &mdash; Save activates when you make changes. Label is required (marked with <span style="color:rgba(239,130,130,.7);font-weight:700;">*</span>) &mdash; Save stays disabled until a label is entered. New items have no Delete button.</li>
 </ul>
 
 <h4 style="margin:14px 0 6px;">6. Save &amp; share</h4>
@@ -12096,6 +12288,23 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.3.9',
+    date: '2026-02-23',
+    highlights: 'Unified color editor UX, nested create modals, required field indicators, undo improvements',
+    changes: [
+      '<b>Unified color editor</b>: all color pickers now include a hex input field, preset swatches, and an <b>Apply</b> checkbox — across catalog managers (tags, transforms, attributes), create modals, and details panels. Typing a hex code auto-checks Apply and updates the picker',
+      '<b>Create modal color support</b>: the create modal for transforms and custom attributes now includes the full color editor (swatches + picker + hex input + Apply checkbox). Tags always have color applied; other types start with Apply unchecked',
+      '<b>Nested create modals</b>: selecting "+ New tag…", "+ New attribute…", or "+ New value…" from the node create modal now opens a nested create modal instead of the full catalog manager. The node create modal\'s state is saved and restored after committing or cancelling the nested modal. New items are automatically added to the node being created',
+      '<b>Required field indicators</b>: Label fields in all editors and create modals now show a red <b>*</b> asterisk. The Save button remains disabled until a label is provided — replaces the previous alert-based validation',
+      '<b>Highlight colors undoable</b>: saving or deleting custom highlight colors now creates an undo snapshot. Ctrl+Z properly reverts highlight color changes',
+      '<b>Undo catalog sync</b>: undo and redo now re-render all open catalog modals (tags, transforms, attributes, filters) and restore highlight CSS variables. Fixes ghost entries that appeared after undoing a catalog "Add" operation',
+      '<b>Dim Off parent highlighting</b>: when Dim unselected is set to Off, connected parent groups now show the blue highlight — matching the behavior of Parents mode. Previously, parent groups were not highlighted in Off mode',
+      '<b>Highlight colors preview labels</b>: the demo nodes in the highlight colors modal now read "Source" and "Target" instead of "source_id" and "target_id"',
+      '<b>Dropdown reset on cancel</b>: selecting "+ New value…" in the node editor attribute dropdown now resets the dropdown immediately, so cancelling the create modal leaves it at the default "Value…" placeholder',
+      '<b>Guard prompt labels</b>: dirty discard prompts for create modals now show friendly names ("custom attribute", "custom attribute value") instead of internal kind codes',
+    ]
+  },
   {
     version: '1.3.8',
     date: '2026-02-23',
@@ -12625,6 +12834,7 @@ function restoreHlColors(){
     const conn = hlConnPicker?.value || HL_DEFAULTS.connected;
     const act = hlActPicker?.value || HL_DEFAULTS.active;
     if(state.data){
+      recordChange();
       if(conn === HL_DEFAULTS.connected && act === HL_DEFAULTS.active){
         delete state.data._highlightColors;
       } else {
@@ -12655,6 +12865,7 @@ function restoreHlColors(){
   if(hlDeleteBtn) hlDeleteBtn.addEventListener('click', async ()=>{
     const ok = await customConfirm('Remove custom highlight colors and revert to defaults?');
     if(!ok) return;
+    recordChange();
     if(state.data) delete state.data._highlightColors;
     applyHlCssVars(HL_DEFAULTS.connected, HL_DEFAULTS.active);
     syncHlPickerUI(HL_DEFAULTS.connected, HL_DEFAULTS.active);
@@ -12965,7 +13176,7 @@ async function guardCatalogAbandon(){
   if(__catalogEdit.isNew){
     // New item that was never saved — always prompt if dirty, remove on abandon
     if(catalogFormIsDirty()){
-      const ok = await customConfirm('Discard new ' + (__catalogEdit.kind || 'item') + '?');
+      const ok = await customConfirm('Discard new ' + (CREATE_KIND_LABELS[__catalogEdit.kind] || __catalogEdit.kind || 'item') + '?');
       if(!ok) return false;
     }
     // Remove the unsaved new entry
@@ -13134,9 +13345,13 @@ async function guardNodeAbandon(){
 }
 
 // --- Dirty-highlight helper: toggles .btnDirty on Save button when form is dirty ---
-function wireDirtyHighlight(container, saveBtn, dirtyFn){
+function wireDirtyHighlight(container, saveBtn, dirtyFn, canSaveFn){
   if(!container || !saveBtn || !dirtyFn) return;
-  const update = ()=>{ saveBtn.classList.toggle('btnDirty', dirtyFn()); };
+  const update = ()=>{ 
+    const dirty = dirtyFn();
+    const canSave = canSaveFn ? canSaveFn() : true;
+    saveBtn.classList.toggle('btnDirty', dirty && canSave);
+  };
   container.addEventListener('input', update);
   container.addEventListener('change', update);
   // click catches tag chip add/remove, transform chips, checkbox labels, etc.
@@ -13189,10 +13404,10 @@ function renderTagsManager(){
     const _isNew = isEditing && __catalogEdit.isNew;
     return `<div class="mapCard catItem catEditing" data-tidx="${idx}" style="margin-bottom:12px;border-color:rgba(59,130,246,.5);padding:12px 14px;">
       <div class="kv" style="grid-template-columns: 90px 1fr;">
-        <div class="k">Label</div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Critical"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Critical"/></div>
         <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
         <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="S"/></div>
-        <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${escapeHtml(color||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;"/><input class="inp" data-f="color" value="${escapeHtml(color)}" placeholder="#3b82f6" style="flex:1;"/></div></div>
+        <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${escapeHtml(color||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${(color && cat[idx]?.colorEnabled!==false)?'':'opacity:.3;'}"/><input class="inp" data-f="color" value="${escapeHtml(color)}" placeholder="#3b82f6" style="flex:1;"/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="colorOn" ${(color && cat[idx]?.colorEnabled!==false)?'checked':''}/> Apply</label></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
       </div>
       <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap;">
@@ -13291,6 +13506,7 @@ function renderTagsManager(){
     const sw = card.querySelector('[data-f="colorSwatches"]');
     const colorInp = card.querySelector('input[data-f="color"]');
     const colorPick = card.querySelector('input[data-f="colorPicker"]');
+    const _kick = ()=>{ const s = card.querySelector('[data-act="save"]'); if(s && s.__dirtyUpdate) s.__dirtyUpdate(); };
     if(sw){
       const curColor = (colorInp?.value || DEFAULT_TAG_COLOR).trim();
       TAG_COLOR_PRESETS.forEach(p=>{
@@ -13301,9 +13517,12 @@ function renderTagsManager(){
         s.addEventListener('click', (e)=>{
           e.stopPropagation();
           if(colorInp){ colorInp.value = p.value; colorInp.dispatchEvent(new Event('input',{bubbles:true})); }
-          if(colorPick) colorPick.value = p.value;
+          if(colorPick){ colorPick.value = p.value; colorPick.style.opacity = '1'; }
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = true;
           sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
           s.classList.add('sel');
+          _kick();
         });
         sw.appendChild(s);
       });
@@ -13311,15 +13530,32 @@ function renderTagsManager(){
         colorPick.addEventListener('input', ()=>{
           if(colorInp) colorInp.value = colorPick.value;
           sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = true;
+          colorPick.style.opacity = '1';
+          _kick();
         });
+        colorPick.addEventListener('change', _kick);
       }
       if(colorInp) colorInp.addEventListener('input', ()=>{
         const v = (colorInp.value||'').trim();
         if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
           if(colorPick) colorPick.value = v;
           sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = true;
+          if(colorPick) colorPick.style.opacity = '1';
         }
+        _kick();
       });
+      // Apply checkbox
+      const tagColorOn = card.querySelector('[data-f="colorOn"]');
+      if(tagColorOn){
+        tagColorOn.addEventListener('change', ()=>{
+          if(colorPick) colorPick.style.opacity = tagColorOn.checked ? '1' : '.3';
+          _kick();
+        });
+      }
     }
     // Save
     card.querySelector('[data-act="save"]')?.addEventListener('click', ()=>{
@@ -13330,9 +13566,14 @@ function renderTagsManager(){
       if(!newId) newId = slugifyTagLabel(newLabel) || t.id;
       const newAbbr = (card.querySelector('[data-f="abbr"]')?.value||'').trim();
       const newColor = (card.querySelector('[data-f="color"]')?.value||'').trim() || DEFAULT_TAG_COLOR;
+      const newColorOn = card.querySelector('[data-f="colorOn"]')?.checked;
       const newNote = (card.querySelector('[data-f="note"]')?.value||'').trim();
+      // For new items, remove placeholder before snapshot so undo doesn't include it
+      if(__catalogEdit.isNew) cat.splice(idx, 1);
       recordChange();
+      if(__catalogEdit.isNew) cat.splice(idx, 0, t);
       t.label = newLabel; t.abbr = newAbbr; t.color = newColor; t.note = newNote;
+      t.colorEnabled = newColorOn !== false;
       t._autoId = __editorAutoId; t._autoAbbr = __editorAutoAbbr;
       if(newId !== t.id){
         const result = reIdTagInData(state.data, t.id, newId);
@@ -13354,7 +13595,7 @@ function renderTagsManager(){
       if(tid){ for(const n of IDX.nodeById.values()){ if(Array.isArray(n.tags)) n.tags = n.tags.filter(x=>x!==tid); } }
       catalogEditEnd(); renderAll(); renderTagsManager();
     });
-    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty);
+    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'tag', cat[idx]);
   });
 }
@@ -13380,7 +13621,7 @@ function renderTransformsManager(){
       const editable = state.editorMode;
       const paramCount = Array.isArray(t.params) ? t.params.length : 0;
       const paramInfo = paramCount ? `<span style="font-size:10px;opacity:.45;margin-left:4px;">${paramCount} param${paramCount>1?'s':''}</span>` : '';
-      const tColorDot = t.color ? `<span style="width:10px;height:10px;border-radius:3px;background:${escapeHtml(t.color)};display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.12);"></span>` : '';
+      const tColorDot = (t.color && t.colorEnabled !== false) ? `<span style="width:10px;height:10px;border-radius:3px;background:${escapeHtml(t.color)};display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.12);"></span>` : '';
       return `<div class="mapCard catItem" data-tidx="${idx}" style="margin-bottom:8px;${editable?'cursor:pointer;':''}" ${editable?'title="Click to edit"':''}>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           ${tColorDot}
@@ -13408,10 +13649,10 @@ function renderTransformsManager(){
     const tColor = escapeHtml(t.color||'');
     return `<div class="mapCard catItem catEditing" data-tidx="${idx}" style="margin-bottom:10px;border-color:rgba(59,130,246,.5);">
       <div class="kv" style="grid-template-columns: 90px 1fr;">
-        <div class="k">Label</div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Trim whitespace"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Trim whitespace"/></div>
         <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
         <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TR"/></div>
-        <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${tColor||'#6b7280'}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${tColor?'':'opacity:.3;'}"/><input class="inp" data-f="color" value="${tColor}" placeholder="optional" style="flex:1;"/><span class="layoutReset trColorReset" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);">↺</span></div></div>
+        <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${tColor||'#6b7280'}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${tColor && t.colorEnabled!==false?'':'opacity:.3;'}"/><input class="inp" data-f="color" value="${tColor}" placeholder="optional" style="flex:1;"/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="colorOn" ${(tColor && t.colorEnabled!==false)?'checked':''}/> Apply</label><span class="layoutReset trColorReset" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);">↺</span></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
         <div class="k">Params</div><div class="v">
           <div id="trParams_${idx}">${_isNew ? '<span class="empty" style="font-size:11px;">No parameters</span>' : (paramsHtml || '<span class="empty" style="font-size:11px;">No parameters</span>')}</div>
@@ -13469,11 +13710,16 @@ function renderTransformsManager(){
           newParams.push(p);
         }
       });
+      // For new items, remove placeholder before snapshot so undo doesn't include it
+      if(__catalogEdit.isNew) cat.splice(idx, 1);
       recordChange();
+      if(__catalogEdit.isNew) cat.splice(idx, 0, t);
       t.label = newLabel; t.abbr = newAbbr; t.note = newNote;
       t._autoId = __editorAutoId; t._autoAbbr = __editorAutoAbbr;
       const newColor = (card.querySelector('[data-f="color"]')?.value||'').trim();
+      const newColorOn = card.querySelector('[data-f="colorOn"]')?.checked;
       if(newColor) t.color = newColor; else delete t.color;
+      t.colorEnabled = !!newColorOn;
       t.params = newParams.length ? newParams : undefined;
       if(!t.params) delete t.params;
       if(newId !== t.id){
@@ -13531,6 +13777,7 @@ function renderTransformsManager(){
       const colorInp = card.querySelector('input[data-f="color"]');
       const colorPick = card.querySelector('input[data-f="colorPicker"]');
       const colorReset = card.querySelector('.trColorReset');
+      const _kick = ()=>{ const s = card.querySelector('[data-act="save"]'); if(s && s.__dirtyUpdate) s.__dirtyUpdate(); };
       if(sw){
         const curColor = (colorInp?.value || '').trim();
         TAG_COLOR_PRESETS.forEach(p=>{
@@ -13542,8 +13789,11 @@ function renderTransformsManager(){
             e.stopPropagation();
             if(colorInp){ colorInp.value = p.value; colorInp.dispatchEvent(new Event('input',{bubbles:true})); }
             if(colorPick){ colorPick.value = p.value; colorPick.style.opacity = '1'; }
+            const colorOn = card.querySelector('[data-f="colorOn"]');
+            if(colorOn) colorOn.checked = true;
             sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
             s.classList.add('sel');
+            _kick();
           });
           sw.appendChild(s);
         });
@@ -13553,20 +13803,38 @@ function renderTransformsManager(){
           if(colorInp){ colorInp.value = colorPick.value; colorInp.dispatchEvent(new Event('input',{bubbles:true})); }
           colorPick.style.opacity = '1';
           if(sw) sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = true;
+          _kick();
         });
+        colorPick.addEventListener('change', _kick);
       }
       if(colorInp) colorInp.addEventListener('input', ()=>{
         const v = (colorInp.value||'').trim();
         if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
           if(colorPick){ colorPick.value = v; colorPick.style.opacity = '1'; }
           if(sw) sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = true;
         }
+        _kick();
       });
+      // Apply checkbox
+      const trColorOn = card.querySelector('[data-f="colorOn"]');
+      if(trColorOn){
+        trColorOn.addEventListener('change', ()=>{
+          if(colorPick) colorPick.style.opacity = trColorOn.checked ? '1' : '.3';
+          _kick();
+        });
+      }
       if(colorReset){
         colorReset.addEventListener('click', ()=>{
           if(colorInp){ colorInp.value = ''; colorInp.dispatchEvent(new Event('input',{bubbles:true})); }
           if(colorPick){ colorPick.value = '#6b7280'; colorPick.style.opacity = '.3'; }
           if(sw) sw.querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+          const colorOn = card.querySelector('[data-f="colorOn"]');
+          if(colorOn) colorOn.checked = false;
+          _kick();
         });
       }
     }
@@ -13586,7 +13854,7 @@ function renderTransformsManager(){
       }
       catalogEditEnd(); renderAll(); renderTransformsManager();
     });
-    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty);
+    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'transform', cat[idx]);
   });
 }
@@ -13709,15 +13977,18 @@ function renderCustomAttrsManager(){
     const _isNew = isEditing && __catalogEdit.isNew;
     return `<div class="mapCard catItem catEditing" data-aidx="${idx}" style="margin-bottom:10px;border-color:rgba(59,130,246,.5);">
       <div class="kv" style="grid-template-columns: 90px 1fr;">
-        <div class="k">Label</div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Status"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Status"/></div>
         <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
         <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TY"/></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div data-f="attrColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
+          <div style="display:flex;align-items:center;gap:6px;flex-basis:100%;">
           <input type="color" data-f="attrColorPicker" value="${a.color||'#6b7280'}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${a.color && a.colorEnabled!==false?'':'opacity:.3;'}"/>
+          <input class="inp" data-f="attrColorHex" value="${escapeHtml(a.color && a.colorEnabled!==false ? a.color : '')}" placeholder="optional" style="flex:1;font-family:var(--mono);font-size:11px;max-width:100px;"/>
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="attrColorOn" ${(a.color && a.colorEnabled!==false)?'checked':''}/> Apply</label>
           <span class="layoutReset attrColorReset" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);">↺</span>
+          </div>
           <span style="font-size:10px;opacity:.4;">Inherited by values without color</span>
         </div>
         <div class="k">Options</div>
@@ -13912,7 +14183,10 @@ function renderCustomAttrsManager(){
         newValues.push(vObj);
       });
 
+      // For new items, remove placeholder before snapshot so undo doesn't include it
+      if(__catalogEdit.isNew) cat.splice(idx, 1);
       recordChange();
+      if(__catalogEdit.isNew) cat.splice(idx, 0, a);
       a.label = newLabel; a.abbr = newAbbr; a.note = newNote; a.multi = newMulti;
       a._autoId = __editorAutoId; a._autoAbbr = __editorAutoAbbr;
       a.displayOnNode = newDisplayOnNode;
@@ -13982,7 +14256,7 @@ function renderCustomAttrsManager(){
           a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
           const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
           if(abbr) vObj.abbr = abbr;
-          if(color) vObj.color = color;
+          if(color) { vObj.color = color; vObj.colorEnabled = true; }
           a.values.push(vObj);
           renderCustomAttrsManager();
         }
@@ -14001,13 +14275,27 @@ function renderCustomAttrsManager(){
     });
 
     // Value colorEnabled checkboxes
+    const _kick = ()=>{ const s = card.querySelector('[data-act="save"]'); if(s && s.__dirtyUpdate) s.__dirtyUpdate(); };
     card.querySelectorAll('[data-vf="vcolorOn"]').forEach(cb=>{
       cb.addEventListener('change', ()=>{
         const vi = Number(cb.dataset.vi);
         const colorInp = card.querySelector(`[data-vf="vcolor"][data-vi="${vi}"]`);
         if(colorInp) colorInp.style.opacity = cb.checked ? '1' : '.3';
         if(a.values && a.values[vi]) a.values[vi].colorEnabled = cb.checked;
+        _kick();
       });
+    });
+
+    // Value color pickers — auto-check Apply on change
+    card.querySelectorAll('[data-vf="vcolor"]').forEach(colorInp=>{
+      colorInp.addEventListener('input', ()=>{
+        const vi = colorInp.dataset.vi;
+        const cb = card.querySelector(`[data-vf="vcolorOn"][data-vi="${vi}"]`);
+        if(cb) cb.checked = true;
+        colorInp.style.opacity = '1';
+        _kick();
+      });
+      colorInp.addEventListener('change', _kick);
     });
 
     // Value color swatch toggle buttons
@@ -14032,6 +14320,7 @@ function renderCustomAttrsManager(){
               if(colorInp){ colorInp.value = p.value; colorInp.style.opacity = '1'; colorInp.dispatchEvent(new Event('input',{bubbles:true})); }
               const cb2 = card.querySelector(`[data-vf="vcolorOn"][data-vi="${vi}"]`);
               if(cb2) cb2.checked = true;
+              _kick();
             });
             panel.appendChild(s);
           });
@@ -14048,6 +14337,7 @@ function renderCustomAttrsManager(){
         const cb = card.querySelector(`[data-vf="vcolorOn"][data-vi="${vi}"]`);
         if(cb) cb.checked = false;
         if(a.values && a.values[vi]){ delete a.values[vi].color; a.values[vi].colorEnabled = false; }
+        _kick();
       });
     });
 
@@ -14055,25 +14345,43 @@ function renderCustomAttrsManager(){
     {
       const attrColorPicker = card.querySelector('[data-f="attrColorPicker"]');
       const attrColorOn = card.querySelector('[data-f="attrColorOn"]');
+      const attrColorHex = card.querySelector('[data-f="attrColorHex"]');
       const attrColorReset = card.querySelector('.attrColorReset');
       const attrSwatchWrap = card.querySelector('[data-f="attrColorSwatches"]');
       if(attrSwatchWrap && attrColorPicker){
-        buildColorSwatches(attrSwatchWrap, attrColorPicker);
+        buildColorSwatches(attrSwatchWrap, attrColorPicker, attrColorOn, _kick);
         // When picker changes, auto-check Apply
         attrColorPicker.addEventListener('input', ()=>{
           if(attrColorOn) attrColorOn.checked = true;
           attrColorPicker.style.opacity = '1';
+          if(attrColorHex) attrColorHex.value = attrColorPicker.value;
+          _kick();
+        });
+        attrColorPicker.addEventListener('change', _kick);
+      }
+      if(attrColorHex){
+        attrColorHex.addEventListener('input', ()=>{
+          const v = (attrColorHex.value||'').trim();
+          if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
+            if(attrColorPicker) attrColorPicker.value = v;
+            if(attrColorOn) attrColorOn.checked = true;
+            if(attrColorPicker) attrColorPicker.style.opacity = '1';
+          }
+          _kick();
         });
       }
       if(attrColorOn){
         attrColorOn.addEventListener('change', ()=>{
           if(attrColorPicker) attrColorPicker.style.opacity = attrColorOn.checked ? '1' : '.3';
+          _kick();
         });
       }
       if(attrColorReset){
         attrColorReset.addEventListener('click', ()=>{
           if(attrColorPicker){ attrColorPicker.value = '#6b7280'; attrColorPicker.style.opacity = '.3'; attrColorPicker.dispatchEvent(new Event('input',{bubbles:true})); }
           if(attrColorOn) attrColorOn.checked = false;
+          if(attrColorHex) attrColorHex.value = '';
+          _kick();
         });
       }
     }
@@ -14147,7 +14455,7 @@ function renderCustomAttrsManager(){
       }
       catalogEditEnd(); renderCustomAttrsManager(); renderAll();
     });
-    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty);
+    wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'attr', a);
   });
 }
@@ -14507,6 +14815,17 @@ async function undo(){
   const __ti = document.getElementById('projectTitle');
   if(__ti && state.data) __ti.value = state.data.title || 'New Project';
 
+  // Restore highlight colors from data
+  try { restoreHlColors(); } catch(e){}
+
+  // Reset any active catalog edit and re-render open catalog modals
+  catalogEditEnd();
+  __filterEditId = null; __filterEditSnapshot = null;
+  try { renderTagsManager(); } catch(e){}
+  try { renderTransformsManager(); } catch(e){}
+  try { renderCustomAttrsManager(); } catch(e){}
+  try { renderFiltersManager(); } catch(e){}
+
   updateUndoRedoButtons();
   checkDirtyState();
   setViewerStatus('Undo');
@@ -14618,6 +14937,17 @@ async function redo(){
   // Sync header inputs with restored data
   const __ti = document.getElementById('projectTitle');
   if(__ti && state.data) __ti.value = state.data.title || 'New Project';
+
+  // Restore highlight colors from data
+  try { restoreHlColors(); } catch(e){}
+
+  // Reset any active catalog edit and re-render open catalog modals
+  catalogEditEnd();
+  __filterEditId = null; __filterEditSnapshot = null;
+  try { renderTagsManager(); } catch(e){}
+  try { renderTransformsManager(); } catch(e){}
+  try { renderCustomAttrsManager(); } catch(e){}
+  try { renderFiltersManager(); } catch(e){}
 
   updateUndoRedoButtons();
   checkDirtyState();
@@ -16195,13 +16525,16 @@ function renderSelectedColumnEditor(){
         <span class="dtEditorLabel">Editor</span>
       </div>
       <div class="kv" style="grid-template-columns: 80px 1fr;">
-        <div class="k">Label</div><div class="v"><input class="inp" id="colLabel" value="${escapeHtml(col.label||col.id)}"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" id="colLabel" value="${escapeHtml(col.label||col.id)}"/></div>
         <div class="k">ID <span class="autoTag" id="colIdAuto">auto</span></div><div class="v" style="display:flex;align-items:center;gap:0;"><input class="inp" id="colId" value="${escapeHtml(col.id)}" style="font-family:var(--mono);font-size:11px;flex:1;"/></div>
         <div class="k">Note</div><div class="v"><input class="inp" id="colNote" value="${escapeHtml(col.note||'')}" placeholder="optional"/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div id="colColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
+          <div style="display:flex;align-items:center;gap:6px;flex-basis:100%;">
           <input type="color" id="colColor" value="${escapeHtml(col.color||col._pendingColor||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${col.color?'':'opacity:.3;'}"/>
+          <input class="inp" id="colColorHex" value="${escapeHtml(col.color||'')}" placeholder="optional" style="flex:1;font-family:var(--mono);font-size:11px;max-width:100px;"/>
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="colColorOn" ${col.color?'checked':''}/> Apply</label>
+          </div>
           <div style="font-size:10px;opacity:.35;flex-basis:100%;">Colors header &amp; child nodes without own color</div>
         </div>
         <div class="k">Fields</div><div class="v"><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:12px;">${fieldCount}</span></span></div>
@@ -16272,25 +16605,42 @@ function renderSelectedColumnEditor(){
     setGlobalStatus('Cancelled changes.');
   });
  document.getElementById('colDelete')?.addEventListener('click', ()=> deleteColumnById(colId));
-  // Column color swatches and checkbox
+  // Column color swatches, hex input, and checkbox
   {
     const _colColorPicker = document.getElementById('colColor');
     const _colColorOn = document.getElementById('colColorOn');
+    const _colColorHex = document.getElementById('colColorHex');
     const _colSwatchWrap = document.getElementById('colColorSwatches');
+    const _kick = ()=>{ const s = document.getElementById('colSave'); if(s && s.__dirtyUpdate) s.__dirtyUpdate(); };
     if(_colSwatchWrap && _colColorPicker){
-      buildColorSwatches(_colSwatchWrap, _colColorPicker);
+      buildColorSwatches(_colSwatchWrap, _colColorPicker, _colColorOn, _kick);
       _colColorPicker.addEventListener('input', ()=>{
         if(_colColorOn) _colColorOn.checked = true;
         _colColorPicker.style.opacity = '1';
+        if(_colColorHex) _colColorHex.value = _colColorPicker.value;
+        _kick();
+      });
+      _colColorPicker.addEventListener('change', _kick);
+    }
+    if(_colColorHex){
+      _colColorHex.addEventListener('input', ()=>{
+        const v = (_colColorHex.value||'').trim();
+        if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
+          if(_colColorPicker) _colColorPicker.value = v;
+          if(_colColorOn) _colColorOn.checked = true;
+          if(_colColorPicker) _colColorPicker.style.opacity = '1';
+        }
+        _kick();
       });
     }
     if(_colColorOn){
       _colColorOn.addEventListener('change', ()=>{
         if(_colColorPicker) _colColorPicker.style.opacity = _colColorOn.checked ? '1' : '.3';
+        _kick();
       });
     }
   }
-  wireDirtyHighlight(detailsBody, document.getElementById('colSave'), nodeEditIsDirty);
+  wireDirtyHighlight(detailsBody, document.getElementById('colSave'), nodeEditIsDirty, ()=> !!(document.getElementById('colLabel')?.value||'').trim());
   // Column label→id auto-fill
   {
     const _colLabelInp = document.getElementById('colLabel');
@@ -16391,14 +16741,17 @@ function renderSelectedNodeEditor(nodeId){
         <span class="dtEditorLabel">Editor</span>
       </div>
       <div class="kv" style="grid-template-columns: 80px 1fr;">
-        <div class="k">Label</div><div class="v"><input class="inp" id="ndLabel" value="${escapeHtml(node.label||node.id)}"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" id="ndLabel" value="${escapeHtml(node.label||node.id)}"/></div>
         <div class="k">ID <span class="autoTag" id="ndIdAuto">auto</span></div><div class="v" style="display:flex;align-items:center;gap:0;"><span style="font-family:var(--mono);font-size:11px;opacity:.55;white-space:nowrap;">${escapeHtml(idPathPrefix(node.id))}</span><input class="inp" id="ndId" value="${escapeHtml(localIdSegment(node.id))}" style="font-family:var(--mono);font-size:11px;flex:1 1 auto;min-width:80px;"/></div>
         <div class="k">Summary</div><div class="v"><div class="dtStatRow" style="padding:0;"><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${inbound.length}</span><span class="dtStatL">in</span></span><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${outbound.length}</span><span class="dtStatL">out</span></span></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" id="ndNote" value="${escapeHtml(node.note||'')}" placeholder="optional"/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div id="ndColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
+          <div style="display:flex;align-items:center;gap:6px;flex-basis:100%;">
           <input type="color" id="ndColor" value="${escapeHtml(node.color||node._pendingColor||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${node.color?'':'opacity:.3;'}"/>
+          <input class="inp" id="ndColorHex" value="${escapeHtml(node.color||'')}" placeholder="optional" style="flex:1;font-family:var(--mono);font-size:11px;max-width:100px;"/>
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="ndColorOn" ${node.color?'checked':''}/> Apply</label>
+          </div>
         </div>
 
         <div class="k">Tags</div>
@@ -16707,11 +17060,12 @@ function renderMultiVals(aid){
         placeholder:'Value label…',
         hint:'ID is generated from the value label and made unique.',
         taken,
-        onCommit: ({label,id,note,abbr,_autoId,_autoAbbr})=>{
+        onCommit: ({label,id,note,color,abbr,_autoId,_autoAbbr})=>{
           let maxVP = 0;
           a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
           const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
           if(abbr) vObj.abbr = abbr;
+          if(color) { vObj.color = color; vObj.colorEnabled = true; }
           a.values.push(vObj);
           node.customAttributes = node.customAttributes || {};
           const cur = node.customAttributes[aid];
@@ -16780,17 +17134,34 @@ function rebuildTagOptions(){
   {
     const ndColorOn = document.getElementById('ndColorOn');
     const ndColor = document.getElementById('ndColor');
+    const ndColorHex = document.getElementById('ndColorHex');
     const ndSaveBtn = document.getElementById('ndSave');
     if(ndColorOn && ndColor){
-      // Build preset swatches
-      buildColorSwatches(document.getElementById('ndColorSwatches'), ndColor);
       const triggerDirty = ()=>{ if(ndSaveBtn && ndSaveBtn.__dirtyUpdate) ndSaveBtn.__dirtyUpdate(); };
+      // Build preset swatches
+      buildColorSwatches(document.getElementById('ndColorSwatches'), ndColor, ndColorOn, triggerDirty);
       ndColorOn.addEventListener('change', ()=>{
         ndColor.style.opacity = ndColorOn.checked ? '1' : '.3';
         triggerDirty();
       });
-      ndColor.addEventListener('input', triggerDirty);
+      ndColor.addEventListener('input', ()=>{
+        if(ndColorOn) ndColorOn.checked = true;
+        ndColor.style.opacity = '1';
+        if(ndColorHex) ndColorHex.value = ndColor.value;
+        triggerDirty();
+      });
       ndColor.addEventListener('change', triggerDirty);
+      if(ndColorHex){
+        ndColorHex.addEventListener('input', ()=>{
+          const v = (ndColorHex.value||'').trim();
+          if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
+            ndColor.value = v;
+            if(ndColorOn) ndColorOn.checked = true;
+            ndColor.style.opacity = '1';
+          }
+          triggerDirty();
+        });
+      }
     }
   }
 
@@ -16878,8 +17249,10 @@ function rebuildTagOptions(){
         placeholder:'Attribute label…',
         hint:'ID is generated from the attribute label and made unique.',
         taken,
-        onCommit: ({label,id,abbr,note,multi,_autoId,_autoAbbr})=>{
-          cat.push({ id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), multi:!!multi, values:[], _autoId, _autoAbbr});
+        onCommit: ({label,id,abbr,note,color,multi,_autoId,_autoAbbr})=>{
+          const entry = { id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), multi:!!multi, values:[], _autoId, _autoAbbr};
+          if(color) { entry.color = color; entry.colorEnabled = true; }
+          cat.push(entry);
           rebuildAttrOptions();
           ndAttrSel.value = id;
           rebuildValOptions(id);
@@ -16920,6 +17293,7 @@ function rebuildTagOptions(){
     if(!vid) return;
 
     if(vid==='__new__'){
+      ndAttrValSel.value = '';
       const a = customAttrById(aid);
       if(!a){  return; }
       if(!Array.isArray(a.values)) a.values=[];
@@ -16930,11 +17304,12 @@ function rebuildTagOptions(){
         placeholder:'Value label…',
         hint:'ID is generated from the value label and made unique.',
         taken,
-        onCommit: ({label,id,note,abbr,_autoId,_autoAbbr})=>{
+        onCommit: ({label,id,note,color,abbr,_autoId,_autoAbbr})=>{
           let maxVP = 0;
           a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
           const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
           if(abbr) vObj.abbr = abbr;
+          if(color) { vObj.color = color; vObj.colorEnabled = true; }
           a.values.push(vObj);
           rebuildValOptions(aid);
           node.customAttributes = node.customAttributes || {};
@@ -17042,7 +17417,7 @@ function rebuildTagOptions(){
     });
   }
 
-  wireDirtyHighlight(detailsBody, document.getElementById('ndSave'), nodeEditIsDirty);
+  wireDirtyHighlight(detailsBody, document.getElementById('ndSave'), nodeEditIsDirty, ()=> !!(document.getElementById('ndLabel')?.value||'').trim());
   // Node label→id auto-fill (local segment)
   {
     const _ndLabelInp = document.getElementById('ndLabel');
@@ -17923,8 +18298,11 @@ function renderSelectedEdgeEditor(){
         <div class="k">Note</div><div class="v"><input class="inp" id="edNote" value="${escapeHtml(note)}" placeholder="optional" ${isHoverOnly ? 'disabled' : ''}/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div id="edColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
+          <div style="display:flex;align-items:center;gap:6px;">
           <input type="color" id="edColor" value="${escapeHtml((draft||rule).color||(draft||rule)._pendingColor||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${(draft||rule).color?'':'opacity:.3;'}" ${isHoverOnly ? 'disabled' : ''}/>
+          <input class="inp" id="edColorHex" value="${escapeHtml((draft||rule).color||'')}" placeholder="optional" style="flex:1;font-family:var(--mono);font-size:11px;max-width:100px;" ${isHoverOnly ? 'disabled' : ''}/>
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="edColorOn" ${(draft||rule).color?'checked':''} ${isHoverOnly ? 'disabled' : ''}/> Apply</label>
+          </div>
         </div>
       </div>
       ${!isHoverOnly ? `<div class="dtActions">
@@ -18197,15 +18575,33 @@ function renderSelectedEdgeEditor(){
     {
       const edColorOn = document.getElementById('edColorOn');
       const edColor = document.getElementById('edColor');
+      const edColorHex = document.getElementById('edColorHex');
+      const _edKick = ()=>{ syncDraftFromInputs(); triggerEdgeDirty(); };
       if(edColorOn && edColor){
         // Build preset swatches
-        if(!isHoverOnly) buildColorSwatches(document.getElementById('edColorSwatches'), edColor);
+        if(!isHoverOnly) buildColorSwatches(document.getElementById('edColorSwatches'), edColor, edColorOn, _edKick);
         edColorOn.addEventListener('change', ()=>{
           edColor.style.opacity = edColorOn.checked ? '1' : '.3';
-          syncDraftFromInputs();
+          _edKick();
         });
-        edColor.addEventListener('input', syncDraftFromInputs);
-        edColor.addEventListener('change', syncDraftFromInputs);
+        edColor.addEventListener('input', ()=>{
+          if(edColorOn) edColorOn.checked = true;
+          edColor.style.opacity = '1';
+          if(edColorHex) edColorHex.value = edColor.value;
+          _edKick();
+        });
+        edColor.addEventListener('change', _edKick);
+        if(edColorHex){
+          edColorHex.addEventListener('input', ()=>{
+            const v = (edColorHex.value||'').trim();
+            if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){
+              edColor.value = v;
+              if(edColorOn) edColorOn.checked = true;
+              edColor.style.opacity = '1';
+            }
+            _edKick();
+          });
+        }
       }
     }
 
@@ -18916,7 +19312,7 @@ function buildDocs(){
   <li><b>Dim mode</b> (Selection menu): choose how unselected nodes and mappings appear — <b>All</b> dims everything, <b>Parents</b> keeps parent groups visible, <b>Off</b> disables dimming entirely. Colored mappings (scheme, filter, or manual) properly dim alongside nodes.</li>
   <li><b>Dim unselected</b> (Selection menu): <b>All</b> dims everything except directly connected fields. <b>Parents</b> also keeps ancestor groups visible with a subtle highlight. <b>Off</b> disables dimming. Collapsed groups always stay highlighted regardless of mode.</li>
   <li><b>Highlight mode</b> (Selection menu): choose between <b>Chain</b> (follow full mapping chain across all columns, default), <b>Direct</b> (show only immediate/adjacent mappings), and <b>Selected</b> (highlight only the selected node(s), no connected fields). Applies to both single and multi-selections.</li>
-  <li><b>Highlight colors</b> (Selection → Highlight colors…): customize the Selected / Hovered and Connected highlight colors with a picker and preset swatches. Includes a live preview tester with interactive source → target nodes. Per-row ↺ reset to defaults. Colors are saved as <code>_highlightColors</code> in the project JSON and travel with the file. Editable only in Editor mode; read-only in Viewer mode. Save / Cancel / Delete workflow with unsaved-changes guard.</li>
+  <li><b>Highlight colors</b> (Selection → Highlight colors…): customize the Selected / Hovered and Connected highlight colors with a picker and preset swatches. Includes a live preview tester with interactive Source → Target nodes. Per-row ↺ reset to defaults. Colors are saved as <code>_highlightColors</code> in the project JSON and travel with the file. Changes are undoable (Ctrl+Z). Editable only in Editor mode; read-only in Viewer mode. Save / Cancel / Delete workflow with unsaved-changes guard.</li>
 </ul>
 <p>Tip: for large graphs, keep arrow mode on <b>Selected</b> and use hover/click to explore connections contextually. Disable <b>Same-column</b> and <b>Distant</b> arrows to focus on adjacent mappings only.</p>
 
@@ -18958,7 +19354,7 @@ function buildDocs(){
   <li><b>Rename columns</b>: click the column header label (in editor mode) to edit it.</li>
   <li><b>Column context menu</b>: click the &#x2AF6; button on a column header to access rename, delete, move, and add options.</li>
   <li><b>Column notes</b>: editable in the details pane when a column is selected.</li>
-  <li><b>Column colors</b>: optional per-column color with swatch picker and Apply checkbox. When applied, the column header name is tinted and a colored bottom border appears. The color acts as the final fallback in the node color inheritance chain &mdash; all descendant nodes without their own applied color (or an ancestor group color) inherit the column color as a subtle background tint.</li>
+  <li><b>Column colors</b>: optional per-column color with swatch picker, hex input, and Apply checkbox. When applied, the column header name is tinted and a colored bottom border appears. The color acts as the final fallback in the node color inheritance chain &mdash; all descendant nodes without their own applied color (or an ancestor group color) inherit the column color as a subtle background tint.</li>
 </ul>
 
 <h3>Nodes (fields &amp; groups)</h3>
@@ -18975,8 +19371,8 @@ function buildDocs(){
     </ul>
   </li>
   <li><b>Node IDs</b>: hierarchical path structure. The path prefix is auto-calculated from the parent hierarchy; the local segment is editable.</li>
-  <li><b>Node colors</b>: optional per-node color shown as a subtle background tint. Use the preset swatches or the color picker in the editor. Check <b>Apply</b> to activate; uncheck to stage a color without applying it.</li>
-  <li><b>Column colors</b>: optional per-column color that tints the column header and acts as the final fallback in the inheritance chain for all descendant nodes.</li>
+  <li><b>Node colors</b>: optional per-node color shown as a subtle background tint. Use the preset swatches, color picker, or hex input in the editor. Check <b>Apply</b> to activate; uncheck to stage a color without applying it.</li>
+  <li><b>Column colors</b>: optional per-column color with swatch picker, hex input, and Apply checkbox that tints the column header and acts as the final fallback in the inheritance chain for all descendant nodes.</li>
   <li><b>Attribute value colors</b>: each value can have a color with an Apply checkbox. If a value's color is not applied, it inherits from the attribute-level color. For &ldquo;Color mappings by&rdquo;, disabled value colors fall back to the default palette.</li>
   <li><b>Color priority (node background)</b>: multiple systems can color a node. From highest to lowest priority: <b>Selection/hover highlight</b> &rarr; <b>Filter highlight</b> &rarr; <b>Node color</b> (applied) &rarr; <b>Nearest ancestor group color</b> (applied) &rarr; <b>Column color</b> &rarr; none. Selection and filter highlights completely override the inheritance chain. Within the inheritance chain, groups with color applied cascade to all descendants until a child overrides with its own applied color.</li>
   <li><b>Color priority (mappings)</b>: multiple systems can color an arrow. From highest to lowest priority:
@@ -19040,16 +19436,17 @@ function buildDocs(){
 <h2>Catalogs</h2>
 <p>Four catalogs are managed via modal panels (accessible from the CATALOGS toolbar group). All catalog editors share a unified editing pattern:</p>
 <ul>
-  <li><b>Inline creation</b>: clicking <b>Add</b> inserts a blank editor card at the top of the list. No popup — edit in place.</li>
+  <li><b>Inline creation</b>: clicking <b>Add</b> inserts a blank editor card at the top of the list. No popup — edit in place. When creating a node, selecting "+ New tag…", "+ New attribute…", or "+ New value…" opens a nested create modal — the node form is saved and restored automatically after committing or cancelling.</li>
   <li><b>Auto-ID &amp; abbreviation</b>: as you type a label, the ID and abbreviation auto-generate in real time. A blue <b>auto</b> badge indicates the field is linked to the label. Edit the field to override (badge disappears); clear it to re-link (badge reappears).</li>
-  <li><b>Save / Cancel / Delete</b>: the Save button is disabled until changes are detected. New items have no Delete button. Cancel on a new item discards it (with a confirmation prompt if dirty). Label is required to save.</li>
+  <li><b>Required fields</b>: Label is required in all editors — marked with a red <b style="color:rgba(239,130,130,.7);">*</b>. The Save button stays disabled until a label is entered.</li>
+  <li><b>Save / Cancel / Delete</b>: the Save button is disabled until changes are detected and all required fields are filled. New items have no Delete button. Cancel on a new item discards it (with a confirmation prompt if dirty).</li>
   <li><b>Click to edit</b>: click any existing item to open its inline editor. A dirty guard prompts before abandoning unsaved changes.</li>
 </ul>
 
 <h3>Tags</h3>
 <p>Tags are colored labels attached to nodes (fields and groups). They appear as small pills in the viewer and indicate status, ownership, or workflow stage.</p>
 <ul>
-  <li>Each tag has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>color</b>, <b>note</b>, and <b>priority</b>.</li>
+  <li>Each tag has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>color</b> (with preset swatches, color picker, and hex input), <b>Apply</b> checkbox, <b>note</b>, and <b>priority</b>.</li>
   <li><b>Priority</b> determines display order everywhere. Drag tags in the manager to reorder, or use the arrow buttons.</li>
   <li>Tags are assigned to nodes in the node editor (details pane).</li>
   <li>Up to 3 tags are shown per field in the viewer; the rest are visible on hover or in the details pane.</li>
@@ -19058,7 +19455,7 @@ function buildDocs(){
 <h3>Transforms</h3>
 <p>Transforms describe data conversion operations applied to mappings (e.g. trim, uppercase, type cast). They are an ordered sequence per mapping.</p>
 <ul>
-  <li>Each transform has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>note</b>, and optional <b>params</b> (parameter schema).</li>
+  <li>Each transform has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>note</b>, optional <b>color</b> (with hex input and Apply checkbox), and optional <b>params</b> (parameter schema).</li>
   <li>Params define per-instance configuration: each param has an <b>id</b>, <b>label</b>, <b>type</b> (text or number), and optional <b>default</b>. Param IDs also auto-generate from the label.</li>
   <li>The same transform can be added <b>multiple times</b> to a mapping&rsquo;s chain &mdash; each instance can have different parameter values (e.g. two REPLACE transforms with different substitutions).</li>
   <li>Transforms are assigned to mappings in the mapping editor. Their <b>order matters</b> &mdash; drag to reorder. Click a parameterized chip to edit its parameters.</li>
@@ -19074,7 +19471,7 @@ function buildDocs(){
   <li><b>Attribute-level color</b>: the attribute itself can have a color with an Apply checkbox. When enabled, values that don&rsquo;t have their own color applied will inherit the attribute&rsquo;s color for node pills.</li>
   <li><b>Value color Apply</b>: each value&rsquo;s color has an explicit Apply toggle. When unchecked, the color is stored but not used &mdash; the value inherits from the attribute color instead. For &ldquo;Color mappings by&rdquo;, values with disabled colors fall back to the default palette rather than using their stored color.</li>
   <li>The catalog overview shows a colored dot next to each value that has a custom color. Values with disabled colors appear slightly dimmed. Attributes with an applied color show a dot next to the attribute name.</li>
-  <li><b>Value color editing</b>: inline color picker with &#x1f3a8; swatch toggle (10 presets), Apply checkbox, and &#x21ba; reset per value row. Colors are also available when creating new values.</li>
+  <li><b>Value color editing</b>: inline color picker with &#x1f3a8; swatch toggle (10 presets), hex input, Apply checkbox, and &#x21ba; reset per value row. Colors are also available when creating new values.</li>
   <li>Attributes appear as compact pills in the viewer and as full details in the details pane.</li>
 </ul>
 
@@ -19094,6 +19491,8 @@ function buildDocs(){
   <li><b>Ctrl+Z</b> / <b>Ctrl+Y</b> (or Cmd on Mac) to undo and redo.</li>
   <li>Toolbar buttons are also available in the top bar.</li>
   <li>Each meaningful action creates exactly one undo entry (no duplicates from intermediate steps).</li>
+  <li>All data mutations are undoable — node edits, mapping changes, catalog additions/deletions, highlight color changes, and filter updates.</li>
+  <li>Undo/redo automatically refreshes open catalog modals and restores highlight CSS variables to match the restored state.</li>
   <li>Undo history is cleared when loading a new project or starting a new mapping.</li>
 </ul>
 
@@ -19124,7 +19523,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.3.8", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.3.9", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {
