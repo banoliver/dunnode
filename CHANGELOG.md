@@ -4,6 +4,29 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.3.8] – 2026-02-23
+**Highlights:** Selection menu redesign, highlight mode, enhanced dimming, branding & licensing, privacy section, Unicode transliteration
+
+- **Selection menu redesign**: action buttons now have SVG icons and are reordered — Select all → Invert selection → Clear selection → Expand all → Collapse all. Cleaner visual hierarchy with grouped sections
+- **Highlight mode (3-way)**: merged the old "Selection arrows" toggle and "Selected only" checkbox into a single **Chain** / **Direct** / **Selected** selector. **Chain** follows the full mapping chain across all columns, **Direct** shows only immediate neighbors, and **Selected** highlights only the selected node(s) with no connected fields. Applies to both single and multi-selections
+- **Highlight parents removed**: the standalone "Highlight parents" toggle has been retired — its behavior is now baked into the **Parents** dim mode, which highlights ancestor groups with a subtle blue tint. In **All** dim mode, only directly connected fields are un-dimmed
+- **Dim "All" fix**: expanded parent groups now correctly stay dimmed in All mode. Previously, parent highlighting was un-dimming them regardless, making All and Parents behave identically
+- **Selected group highlighting**: selecting a group now properly un-dims the group node itself and all its descendant subgroups (e.g. selecting EXPERIMENT also un-dims SAMPLE_ANALYSIS)
+- **Selected mode edge hiding**: in Selected highlight mode, non-highlighted edges are fully hidden instead of dimmed. When Show arrows is set to All, edges properly dim rather than disappear
+- **Enhanced dimming contrast**: dimmed elements are now more transparent for better visual clarity — dark mode 0.30 → 0.22, bright mode 0.50 → 0.40
+- **Column selection fix**: clicking a column header while in multi-select mode now properly clears the multi-selection and switches to column view
+- **Unicode transliteration**: auto-generated IDs now convert accented characters to their ASCII equivalents (á→a, é→e, ű→u, ñ→n, ö→o) instead of stripping them. Applied across all ID generation — nodes, tags, transforms, attributes, filters, and export filenames
+- **Favicon**: inline SVG and PNG fallback favicon — the Dunnode diamond icon appears in browser tabs
+- **Branding headers**: Quick Start Guide and Documentation modals now open with the Dunnode logo, tagline ("Done. Now."), and description
+- **MIT License**: full license text added to Documentation. Footer updated to "© 2026 Olivér Bán · MIT License" with a clickable link. About modal shows "MIT Licensed" link — both scroll to the License section in docs
+- **Privacy & Data Handling**: new Documentation section confirming Dunnode runs entirely client-side with no server uploads or data transmission
+- **About modal**: now includes dunnode.com link and "MIT Licensed · Runs entirely in your browser" notice
+- **Version format**: standardized to "v1.3.8" (lowercase v prefix) across footer, About modal, docs, and release notes
+- **Getting started updated**: first step now reads "Visit dunnode.com" as the primary entry point, with local HTML download as a secondary option
+- **Sample data**: project properties now include contact email (hello@dunnode.com) and URL (https://dunnode.com)
+
+---
+
 ## [1.3.7] – 2026-02-23
 **Highlights:** Arrow controls redesign, filter bar polish, mapping color hierarchy, command palette docs search, terminology sweep
 
