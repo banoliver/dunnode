@@ -338,6 +338,21 @@
       max-width:600px;width:100%;transition:all .2s ease;
     }
     .topRight{display:flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+    .topBtn{display:inline-flex;align-items:center;gap:5px;}
+    .topBtn svg{flex-shrink:0;opacity:.55;transition:opacity .15s;}
+    .topBtn:hover svg{opacity:.85;}
+    .topIconBtn{width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;}
+    .topIconBtn svg{opacity:.6;transition:opacity .15s;}
+    .topIconBtn:hover svg{opacity:1;}
+    .editorToggle{transition:background .2s,border-color .2s,color .2s;}
+    .editorToggle.active{border-color:rgba(255,208,92,.55);background:rgba(255,208,92,.16);font-weight:700;}
+    .editorToggle.active:hover{background:rgba(255,208,92,.26);}
+    .editorToggle.active svg{opacity:.9;}
+    body.brightMode .editorToggle.active{border-color:rgba(180,130,10,.50);background:rgba(255,208,92,.22);}
+    body.brightMode .editorToggle.active:hover{background:rgba(255,208,92,.35);}
+    .colsBtn{display:inline-flex;align-items:center;gap:5px;}
+    .colsBtn svg{flex-shrink:0;opacity:.55;transition:opacity .15s;}
+    .colsBtn:hover svg{opacity:.85;}
 
     h1{
       font-size: 17px;
@@ -1524,6 +1539,59 @@ select.inp option:disabled{ color: rgba(155,176,230,.95); }
 .popItem.dragOver{border-color: rgba(59,130,246,.6); box-shadow: 0 -2px 0 0 rgba(59,130,246,.7);}
 .popItem .grow{flex:1 1 auto; min-width: 0;} 
 .popItem input[type='checkbox']{accent-color:#3b82f6;}
+    /* Columns popover */
+    .colPopFooter{display:flex;gap:6px;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;}
+    .viewDeactivateBtn{opacity:.7;}
+    .colPopBtn{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:5px 8px;}
+    .colPopBtn svg{flex-shrink:0;opacity:.5;}
+    .colPopBtn:hover svg{opacity:.8;}
+    .colPopAdd{display:inline-flex;gap:6px;}
+    #columnsList{display:flex;flex-direction:column;gap:3px;}
+    .colItem{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:10px;border:1px solid transparent;background:rgba(255,255,255,.025);transition:background .15s,border-color .15s;cursor:pointer;}
+    .colItem .grow{flex:1 1 auto;min-width:0;}
+    .colItemActions{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto;}
+    .colItem:hover{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.05);}
+    .colItem.dragOver{border-color:rgba(59,130,246,.6);box-shadow:0 -2px 0 0 rgba(59,130,246,.7);}
+    .colItem.colHidden{opacity:.45;}
+    .colItem.colHidden:hover{opacity:.7;}
+    .colColorDot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,.15);}
+    body.brightMode .colColorDot{border-color:rgba(0,0,0,.15);}
+    .colEyeBtn{width:22px;height:22px;padding:0;border:none;background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;opacity:.5;transition:all .15s;flex-shrink:0;}
+    .colEyeBtn:hover{opacity:1;background:rgba(255,255,255,.08);}
+    body.brightMode .colEyeBtn:hover{background:rgba(0,0,0,.06);}
+    .colEyeBtn.colEyeOff{opacity:.25;}
+    .colEyeBtn.colEyeOff:hover{opacity:.6;}
+    .colMoveBtn{width:24px;height:24px;padding:0;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;opacity:.5;transition:all .12s;flex-shrink:0;}
+    .colMoveBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
+    .colMoveBtn[disabled]{opacity:.15;pointer-events:none;}
+    .colDelBtn{width:24px;height:24px;padding:0;border:1px solid rgba(255,120,120,.2);background:rgba(255,120,120,.04);color:rgba(255,120,120,.6);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;transition:all .12s;flex-shrink:0;}
+    .colDelBtn:hover{background:rgba(255,120,120,.15);border-color:rgba(255,120,120,.4);color:rgba(255,120,120,.9);}
+    body.brightMode .colItem{background:rgba(0,0,0,.02);}
+    body.brightMode .colItem:hover{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.08);}
+    body.brightMode .colMoveBtn{border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.02);}
+    body.brightMode .colMoveBtn:hover{background:rgba(0,0,0,.07);border-color:rgba(0,0,0,.18);}
+    body.brightMode .colDelBtn{border-color:rgba(220,38,38,.2);background:rgba(220,38,38,.03);color:rgba(220,38,38,.5);}
+    body.brightMode .colDelBtn:hover{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.35);color:rgba(220,38,38,.8);}
+    /* Catalog card action buttons (shared across tags, attributes, filters) */
+    .catActions{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto;}
+    .catMoveBtn{width:24px;height:24px;padding:0;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;opacity:.5;transition:all .12s;flex-shrink:0;}
+    .catMoveBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
+    .catMoveBtn[disabled],.catMoveBtn[style*="visibility:hidden"]{opacity:.15;pointer-events:none;}
+    body.brightMode .catMoveBtn{border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.02);}
+    body.brightMode .catMoveBtn:hover{background:rgba(0,0,0,.07);border-color:rgba(0,0,0,.18);}
+    .catValMoveBtn{width:20px;height:20px;padding:0;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;opacity:.4;transition:all .12s;flex-shrink:0;}
+    .catValMoveBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+    .catValMoveBtn[style*="visibility:hidden"]{opacity:.1;pointer-events:none;}
+    body.brightMode .catValMoveBtn{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.02);}
+    body.brightMode .catValMoveBtn:hover{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.14);}
+    .ruleActBtn{width:22px;height:22px;padding:0;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;opacity:.45;transition:all .12s;flex-shrink:0;}
+    .ruleActBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+    .ruleActBtn.ruleDel{border-color:rgba(255,100,100,.25);color:#f87171;opacity:.5;}
+    .ruleActBtn.ruleDel:hover{border-color:rgba(255,100,100,.5);background:rgba(255,80,80,.08);opacity:1;}
+    body.brightMode .ruleActBtn{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.02);}
+    body.brightMode .ruleActBtn:hover{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.14);}
+    body.brightMode .ruleActBtn.ruleDel{border-color:rgba(220,38,38,.25);color:rgba(220,38,38,.7);}
+    body.brightMode .ruleActBtn.ruleDel:hover{border-color:rgba(220,38,38,.45);background:rgba(220,38,38,.06);}
 
 .modalMask{position:fixed; inset:0; background: rgba(0,0,0,.55); z-index: 200; display:none;}
 .modalMask.active{display:block;}
@@ -1913,15 +1981,16 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 <button class="btn" id="projectInfoBtn" title="Project properties" style="padding:4px 8px;font-size:13px;min-width:0;line-height:1;">ⓘ</button>
 </div>
 <div class="topRight">
-<button class="btn" id="newMappingBtn" title="Start a new blank project (Ctrl+N)">New project</button>
-<button class="btn" id="openProjectBtn" title="Upload and open a project JSON file (Ctrl+O)">Open project</button>
-<button class="btn" id="saveProjectBtn" title="Download the current project as JSON (Ctrl+S)">Save project</button>
-<label class="toggle modeToggle prominent" title="Toggle inline editing controls in the viewer (Ctrl+E)">
-<input id="editorModeToggle" type="checkbox"/>
+<button class="btn topBtn" id="newMappingBtn" title="Start a new blank project (Alt+N)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 13h6a1.5 1.5 0 0 0 1.5-1.5V4.5Z"/><polyline points="8,1 8,4.5 11.5,4.5"/></svg>New</button>
+<button class="btn topBtn" id="openProjectBtn" title="Upload and open a project JSON file (Alt+O)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 11V3.5A1.5 1.5 0 0 1 3 2h2.5L7 3.5h4A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 11Z"/></svg>Open</button>
+<button class="btn topBtn" id="saveProjectBtn" title="Download the current project as JSON (Alt+S)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9.5v2a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-2"/><polyline points="4.5,6 7,8.5 9.5,6"/><line x1="7" y1="1.5" x2="7" y2="8.5"/></svg>Save</button>
+<button class="btn topBtn editorToggle" id="editorModeBtn" title="Toggle inline editing controls in the viewer (Alt+E)">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 2.5l3 3-7 7H1.5V9.5z"/><line x1="7" y1="4" x2="10" y2="7" opacity=".3"/></svg>
 <span>Editor mode</span>
-</label>
-<button class="btn" id="brightModeBtn" title="Toggle bright/dark mode" style="width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;">☀</button>
-<button class="btn" id="cmdPaletteBtn" title="Command palette (Ctrl+K)" style="width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:15px;">⌘</button>
+</button>
+<input id="editorModeToggle" type="checkbox" style="display:none;"/>
+<button class="btn topIconBtn" id="brightModeBtn" title="Toggle bright/dark mode"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="2.5"/><line x1="7" y1="1" x2="7" y2="2.5"/><line x1="7" y1="11.5" x2="7" y2="13"/><line x1="1" y1="7" x2="2.5" y2="7"/><line x1="11.5" y1="7" x2="13" y2="7"/><line x1="2.76" y1="2.76" x2="3.82" y2="3.82"/><line x1="10.18" y1="10.18" x2="11.24" y2="11.24"/><line x1="2.76" y1="11.24" x2="3.82" y2="10.18"/><line x1="10.18" y1="3.82" x2="11.24" y2="2.76"/></svg></button>
+<button class="btn topIconBtn" id="cmdPaletteBtn" title="Command palette (Ctrl+K)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx=".5"/><circle cx="3" cy="3" r="2"/><circle cx="11" cy="3" r="2"/><circle cx="3" cy="11" r="2"/><circle cx="11" cy="11" r="2"/></svg></button>
 </div>
 </div>
 <!-- Viewer controls: two-row toolbar -->
@@ -1998,14 +2067,6 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 <div class="tbPop" id="tbPopLayout" style="min-width:260px;">
 <div class="layoutSection">
 <div class="layoutSectionTitle">Columns</div>
-<div class="selMenuActions" style="margin-bottom:8px;">
-<button class="btn selActionBtn" id="wrapToggleBtn" title="Toggle wrap columns into rows" style="justify-content:flex-start;">
-<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="4" height="5" rx="1"/><rect x="9" y="1" width="4" height="5" rx="1"/><rect x="1" y="8" width="4" height="5" rx="1"/><rect x="9" y="8" width="4" height="5" rx="1"/></svg>
-<span>Wrap columns</span>
-<span id="wrapIndicator" style="margin-left:auto;font-size:10px;opacity:.4;">OFF</span>
-</button>
-</div>
-<input id="wrapToggle" type="checkbox" style="display:none;"/>
 <div class="layoutSliderRow">
 <span class="layoutSliderLabel">Width</span>
 <input id="colWidthSlider" type="range" min="200" max="600" step="10" value="300"/>
@@ -2024,6 +2085,14 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 <span class="layoutSliderVal" id="colZoomVal">100%</span>
 <span class="layoutReset" id="colZoomReset" title="Reset to default (100%)">↺</span>
 </div>
+<div class="selMenuActions" style="margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--border);">
+<button class="btn selActionBtn" id="wrapToggleBtn" title="Toggle wrap columns into rows" style="justify-content:flex-start;">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="4" height="5" rx="1"/><rect x="9" y="1" width="4" height="5" rx="1"/><rect x="1" y="8" width="4" height="5" rx="1"/><rect x="9" y="8" width="4" height="5" rx="1"/></svg>
+<span>Wrap columns</span>
+<span id="wrapIndicator" style="margin-left:auto;font-size:10px;opacity:.4;">OFF</span>
+</button>
+</div>
+<input id="wrapToggle" type="checkbox" style="display:none;"/>
 </div>
 <div class="layoutSection">
 <div class="layoutSectionTitle">Node labels</div>
@@ -2145,7 +2214,7 @@ Collapse all
 </div>
 <div style="border-top:1px solid var(--border);margin:6px 0;"></div>
 <button class="btn selActionBtn" id="hlColorsBtn" title="Customize highlight colors">
-<svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="5.5" cy="5.5" r="2" fill="currentColor" opacity=".6"/><circle cx="8.5" cy="5.5" r="2" fill="currentColor" opacity=".4"/><circle cx="7" cy="8.5" r="2" fill="currentColor" opacity=".5"/></svg>
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1A6 6 0 0 0 7 13c1 0 1.5-.5 1.5-1.2 0-.4-.2-.7-.4-1-.2-.3-.4-.6-.4-1 0-.8.7-1.3 1.5-1.3H11a3 3 0 0 0 3-3C14 3 10.9 1 7 1Z"/><circle cx="5" cy="4.5" r="1" fill="currentColor" opacity=".7"/><circle cx="8" cy="3.5" r="1" fill="currentColor" opacity=".5"/><circle cx="3.5" cy="7" r="1" fill="currentColor" opacity=".6"/></svg>
 Highlight colors…
 </button>
 </div>
@@ -2184,16 +2253,16 @@ Filters…
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
 <div id="viewsQuickList" style="max-height:280px;overflow-y:auto;"></div>
 <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
-<button class="btn selActionBtn" id="viewsSaveCurrentBtn" title="Save current viewer state as a new view (Alt+S)">
+<button class="btn selActionBtn" id="viewsSaveCurrentBtn" title="Save current viewer state as a new view (Ctrl+Alt+S)">
 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 13H3a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 3 1h6l3.5 3.5v7A1.5 1.5 0 0 1 11 13z"/><rect x="4.5" y="7.5" width="5" height="4" rx=".5"/><line x1="5" y1="1" x2="5" y2="4"/></svg>
 Save current view…
 </button>
 <div id="viewsNavRow" style="display:none;gap:4px;">
-<button class="btn selActionBtn" id="viewsRestorePrevBtn" title="Previous view in catalog (Alt+,)" style="flex:1;">
+<button class="btn selActionBtn" id="viewsRestorePrevBtn" title="Previous view in catalog (,)" style="flex:1;">
 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="2" y2="6"/><polyline points="5,3 2,6 5,9"/></svg>
 Prev
 </button>
-<button class="btn selActionBtn" id="viewsNextBtn" title="Next view in catalog (Alt+.)" style="flex:1;">
+<button class="btn selActionBtn" id="viewsNextBtn" title="Next view in catalog (.)" style="flex:1;">
 Next
 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="6" x2="10" y2="6"/><polyline points="7,3 10,6 7,9"/></svg>
 </button>
@@ -2204,7 +2273,7 @@ Next
 Manage views…
 </button>
 <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
-<button class="btn selActionBtn" id="viewsResetBtn" title="Reset viewer to default state (Alt+0)">
+<button class="btn selActionBtn" id="viewsResetBtn" title="Reset viewer to default state (Ctrl+Alt+0)">
 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg>
 Reset view
 </button>
@@ -2311,19 +2380,19 @@ About
 <div id="viewPill" style="display:none;align-items:center;gap:2px;font-size:12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:16px;padding:2px 4px 2px 8px;white-space:nowrap;flex-shrink:0;position:relative;">
 <span id="viewPillEmoji" style="font-size:12px;"></span>
 <span id="viewPillLabel" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;font-weight:600;padding:0 2px;color:var(--text);"></span>
-<button class="btn" id="viewPillPrev" title="Previous view (Alt+,)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">‹</button>
-<button class="btn" id="viewPillNext" title="Next view (Alt+.)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">›</button>
+<button class="btn" id="viewPillPrev" title="Previous view (,)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">‹</button>
+<button class="btn" id="viewPillNext" title="Next view (.)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">›</button>
 <button class="btn" id="viewPillClose" title="Deactivate view" style="width:20px;height:20px;padding:0;font-size:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:.4;">×</button>
 <select id="viewPillSelect" title="Switch view" style="position:absolute;top:0;left:0;width:calc(100% - 66px);height:100%;opacity:0;cursor:pointer;"></select>
 </div>
 <div class="viewerControls">
 <!-- Columns button -->
-<button class="btn" id="showAllColumnsBtn" title="Show/hide and reorder columns">Columns…</button>
+<button class="btn colsBtn" id="showAllColumnsBtn" title="Show/hide and reorder columns"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="5" height="12" rx="1.5"/><rect x="8" y="1" width="5" height="12" rx="1.5"/><line x1="1" y1="4" x2="6" y2="4" opacity=".4"/><line x1="8" y1="4" x2="13" y2="4" opacity=".4"/></svg>Columns…</button>
 <!-- View actions group -->
 <div class="vcGroup">
 <button class="vcBtn" id="panToggleBtn" title="Toggle pan mode (P)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/><polyline points="5.5,3.5 8,1 10.5,3.5"/><polyline points="5.5,12.5 8,15 10.5,12.5"/><polyline points="3.5,5.5 1,8 3.5,10.5"/><polyline points="12.5,5.5 15,8 12.5,10.5"/></svg></button>
 <button class="vcBtn" id="clearSelBtn" title="Clear selection (Esc)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><line x1="4" y1="4" x2="10" y2="10"/></svg></button>
-<button class="vcBtn" id="resetViewBtn" title="Reset view to defaults (Alt+0)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg></button>
+<button class="vcBtn" id="resetViewBtn" title="Reset view to defaults (Ctrl+Alt+0)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg></button>
 </div>
 <!-- Editor: history group -->
 <div class="vcGroup vcEditorOnly" id="vcHistoryGroup" style="display:none;">
@@ -2419,7 +2488,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.4.0</span>
+<span id="appVersionLabel">v1.4.1</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -2430,15 +2499,15 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 <div aria-label="Columns" class="popover" id="columnsPopover" role="dialog">
 <div class="popTitle">Columns</div>
 <div id="columnsList"></div>
-<div style="display:flex;gap:8px;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;">
-<span id="colPopAddBtns" style="display:none;gap:8px;">
-<button class="btn" id="addColumnLeftBtn" title="Add a new column at the far left">+ Add left</button>
-<button class="btn" id="addColumnRightBtn" title="Add a new column at the far right">+ Add right</button>
+<div class="colPopFooter">
+<span id="colPopAddBtns" class="colPopAdd" style="display:none;">
+<button class="btn colPopBtn" id="addColumnLeftBtn" title="Add a new column at the far left"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>Add left</button>
+<button class="btn colPopBtn" id="addColumnRightBtn" title="Add a new column at the far right"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>Add right</button>
 </span>
 <span style="flex:1;"></span>
-<button class="btn" id="showAllColsBtn">Show all</button>
-<button class="btn" id="hideUnmappedColsBtn" title="Hide columns that currently contain no mapped fields (based on the loaded JSON)">Hide unmapped</button>
-<button class="btn" id="closeColumnsBtn">Close</button>
+<button class="btn colPopBtn" id="showAllColsBtn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M1 6s2-3 5-3 5 3 5 3-2 3-5 3-5-3-5-3z"/><circle cx="6" cy="6" r="1.5"/></svg>Show all</button>
+<button class="btn colPopBtn" id="hideUnmappedColsBtn" title="Hide columns with no mapped fields"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M1 6s2-3 5-3 5 3 5 3-2 3-5 3-5-3-5-3z"/><line x1="2" y1="10" x2="10" y2="2"/></svg>Hide unmapped</button>
+<button class="btn colPopBtn" id="closeColumnsBtn">Close</button>
 </div>
 </div>
 <!-- Tags modal -->
@@ -2737,7 +2806,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.4.1';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -2749,7 +2818,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.4.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.4.1", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -4645,7 +4714,7 @@ function setGlobalStatus(text){ globalStatus.textContent = text; }
 function setViewerStatus(text){ viewerStatus.textContent = text; }
 function syncBrowserTitle(){
   const name = (state.data?.title || '').trim();
-  document.title = name ? (name + ' — Dunnode') : 'Dunnode';
+  document.title = name ? ('Dunnode — ' + name) : 'Dunnode';
 }
 
 // Custom alert/confirm dialogs (replaces browser prompts)
@@ -5387,6 +5456,12 @@ function escapeHtml(s){
     .replace(/'/g, '&#39;');
 }
 
+const _isMac = /Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
+function platformKbd(s){
+  if(!_isMac) return s;
+  return s.replace(/Ctrl\+Alt\+/g,'\u2318\u2325').replace(/Ctrl\+/g,'\u2318').replace(/Alt\+/g,'\u2325').replace(/\bDelete\b/g,'\u232B').replace(/\bShift\+/g,'\u21E7');
+}
+
 // ── Shared SVG icon library ──
 const ICONS = {
   field:  '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1.5L10.5 6L6 10.5L1.5 6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
@@ -5410,6 +5485,14 @@ const ICONS = {
   hide:     '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><path d="M1 6s2-3.5 5-3.5S11 6 11 6s-2 3.5-5 3.5S1 6 1 6z"/><line x1="2" y1="10" x2="10" y2="2"/></svg>',
   convert:  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3.5A1.5 1.5 0 0 0 2 4.5V5"/><polyline points="7,1 9,3 7,5"/><path d="M3 9h5.5A1.5 1.5 0 0 0 10 7.5V7"/><polyline points="5,11 3,9 5,7"/></svg>',
   trash:    '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,3 11,3"/><path d="M4 3V1.5h4V3"/><path d="M2.5 3l.5 7.5a1 1 0 0 0 1 .9h4a1 1 0 0 0 1-.9L9.5 3"/></svg>',
+  // Top bar icons (14×14)
+  newDoc:   '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 13h6a1.5 1.5 0 0 0 1.5-1.5V4.5Z"/><polyline points="8,1 8,4.5 11.5,4.5"/></svg>',
+  openDoc:  '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 11V3.5A1.5 1.5 0 0 1 3 2h2.5L7 3.5h4A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H3A1.5 1.5 0 0 1 1.5 11Z"/></svg>',
+  saveDoc:  '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9.5v2a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-2"/><polyline points="4.5,6 7,8.5 9.5,6"/><line x1="7" y1="1.5" x2="7" y2="8.5"/></svg>',
+  sun:      '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="2.5"/><line x1="7" y1="1" x2="7" y2="2.5"/><line x1="7" y1="11.5" x2="7" y2="13"/><line x1="1" y1="7" x2="2.5" y2="7"/><line x1="11.5" y1="7" x2="13" y2="7"/><line x1="2.76" y1="2.76" x2="3.82" y2="3.82"/><line x1="10.18" y1="10.18" x2="11.24" y2="11.24"/><line x1="2.76" y1="11.24" x2="3.82" y2="10.18"/><line x1="10.18" y1="3.82" x2="11.24" y2="2.76"/></svg>',
+  moon:     '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5A5.5 5.5 0 0 1 5.5 2a5.5 5.5 0 1 0 6.5 6.5Z"/></svg>',
+  cmdPalette:'<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx=".5"/><circle cx="3" cy="3" r="2"/><circle cx="11" cy="3" r="2"/><circle cx="3" cy="11" r="2"/><circle cx="11" cy="11" r="2"/></svg>',
+  columns:  '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="5" height="12" rx="1.5"/><rect x="8" y="1" width="5" height="12" rx="1.5"/><line x1="1" y1="4" x2="6" y2="4" opacity=".4"/><line x1="8" y1="4" x2="13" y2="4" opacity=".4"/></svg>',
 };
 function nodeIcon(type){ return type === 'group' ? ICONS.group : ICONS.field; }
 
@@ -6799,6 +6882,7 @@ function toggleCollapse(nodeId, force=null, skipHighlight=false){
 
   if(!skipHighlight) applyHighlight();
   scheduleArrowsUpdate();
+  _scheduleDriftCheck();
 }
 
 function setAllGroupsCollapsed(collapsed){
@@ -6809,6 +6893,7 @@ function setAllGroupsCollapsed(collapsed){
   }
   applyHighlight();
   scheduleArrowsUpdate();
+  _scheduleDriftCheck();
 }
 
 /* =========================
@@ -7003,8 +7088,8 @@ function renderFiltersManager(){
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
         <label class="toggle" style="font-size:11px;display:inline-flex;align-items:center;" title="Toggle this filter on/off"><input type="checkbox" class="fToggle" data-fid="${escapeHtml(f.id)}" ${isActive?'checked':''}/>Active</label>
-        ${editable?`<span style="width:8px;"></span><button class="btn catMoveBtn" data-act="moveUp" data-fidx="${idx}" title="Move up" style="padding:2px 6px;font-size:12px;${isFirst?'visibility:hidden;':''}">↑</button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-fidx="${idx}" title="Move down" style="padding:2px 6px;font-size:12px;${isLast?'visibility:hidden;':''}">↓</button>`:''}
+        ${editable?`<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-fidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-fidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -7205,12 +7290,12 @@ function renderRulesEditor(rules, fieldOpts, pathPrefix){
           <span style="flex:1;"></span>
           <button class="btn ruleAddCond" data-path="${path}" style="font-size:10px;">+ Cond</button>
           <button class="btn ruleAddGroup" data-path="${path}" style="font-size:10px;">+ Group</button>
-          <span class="condActions" style="display:flex;gap:1px;align-items:center;">
-            <button class="btn ruleUp" data-path="${path}" title="Move up" style="font-size:10px;padding:2px 4px;">↑</button>
-            <button class="btn ruleDown" data-path="${path}" title="Move down" style="font-size:10px;padding:2px 4px;">↓</button>
-            <button class="btn ruleIndent" data-path="${path}" title="Indent into previous group" style="font-size:10px;padding:2px 4px;">→</button>
-            <button class="btn ruleOutdent" data-path="${path}" title="Outdent from group" style="font-size:10px;padding:2px 4px;">←</button>
-            <button class="btn ruleDel" data-path="${path}" style="font-size:10px;padding:2px 4px;border-color:rgba(255,100,100,.5);color:#f87171;" title="Delete group">×</button>
+          <span class="condActions" style="display:flex;gap:2px;align-items:center;">
+            <button class="btn ruleActBtn ruleUp" data-path="${path}" title="Move up"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="8" x2="5" y2="2"/><polyline points="3,4 5,2 7,4"/></svg></button>
+            <button class="btn ruleActBtn ruleDown" data-path="${path}" title="Move down"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="2" x2="5" y2="8"/><polyline points="3,6 5,8 7,6"/></svg></button>
+            <button class="btn ruleActBtn ruleIndent" data-path="${path}" title="Indent into previous group"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="5" x2="8" y2="5"/><polyline points="6,3 8,5 6,7"/></svg></button>
+            <button class="btn ruleActBtn ruleOutdent" data-path="${path}" title="Outdent from group"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="5" x2="2" y2="5"/><polyline points="4,3 2,5 4,7"/></svg></button>
+            <button class="btn ruleActBtn ruleDel" data-path="${path}" title="Delete group"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="2.5" y1="2.5" x2="7.5" y2="7.5"/><line x1="7.5" y1="2.5" x2="2.5" y2="7.5"/></svg></button>
           </span>
         </div>
         ${innerHtml}
@@ -7229,12 +7314,12 @@ function renderRulesEditor(rules, fieldOpts, pathPrefix){
         ${ops.map(o=>`<option value="${escapeHtml(o.id)}" ${o.id===r.op?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}
       </select>
       ${needsValue ? renderRuleValueInput(fd, r, path) : '<span style="flex:1;"></span>'}
-      <span class="condActions" style="display:flex;gap:1px;align-items:center;flex-shrink:0;">
-        <button class="btn ruleUp" data-path="${path}" title="Move up" style="font-size:10px;padding:2px 4px;">↑</button>
-        <button class="btn ruleDown" data-path="${path}" title="Move down" style="font-size:10px;padding:2px 4px;">↓</button>
-        <button class="btn ruleIndent" data-path="${path}" title="Indent into previous group" style="font-size:10px;padding:2px 4px;">→</button>
-        <button class="btn ruleOutdent" data-path="${path}" title="Outdent from group" style="font-size:10px;padding:2px 4px;">←</button>
-        <button class="btn ruleDel" data-path="${path}" style="font-size:10px;padding:2px 4px;border-color:rgba(255,100,100,.5);color:#f87171;" title="Remove">×</button>
+      <span class="condActions" style="display:flex;gap:2px;align-items:center;flex-shrink:0;">
+        <button class="btn ruleActBtn ruleUp" data-path="${path}" title="Move up"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="8" x2="5" y2="2"/><polyline points="3,4 5,2 7,4"/></svg></button>
+        <button class="btn ruleActBtn ruleDown" data-path="${path}" title="Move down"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="2" x2="5" y2="8"/><polyline points="3,6 5,8 7,6"/></svg></button>
+        <button class="btn ruleActBtn ruleIndent" data-path="${path}" title="Indent into previous group"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="5" x2="8" y2="5"/><polyline points="6,3 8,5 6,7"/></svg></button>
+        <button class="btn ruleActBtn ruleOutdent" data-path="${path}" title="Outdent from group"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="5" x2="2" y2="5"/><polyline points="4,3 2,5 4,7"/></svg></button>
+        <button class="btn ruleActBtn ruleDel" data-path="${path}" title="Remove"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="2.5" y1="2.5" x2="7.5" y2="7.5"/><line x1="7.5" y1="2.5" x2="2.5" y2="7.5"/></svg></button>
       </span>
     </div>`;
   }).join('');
@@ -8593,6 +8678,7 @@ if(!edgeFocusId){
     updateDetails(nodeId, selectedFields);
   }
   scheduleArrowsUpdate();
+  _scheduleDriftCheck();
 }
 
 /* =========================
@@ -10896,13 +10982,13 @@ if(docsMask) docsMask.addEventListener('click', closeDocs);
   try {
     if(localStorage.getItem('ms_brightMode') === '1'){
       document.body.classList.add('brightMode');
-      btn.textContent = '☾';
+      btn.innerHTML = ICONS.moon;
       btn.title = 'Switch to dark mode';
     }
   } catch(e){}
   btn.addEventListener('click', ()=>{
     const on = document.body.classList.toggle('brightMode');
-    btn.textContent = on ? '☾' : '☀';
+    btn.innerHTML = on ? ICONS.moon : ICONS.sun;
     btn.title = on ? 'Switch to dark mode' : 'Switch to bright mode';
     try { localStorage.setItem('ms_brightMode', on ? '1' : '0'); } catch(e){}
     // Redraw arrows after CSS settles — mode toggle can shift row positions
@@ -11758,15 +11844,23 @@ function togglePopover(on){
 function buildColumnsMenu(){
   if(!state.data) return;
   const cols = state.data.columns || [];
-  // Dynamic title
   const popTitle = document.querySelector('#columnsPopover .popTitle');
   if(popTitle) popTitle.textContent = 'Columns';
   columnsList.innerHTML = '';
   let __colDragIdx = null;
+
+  const eyeOnSvg = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M1 7s2.5-3.5 6-3.5S13 7 13 7s-2.5 3.5-6 3.5S1 7 1 7z"/><circle cx="7" cy="7" r="2"/></svg>';
+  const eyeOffSvg = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M1 7s2.5-3.5 6-3.5S13 7 13 7s-2.5 3.5-6 3.5S1 7 1 7z"/><line x1="2" y1="12" x2="12" y2="2"/></svg>';
+  const upSvg = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg>';
+  const downSvg = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg>';
+  const trashSvg = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,3 11,3"/><path d="M4 3V1.5h4V3"/><path d="M2.5 3l.5 7.5a1 1 0 0 0 1 .9h4a1 1 0 0 0 1-.9L9.5 3"/></svg>';
+
   cols.forEach((c, idx) => {
+    const isHidden = state.hiddenColumns.has(c.id);
     const row = document.createElement('div');
-    row.className = 'popItem';
+    row.className = 'colItem' + (isHidden ? ' colHidden' : '');
     row.dataset.colIdx = idx;
+
     if(state.editorMode){
       row.draggable = true;
       row.style.cursor = 'grab';
@@ -11778,12 +11872,12 @@ function buildColumnsMenu(){
       });
       row.addEventListener('dragend', ()=>{
         row.style.opacity = '';
-        columnsList.querySelectorAll('.popItem').forEach(r=>r.classList.remove('dragOver'));
+        columnsList.querySelectorAll('.colItem').forEach(r=>r.classList.remove('dragOver'));
         __colDragIdx = null;
       });
       row.addEventListener('dragover', (e)=>{
         e.preventDefault(); e.dataTransfer.dropEffect = 'move';
-        columnsList.querySelectorAll('.popItem').forEach(r=>r.classList.remove('dragOver'));
+        columnsList.querySelectorAll('.colItem').forEach(r=>r.classList.remove('dragOver'));
         row.classList.add('dragOver');
       });
       row.addEventListener('dragleave', ()=>{ row.classList.remove('dragOver'); });
@@ -11802,97 +11896,116 @@ function buildColumnsMenu(){
       });
     }
 
-    const cb = document.createElement('input');
-    cb.type = 'checkbox';
-    cb.checked = !state.hiddenColumns.has(c.id);
-    cb.addEventListener('change', () => {
-      if(cb.checked) state.hiddenColumns.delete(c.id);
+    // Eye toggle (visibility)
+    const eye = document.createElement('button');
+    eye.className = 'colEyeBtn' + (isHidden ? ' colEyeOff' : '');
+    eye.innerHTML = isHidden ? eyeOffSvg : eyeOnSvg;
+    eye.title = isHidden ? 'Show column' : 'Hide column';
+    eye.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(isHidden) state.hiddenColumns.delete(c.id);
       else state.hiddenColumns.add(c.id);
-      // Reset selection when column visibility changes
-      state.selectedEdgeId = null;
-      state.hoverEdgeId = null;
-      state.lockedId = null;
-      state.hoverId = null;
+      state.selectedEdgeId = null; state.hoverEdgeId = null;
+      state.lockedId = null; state.hoverId = null;
       renderAll();
+      buildColumnsMenu();
       togglePopover(true);
     });
 
+    // Color dot
+    const dot = document.createElement('span');
+    dot.className = 'colColorDot';
+    if(c.color){
+      dot.style.background = c.color;
+      dot.style.borderColor = c.color;
+    } else {
+      dot.style.background = 'var(--border)';
+    }
+
+    // Label + ID
     const grow = document.createElement('div');
     grow.className = 'grow';
-    grow.innerHTML = `<div style=\"font-weight:900;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;\">${escapeHtml(c.label || c.id)}</div>`+
-                     `<div style=\"font-family:var(--mono);font-size:11px;opacity:.78;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;\">${escapeHtml(c.id)}</div>`;
+    grow.style.minWidth = '0';
+    grow.innerHTML = `<div style="font-weight:700;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(c.label || c.id)}</div>`+
+                     `<div style="font-family:var(--mono);font-size:10px;opacity:.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(c.id)}</div>`;
 
-    const up = document.createElement('button');
-    up.className = 'btn';
-    up.textContent = '↑';
-    up.title = 'Move earlier';
-    up.disabled = idx === 0;
-    up.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if(idx<=0) return;
-      recordChange(); // Save BEFORE reordering
-      const a = cols[idx-1]; cols[idx-1] = cols[idx]; cols[idx] = a;
-      jsonArea.value = JSON.stringify(state.data, null, 2);
-      rebuildStructuredList();
-      renderAll();
-      buildColumnsMenu();
-    });
-
-    const down = document.createElement('button');
-    down.className = 'btn';
-    down.textContent = '↓';
-    down.title = 'Move later';
-    down.disabled = idx === cols.length-1;
-    down.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if(idx>=cols.length-1) return;
-      recordChange(); // Save BEFORE reordering
-      const a = cols[idx+1]; cols[idx+1] = cols[idx]; cols[idx] = a;
-      jsonArea.value = JSON.stringify(state.data, null, 2);
-      rebuildStructuredList();
-      renderAll();
-      buildColumnsMenu();
-    });
-
-    row.appendChild(cb);
+    row.appendChild(eye);
+    row.appendChild(dot);
     row.appendChild(grow);
-    // Click anywhere on row toggles visibility
+
+    // Click row to toggle visibility
     row.addEventListener('click', (e)=>{
-      if(e.target === cb || e.target.closest('button')) return;
-      cb.checked = !cb.checked;
-      cb.dispatchEvent(new Event('change'));
+      if(e.target.closest('button')) return;
+      eye.click();
     });
-    row.style.cursor = state.editorMode ? 'grab' : 'pointer';
+    if(!state.editorMode) row.style.cursor = 'pointer';
+
     if(state.editorMode){
-      row.appendChild(up);
-      row.appendChild(down);
+      const actions = document.createElement('div');
+      actions.className = 'colItemActions';
+
+      const up = document.createElement('button');
+      up.className = 'colMoveBtn';
+      up.innerHTML = upSvg;
+      up.title = 'Move earlier';
+      up.disabled = idx === 0;
+      up.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if(idx<=0) return;
+        recordChange();
+        const a = cols[idx-1]; cols[idx-1] = cols[idx]; cols[idx] = a;
+        jsonArea.value = JSON.stringify(state.data, null, 2);
+        rebuildStructuredList();
+        renderAll();
+        buildColumnsMenu();
+      });
+
+      const down = document.createElement('button');
+      down.className = 'colMoveBtn';
+      down.innerHTML = downSvg;
+      down.title = 'Move later';
+      down.disabled = idx === cols.length-1;
+      down.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if(idx>=cols.length-1) return;
+        recordChange();
+        const a = cols[idx+1]; cols[idx+1] = cols[idx]; cols[idx] = a;
+        jsonArea.value = JSON.stringify(state.data, null, 2);
+        rebuildStructuredList();
+        renderAll();
+        buildColumnsMenu();
+      });
+
       const del = document.createElement('button');
-      del.className = 'btn';
-      del.innerHTML = '🗑';
+      del.className = 'colDelBtn';
+      del.innerHTML = trashSvg;
       del.title = 'Delete column';
-      del.style.cssText = 'font-size:11px;padding:2px 4px;margin-left:2px;color:rgba(255,120,120,.7);border-color:rgba(255,120,120,.25);background:rgba(255,120,120,.06);transition:all .15s;';
-      del.addEventListener('mouseenter', ()=>{ del.style.background='rgba(255,120,120,.18)'; del.style.borderColor='rgba(255,120,120,.45)'; del.style.color='rgba(255,120,120,.95)'; });
-      del.addEventListener('mouseleave', ()=>{ del.style.background='rgba(255,120,120,.06)'; del.style.borderColor='rgba(255,120,120,.25)'; del.style.color='rgba(255,120,120,.7)'; });
       del.addEventListener('click', async (e) => {
         e.stopPropagation();
         await deleteColumnById(c.id);
-        // Rebuild columns menu (popover stays open)
         buildColumnsMenu();
         togglePopover(true);
       });
-      row.appendChild(del);
+
+      actions.appendChild(up);
+      actions.appendChild(down);
+      actions.appendChild(del);
+      row.appendChild(actions);
     }
     columnsList.appendChild(row);
   });
+
   // Show/hide add column buttons inside popover
   const addBtnsWrap = document.getElementById('colPopAddBtns');
   if(addBtnsWrap) addBtnsWrap.style.display = state.editorMode ? 'inline-flex' : 'none';
   const nCols = cols.length;
   if(addColumnLeftBtn){
-    addColumnLeftBtn.innerHTML = nCols === 0 ? '+ Add column' : '← Add left';
+    addColumnLeftBtn.innerHTML = nCols === 0
+      ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>Add column'
+      : '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>Add left';
   }
   if(addColumnRightBtn){
-    addColumnRightBtn.innerHTML = 'Add right →';
+    addColumnRightBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>Add right';
     addColumnRightBtn.style.display = nCols > 0 ? '' : 'none';
   }
 }
@@ -12109,16 +12222,19 @@ let updateArrowModeUI = ()=>{};
       svgOverlay.style.display = state.arrowsOn ? "block" : "none";
       updateArrowModeUI();
       scheduleArrowsUpdate();
+      _scheduleDriftCheck();
     });
   }
   // Arrow scope toggles
   if(showSameColToggle) showSameColToggle.addEventListener("change", () => {
     state.showSameColumn = !!showSameColToggle.checked;
     scheduleArrowsUpdate();
+    _scheduleDriftCheck();
   });
   if(showDistantToggle) showDistantToggle.addEventListener("change", () => {
     state.showDistant = !!showDistantToggle.checked;
     scheduleArrowsUpdate();
+    _scheduleDriftCheck();
   });
 }
 
@@ -12165,6 +12281,7 @@ let updateArrowModeUI = ()=>{};
       opt.classList.add('active');
       refreshEdgeColorScheme();
       scheduleArrowsUpdate();
+      _scheduleDriftCheck();
     });
     // Hover preview: temporarily show legend for hovered scheme
     let _hoverActive = false;
@@ -12260,9 +12377,9 @@ function ensureViewCatalog(){
 }
 
 // Tracking
-let __previousViewState = null;
 let __activeViewId = null;
 let __activeViewStateJSON = null;
+let __applyingView = false; // guard to prevent drift detection during view application
 
 // Inline edit state
 let __viewEditIdx = -1;
@@ -12313,24 +12430,31 @@ function _clearActiveViewIfDrifted(){
     __activeViewId = null; __activeViewStateJSON = null; _syncViewNavButtons(); _updateViewPill();
   }
 }
+let __driftTimer = null;
+function _scheduleDriftCheck(){
+  if(__applyingView) return;
+  clearTimeout(__driftTimer);
+  __driftTimer = setTimeout(_clearActiveViewIfDrifted, 80);
+}
 function _syncViewNavButtons(){
   const prevBtn = document.getElementById('viewsRestorePrevBtn');
   const nextBtn = document.getElementById('viewsNextBtn');
   const navRow = document.getElementById('viewsNavRow');
   const cat = ensureViewCatalog();
   const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
-  const showPrev = idx > 0 || __previousViewState;
-  const showNext = idx >= 0 && idx < cat.length - 1;
-  if(prevBtn) prevBtn.style.visibility = showPrev ? '' : 'hidden';
-  if(nextBtn) nextBtn.style.visibility = showNext ? '' : 'hidden';
-  if(navRow) navRow.style.display = (showPrev || showNext) ? 'flex' : 'none';
+  const hasPrev = idx > 0;
+  const hasNext = idx >= 0 && idx < cat.length - 1;
+  if(prevBtn){ prevBtn.disabled = !hasPrev; prevBtn.style.opacity = hasPrev ? '' : '.3'; prevBtn.style.pointerEvents = hasPrev ? '' : 'none'; }
+  if(nextBtn){ nextBtn.disabled = !hasNext; nextBtn.style.opacity = hasNext ? '' : '.3'; nextBtn.style.pointerEvents = hasNext ? '' : 'none'; }
+  if(navRow) navRow.style.display = (idx >= 0) ? 'flex' : 'none';
 }
 function _applyView(view){
   if(!view || !view.state) return;
-  __previousViewState = captureViewState();
+  __applyingView = true;
   applyViewState(view.state);
   __activeViewId = view.id;
   __activeViewStateJSON = JSON.stringify(captureViewState());
+  __applyingView = false;
   _syncViewNavButtons();
   _updateViewPill();
   setGlobalStatus('Applied view: ' + (view.label || view.id));
@@ -12479,7 +12603,7 @@ function renderViewsQuickList(){
       const vid = btn.dataset.vid;
       // Toggle off if clicking the active view
       if(vid === __activeViewId){
-        __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+        __activeViewId = null; __activeViewStateJSON = null;
         _syncViewNavButtons(); _updateViewPill();
         renderViewsQuickList();
         setGlobalStatus('View deactivated — current state kept');
@@ -12501,14 +12625,8 @@ function renderViewsQuickList(){
 document.getElementById('viewsRestorePrevBtn')?.addEventListener('click', ()=>{
   const cat = ensureViewCatalog();
   const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
-  if(idx > 0){ _applyView(cat[idx - 1]); }
-  else if(__previousViewState){
-    const prev = __previousViewState;
-    __previousViewState = captureViewState();
-    applyViewState(prev);
-    __activeViewId = null; __activeViewStateJSON = null; _syncViewNavButtons(); _updateViewPill();
-    setGlobalStatus('Restored previous view');
-  }
+  if(idx > 0) _applyView(cat[idx - 1]);
+  // At first view or no active view: do nothing
   const pop = document.getElementById('tbPopViews');
   if(pop) pop.classList.remove('open');
 });
@@ -12516,16 +12634,17 @@ document.getElementById('viewsNextBtn')?.addEventListener('click', ()=>{
   const cat = ensureViewCatalog();
   const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
   if(idx >= 0 && idx < cat.length - 1) _applyView(cat[idx + 1]);
+  // At last view or no active view: do nothing
   const pop = document.getElementById('tbPopViews');
   if(pop) pop.classList.remove('open');
 });
 
-// Alt+, / Alt+.
+// , / . — Previous / Next view
 document.addEventListener('keydown', (e)=>{
-  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey){
-    if(e.key === ',' || e.key === '<'){ e.preventDefault(); document.getElementById('viewsRestorePrevBtn')?.click(); }
-    else if(e.key === '.' || e.key === '>'){ e.preventDefault(); document.getElementById('viewsNextBtn')?.click(); }
-  }
+  if(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+  if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+  if(e.key === ','){ e.preventDefault(); document.getElementById('viewsRestorePrevBtn')?.click(); }
+  else if(e.key === '.'){ e.preventDefault(); document.getElementById('viewsNextBtn')?.click(); }
 });
 
 // "Save current view" opens catalog with new inline editor
@@ -12655,7 +12774,10 @@ function renderViewsManager(){
         ${v.note ? `<div style="font-size:11px;opacity:.5;margin-top:2px;">${escapeHtml(v.note)}</div>` : ''}
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <button class="btn viewApplyBtn" data-vidx="${idx}" title="Apply this view" style="padding:4px 12px;">\u25B6 Apply</button>
+        ${isActive
+          ? `<button class="btn viewApplyBtn viewDeactivateBtn" data-vidx="${idx}" title="Deactivate this view" style="padding:4px 12px;border-color:rgba(255,255,255,.15);"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="vertical-align:middle;opacity:.6;"><line x1="2" y1="2" x2="9" y2="9"/><line x1="9" y1="2" x2="2" y2="9"/></svg> Deactivate</button>`
+          : `<button class="btn viewApplyBtn" data-vidx="${idx}" title="Apply this view" style="padding:4px 12px;"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;opacity:.6;"><polyline points="2,6 4.5,8.5 9,2.5"/></svg> Apply</button>`
+        }
         ${editable ? `
           <button class="btn viewUpdateBtn" data-vidx="${idx}" title="Update snapshot with current viewer state" style="padding:4px 8px;"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;"><path d="M10 2.5A4.5 4.5 0 0 0 2.3 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 9.5A4.5 4.5 0 0 0 9.7 8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><polyline points="10,0.5 10,3 7.5,3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="2,11.5 2,9 4.5,9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         ` : ''}
@@ -12759,6 +12881,14 @@ function renderViewsManager(){
       e.stopPropagation();
       const v = cat[Number(btn.dataset.vidx)];
       if(!v) return;
+      // Deactivate if this view is already active
+      if(v.id === __activeViewId){
+        __activeViewId = null; __activeViewStateJSON = null;
+        _syncViewNavButtons(); _updateViewPill();
+        renderViewsManager();
+        setGlobalStatus('View deactivated — current state kept');
+        return;
+      }
       _applyView(v);
       renderViewsManager();
     });
@@ -12852,8 +12982,8 @@ function _updateViewPill(){
   const idx = cat.indexOf(view);
   const prevBtn = document.getElementById('viewPillPrev');
   const nextBtn = document.getElementById('viewPillNext');
-  if(prevBtn) prevBtn.style.visibility = idx > 0 ? '' : 'hidden';
-  if(nextBtn) nextBtn.style.visibility = idx < cat.length - 1 ? '' : 'hidden';
+  if(prevBtn){ prevBtn.disabled = idx <= 0; prevBtn.style.opacity = idx > 0 ? '' : '.3'; }
+  if(nextBtn){ nextBtn.disabled = idx >= cat.length - 1; nextBtn.style.opacity = idx < cat.length - 1 ? '' : '.3'; }
   // Populate select dropdown
   const sel = document.getElementById('viewPillSelect');
   if(sel){
@@ -12870,7 +13000,7 @@ function _updateViewPill(){
   if(nextBtn) nextBtn.addEventListener('click', ()=> document.getElementById('viewsNextBtn')?.click());
   if(closeBtn) closeBtn.addEventListener('click', ()=>{
     // Just clear tracking — don't change any state
-    __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+    __activeViewId = null; __activeViewStateJSON = null;
     _syncViewNavButtons(); _updateViewPill();
     setGlobalStatus('View deactivated — current state kept');
   });
@@ -12901,7 +13031,7 @@ function resetViewState(){
   state.nodeColorMode = 'all';
   state.hiddenColumns = new Set();
   __editSnapshot = null;
-  __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+  __activeViewId = null; __activeViewStateJSON = null;
 
   // Sync UI controls
   const searchInput = document.getElementById('searchInput');
@@ -12957,17 +13087,17 @@ document.getElementById('resetViewBtn')?.addEventListener('click', ()=>{
   resetViewState();
 });
 
-// Alt+0 — Reset view
+// Ctrl+Alt+0 — Reset view
 document.addEventListener('keydown', (e)=>{
-  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.key === '0'){
+  if((e.ctrlKey || e.metaKey) && e.altKey && !e.shiftKey && e.key === '0'){
     e.preventDefault();
     resetViewState();
   }
 });
 
-// Save current view shortcut: Alt+S
+// Ctrl+Alt+S — Save current view (use e.code for Mac Option key compat)
 document.addEventListener('keydown', (e)=>{
-  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 's' || e.key === 'S')){
+  if((e.ctrlKey || e.metaKey) && e.altKey && !e.shiftKey && e.code === 'KeyS'){
     e.preventDefault();
     document.getElementById('viewsSaveCurrentBtn')?.click();
   }
@@ -12977,14 +13107,13 @@ document.addEventListener('keydown', (e)=>{
 function openKbdShortcuts(){
   const body = document.getElementById('kbdShortcutsBody');
   if(!body) return;
-  const isMac = /Mac|iPhone|iPad/.test(navigator.platform||'');
+  const isMac = _isMac;
   const mod = isMac ? '\u2318' : 'Ctrl';
+  const alt = isMac ? '\u2325' : 'Alt';
+  const del = isMac ? '\u232B' : 'Delete';
   const sections = [
-    { title: 'Navigation', shortcuts: [
+    { title: 'Navigation (Viewer + Editor)', shortcuts: [
       ['\u2191 / \u2193', 'Move selection up / down in tree'],
-      ['\u2190 / \u2192', 'Collapse / expand group, or move to parent / first child'],
-      ['Home / End', 'Jump to first / last node in column'],
-      ['Tab / Shift+Tab', 'Jump to next / previous column'],
     ]},
     { title: 'Selection', shortcuts: [
       ['Shift+\u2191 / Shift+\u2193', 'Extend multi-selection up / down'],
@@ -12992,25 +13121,26 @@ function openKbdShortcuts(){
       [mod+'+Shift+I', 'Invert selection'],
       ['Esc', 'Clear selection / close popover'],
     ]},
-    { title: 'Editing (Editor mode)', shortcuts: [
+    { title: 'Editing (Editor mode only)', shortcuts: [
       [mod+'+\u2193 / '+mod+'+\u2191', 'Quick-create field below / above with inline rename'],
-      [mod+'+Alt+\u2193 / '+mod+'+Alt+\u2191', 'Quick-create group below / above'],
+      [mod+'+'+alt+'+\u2193 / '+mod+'+'+alt+'+\u2191', 'Quick-create group below / above'],
       [mod+'+\u2192', 'Add child field to selected group'],
-      ['Alt+\u2191 / Alt+\u2193', 'Move node up / down'],
+      [alt+'+\u2191 / '+alt+'+\u2193', 'Move node up / down'],
+      ['Tab / Shift+Tab', 'Indent / outdent node'],
       ['F2 / Enter', 'Start inline rename / focus details editor'],
-      ['Delete', 'Delete selected node'],
+      [del, 'Delete selected node'],
     ]},
     { title: 'Views', shortcuts: [
-      ['Alt+S', 'Save current view'],
-      ['Alt+,', 'Previous view'],
-      ['Alt+.', 'Next view'],
-      ['Alt+0', 'Reset view to defaults'],
+      [mod+'+'+alt+'+S', 'Save current view'],
+      [',', 'Previous view'],
+      ['.', 'Next view'],
+      [mod+'+'+alt+'+0', 'Reset view to defaults'],
     ]},
     { title: 'Project', shortcuts: [
-      [mod+'+N', 'New project'],
-      [mod+'+O', 'Open project'],
-      [mod+'+S', 'Save project'],
-      [mod+'+E', 'Toggle editor mode'],
+      [alt+'+N', 'New project'],
+      [alt+'+O', 'Open project'],
+      [alt+'+S', 'Save project'],
+      [alt+'+E', 'Toggle editor mode'],
     ]},
     { title: 'Global', shortcuts: [
       [mod+'+K', 'Open command palette'],
@@ -13393,7 +13523,7 @@ function openHelp(){
   <li><b>Transforms</b> &mdash; reusable data conversion steps attached to mappings (e.g. Trim, Uppercase). Supports per-instance parameters.</li>
   <li><b>Custom attributes</b> &mdash; domain metadata on nodes (e.g. Data Type, Sensitivity). Each attribute can have its own <b>color</b> (inherited by values without their own). Each value has a color with an <b>Apply</b> checkbox &mdash; unchecked values inherit from the attribute color. Enable "Display on node" per attribute to show value pills on tree nodes. Pill order: Tags &gt; Attribute priority &gt; Value priority.</li>
   <li><b>Filters</b> &mdash; rule-based visual highlights (see section 4 above). Also managed from the Catalogs toolbar menu.</li>
-  <li><b>Views</b> &mdash; saved snapshots of the viewer state (filters, selection, arrows, collapsed groups, hidden columns, display settings). Click <b>Views</b> in the toolbar to apply a saved view with one click. <b>Save current view</b> (<b>Alt+S</b>) bookmarks the current state. <b>Alt+,</b> / <b>Alt+.</b> navigate between views. <b>Reset view</b> (<b>Alt+0</b>) returns to clean defaults. A <b>view pill</b> indicator appears in the viewer header when a view is active.</li>
+  <li><b>Views</b> &mdash; saved snapshots of the viewer state (filters, selection, arrows, collapsed groups, hidden columns, display settings). Click <b>Views</b> in the toolbar to apply a saved view with one click. <b>Save current view</b> (<b>Ctrl+Alt+S</b>) bookmarks the current state. <b>,</b> / <b>.</b> navigate between views. <b>Reset view</b> (<b>Ctrl+Alt+0</b>) returns to clean defaults. A <b>view pill</b> indicator appears in the viewer header when a view is active.</li>
   <li><b>Inline editing</b> &mdash; click <b>Add</b> to create items directly inside the catalog list. Click any existing item to edit it in place. When creating a node, selecting "+ New tag…" or "+ New attribute…" opens a nested create modal &mdash; the node form is saved and restored automatically.</li>
   <li><b>Auto-ID &amp; abbreviation</b> &mdash; ID and abbreviation auto-generate from the label as you type. A blue <b style="font-size:9px;padding:1px 4px;border-radius:4px;background:rgba(59,130,246,.15);color:rgba(130,180,255,.8);">auto</b> badge shows when a field is linked. Edit the field to override; clear it to re-link.</li>
   <li><b>Save / Cancel / Delete</b> &mdash; Save activates when you make changes. Label is required (marked with <span style="color:rgba(239,130,130,.7);font-weight:700;">*</span>) &mdash; Save stays disabled until a label is entered. New items have no Delete button.</li>
@@ -13401,9 +13531,9 @@ function openHelp(){
 
 <h4 style="margin:14px 0 6px;">6. Save &amp; share</h4>
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
-  <li><b>New project</b> (<b>Ctrl+N</b>) &mdash; start blank. <b>Open project</b> (<b>Ctrl+O</b>) &mdash; load a JSON file.</li>
-  <li><b>Save project</b> (<b>Ctrl+S</b>) &mdash; downloads your complete project as JSON. Blue button = unsaved changes.</li>
-  <li><b>Editor mode</b> (<b>Ctrl+E</b>) &mdash; toggle inline editing on/off.</li>
+  <li><b>New project</b> (<b>Alt+N</b>) &mdash; start blank. <b>Open project</b> (<b>Alt+O</b>) &mdash; load a JSON file.</li>
+  <li><b>Save project</b> (<b>Alt+S</b>) &mdash; downloads your complete project as JSON. Blue button = unsaved changes.</li>
+  <li><b>Editor mode</b> (<b>Alt+E</b>) &mdash; toggle inline editing on/off.</li>
   <li><b>Export CSV</b> &mdash; all visible mappings as a spreadsheet-ready file.</li>
   <li><b>Export report</b> &mdash; standalone HTML snapshot for stakeholders.</li>
 </ul>
@@ -13439,6 +13569,34 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.4.1',
+    date: '2026-02-24',
+    highlights: 'Top bar icon revamp, columns popover redesign, keyboard shortcut reorganization, platform-aware shortcut display, catalog SVG icon buttons, view auto-deactivation',
+    changes: [
+      '<b>Top bar icons</b>: New, Open, and Save buttons now show SVG icons (document, folder, download arrow) with shortened labels. Bright/dark mode toggle uses proper sun/moon SVG icons. All icons match the app\'s consistent 1.2 stroke weight',
+      '<b>Editor mode button</b>: replaced the checkbox+label toggle with a clean button that lights up with golden glow when active — no more checkbox. Pencil icon matches the edit icon from the SVG icon system',
+      '<b>Columns popover redesign</b>: checkboxes replaced with eye/eye-off SVG toggle buttons, hidden columns shown at reduced opacity. Color dots show each column\'s assigned color. Move arrows and delete button use SVG icon buttons with dedicated styling. Footer buttons have icons. All elements have proper dark/bright mode support',
+      '<b>Command palette icon</b>: restored the ⌘ looped-square icon as an SVG — four corner circles connected by a center square, matching the classic Mac command key symbol',
+      '<b>New project shortcut</b>: changed from Ctrl+N to <b>Alt+N</b> — browsers hard-intercept Ctrl+N (new window) before JavaScript can cancel it',
+      '<b>Keyboard shortcuts reorganized</b>: all project shortcuts now use the <b>Alt+</b> prefix (<b>Alt+N</b> new, <b>Alt+O</b> open, <b>Alt+S</b> save, <b>Alt+E</b> editor mode). View shortcuts: <b>Ctrl+Alt+S</b> save view, <b>,</b> / <b>.</b> previous/next view, <b>Ctrl+Alt+0</b> reset view. All tooltips, documentation, command palette, and keyboard shortcuts modal updated. Platform-aware display: Mac shows ⌘⌥⇧ symbols, Windows shows Ctrl/Alt/Shift',
+      '<b>Navigation shortcuts corrected</b>: removed unimplemented ←/→ collapse/expand and Home/End shortcuts from the modal. Tab/Shift+Tab correctly documented as indent/outdent under "Editing (Editor mode only)" instead of column switching under Navigation',
+      '<b>Columns button icon</b>: the Columns… button above the viewer now shows the same two-column layout icon used by the Layout toolbar menu',
+      '<b>Highlight colors icon</b>: replaced the abstract Venn diagram with a paint palette SVG icon for clearer meaning',
+      '<b>Layout menu</b>: Wrap columns button moved below the Width/Gap/Zoom sliders with a separator line, keeping the slider controls grouped as the primary adjustment area',
+      '<b>ICONS object expanded</b>: added <code>newDoc</code>, <code>openDoc</code>, <code>saveDoc</code>, <code>sun</code>, <code>moon</code>, <code>cmdPalette</code>, and <code>columns</code> icons for reuse across the app',
+      '<b>Views catalog</b>: the Apply button now shows a ✓ checkmark icon; when a view is active, the button changes to <b>Deactivate</b> with an × icon, matching the pill deactivate behavior. Clicking it toggles the view off while keeping the current state',
+      '<b>Catalog move buttons</b>: all ↑↓ text arrow buttons across Tags, Attributes, Filters, and filter condition rows are now SVG icon buttons with consistent sizing, styling, and hover states — matching the Columns popover design. Filter rule ↑↓→← and × buttons use the same icon system',
+      '<b>Transforms sorted alphabetically</b>: the Transforms catalog now displays entries sorted by label when opened, making it easier to find transforms in larger libraries',
+      '<b>Browser tab title</b>: changed from "Project — Dunnode" to "Dunnode — Project" so the brand is always visible in narrow browser tabs',
+      '<b>Wrap columns spacing</b>: balanced padding above and below the Wrap columns button in the Layout menu — symmetric 8px gaps matching other layout sections',
+      '<b>Mac keyboard fix</b>: Alt+letter project shortcuts (N/O/S/E) now use <code>e.code</code> instead of <code>e.key</code> — fixes Option+letter producing special characters (ß, ø, ´) on Mac keyboards',
+      '<b>Platform-aware shortcut display</b>: keyboard shortcuts modal, command palette hints, context menu hints, and tooltips now show Mac symbols (⌘⌥⇧⌫) on Mac and Ctrl/Alt/Shift/Delete on Windows/Linux. Global <code>platformKbd()</code> utility and one-time tooltip patching at init',
+      '<b>View navigation shortcuts</b>: previous/next view changed to plain <b>,</b> and <b>.</b> keys (no modifiers) — simple single-key shortcuts matching <b>?</b> for help, <b>P</b> for pan, <b>D</b> for details. Guarded against input fields',
+      '<b>View nav edge behavior</b>: prev/next buttons are now greyed out (disabled, 30% opacity) instead of hidden when at the first or last view — no more visual gap in the Views menu. Keyboard shortcuts are no-ops at edges',
+      '<b>View auto-deactivation</b>: changing any viewer state (selection, filters, search, arrows, collapse/expand, column visibility, color modes) now automatically deactivates the active view. Debounced 80ms drift check compares current state against the saved snapshot. Guard flag prevents false triggers during view application',
+    ]
+  },
   {
     version: '1.4.0',
     date: '2026-02-24',
@@ -13641,7 +13799,7 @@ const RELEASE_NOTES = [
     date: '2026-02-20',
     highlights: 'Command palette with fuzzy search for commands and nodes',
     changes: [
-      '<b>Command palette</b>: press <b>Ctrl+K</b> (Cmd+K on Mac) or click the ⌘ button in the header to open a spotlight-style command bar',
+      '<b>Command palette</b>: press <b>Ctrl+K</b> (Cmd+K on Mac) or click the <b>&gt;_</b> button in the header to open a spotlight-style command bar',
       '<b>Fuzzy search</b>: type to filter all available commands (open catalogs, toggle modes, change panel layout, undo/redo, etc.) with match highlighting',
       '<b>Node search</b>: the palette also searches all nodes and fields by name or ID. Selecting a node expands parent groups, highlights it, and scrolls it into view',
       '<b>Keyboard navigation</b>: ↑↓ to move, Enter to execute, Escape to close. Results grouped by Commands and Nodes & Fields',
@@ -14142,6 +14300,19 @@ function restoreHlColors(){
 
 // Set version label in header
 { const vl = document.getElementById('appVersionLabel'); if(vl) vl.textContent = 'v' + APP_VERSION; }
+
+// Patch tooltips with platform-specific modifier keys
+{
+  if(_isMac){
+    document.querySelectorAll('[title]').forEach(el => {
+      let t = el.title;
+      if(t.includes('Ctrl+') || t.includes('Alt+')){
+        t = t.replace(/Ctrl\+Alt\+/g, '\u2318\u2325').replace(/Ctrl\+/g, '\u2318').replace(/Alt\+/g, '\u2325');
+        el.title = t;
+      }
+    });
+  }
+}
 { const fl = document.getElementById('footerLicenseLink'); if(fl) fl.addEventListener('click', e => { e.preventDefault(); openDocs(); requestAnimationFrame(()=>{ const t = docsBody.querySelector('#doc-license'); if(t) t.scrollIntoView({ behavior:'smooth', block:'start' }); }); }); }
 { const al = document.getElementById('aboutLicenseLink'); if(al) al.addEventListener('click', e => { e.preventDefault(); closeAbout(); openDocs(); requestAnimationFrame(()=>{ const t = docsBody.querySelector('#doc-license'); if(t) t.scrollIntoView({ behavior:'smooth', block:'start' }); }); }); }
 
@@ -14576,8 +14747,8 @@ function renderTagsManager(){
           </div>
           ${note ? `<div class="empty" style="margin-top:4px;font-size:11px;">${note}</div>` : ''}
         </div>
-        ${editable ? `<button class="btn catMoveBtn" data-act="moveUp" data-tidx="${idx}" title="Move up" style="padding:2px 6px;font-size:12px;flex-shrink:0;${isFirst?'visibility:hidden;':''}">↑</button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-tidx="${idx}" title="Move down" style="padding:2px 6px;font-size:12px;flex-shrink:0;${isLast?'visibility:hidden;':''}">↓</button>` : ''}
+        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-tidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-tidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
       </div>`;
     }
     const _isNew = isEditing && __catalogEdit.isNew;
@@ -14789,7 +14960,18 @@ function renderTransformsManager(){
     body.innerHTML = '<div class="empty">' + (state.editorMode ? 'No transforms yet. Click \u201cAdd transform\u201d.' : 'No transforms defined.') + '</div>';
     return;
   }
-  body.innerHTML = cat.map((t, idx)=>{
+  // Build sorted index array alphabetically by label (new items being edited pinned to top)
+  const sortedIdxs = cat.map((_,i)=>i).sort((a,b)=>{
+    const aEditing = catalogIsEditing('transform', a) && __catalogEdit.isNew;
+    const bEditing = catalogIsEditing('transform', b) && __catalogEdit.isNew;
+    if(aEditing) return -1;
+    if(bEditing) return 1;
+    const la = (cat[a].label||cat[a].id||'').toLowerCase();
+    const lb = (cat[b].label||cat[b].id||'').toLowerCase();
+    return la < lb ? -1 : la > lb ? 1 : 0;
+  });
+  body.innerHTML = sortedIdxs.map(idx => {
+    const t = cat[idx];
     const id = escapeHtml(t.id||'');
     const label = escapeHtml(t.label||'');
     const abbr = escapeHtml(t.abbr||'');
@@ -15115,8 +15297,8 @@ function renderCustomAttrsManager(){
           ${vals.length ? `<div class="empty" style="margin-top:4px;font-size:11px;display:flex;flex-wrap:wrap;gap:2px 6px;align-items:center;">${valDots}</div>` : ''}
           ${note ? `<div class="empty" style="margin-top:2px;font-size:11px;">${note}</div>` : ''}
         </div>
-        ${editable ? `<button class="btn catMoveBtn" data-act="moveUp" data-aidx="${idx}" title="Move up" style="padding:2px 6px;font-size:12px;flex-shrink:0;${isFirst?'visibility:hidden;':''}">↑</button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-aidx="${idx}" title="Move down" style="padding:2px 6px;font-size:12px;flex-shrink:0;${isLast?'visibility:hidden;':''}">↓</button>` : ''}
+        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-aidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-aidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
       </div>`;
     }
 
@@ -15137,8 +15319,8 @@ function renderCustomAttrsManager(){
       const vLast = vSortPos === sortedValIdxs.length - 1;
       return `<div class="attrValRow" data-vi="${vi}" style="margin-top:6px;">
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-          <button class="btn catMoveBtn" data-act="valUp" data-vi="${vi}" title="Move up" style="padding:1px 4px;font-size:10px;flex-shrink:0;${vFirst?'visibility:hidden;':''}">↑</button>
-          <button class="btn catMoveBtn" data-act="valDown" data-vi="${vi}" title="Move down" style="padding:1px 4px;font-size:10px;flex-shrink:0;${vLast?'visibility:hidden;':''}">↓</button>
+          <button class="btn catValMoveBtn" data-act="valUp" data-vi="${vi}" title="Move up" ${vFirst?'style="visibility:hidden;"':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="8" x2="5" y2="2"/><polyline points="3,4 5,2 7,4"/></svg></button>
+          <button class="btn catValMoveBtn" data-act="valDown" data-vi="${vi}" title="Move down" ${vLast?'style="visibility:hidden;"':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="2" x2="5" y2="8"/><polyline points="3,6 5,8 7,6"/></svg></button>
           <input class="inp" data-vf="vlabel" data-vi="${vi}" value="${vlabel}" placeholder="Label" style="flex:1 1 80px;"/>
           <input class="inp" data-vf="vid" data-vi="${vi}" data-orig-id="${vid}" value="${vid}" style="font-family:var(--mono);font-size:11px;max-width:80px;flex:0 0 auto;" title="Value ID"/><span class="autoTag" data-auto="vid" data-vi="${vi}">auto</span>
           <input class="inp" data-vf="vabbr" data-vi="${vi}" value="${vabbr}" placeholder="Abbr" style="max-width:50px;flex:0 0 auto;font-size:11px;" title="Abbreviation (shown as pill on nodes)"/><span class="autoTag" data-auto="vabbr" data-vi="${vi}">auto</span>
@@ -16238,6 +16420,35 @@ if(addColumnRightBtn) addColumnRightBtn.addEventListener('click', async ()=>{
 });
 
 
+// Project shortcuts — all use Alt/Option+ prefix for consistency
+// On Mac, Option+letter produces special characters (ß, ø, ´…) so we match e.code not e.key
+window.addEventListener('keydown', (e) => {
+  if(!e.altKey) return;
+  if(e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if(e.code === 'KeyN'){
+    e.preventDefault();
+    document.getElementById('newMappingBtn')?.click();
+    return;
+  }
+  if(e.code === 'KeyO'){
+    e.preventDefault();
+    document.getElementById('openProjectBtn')?.click();
+    return;
+  }
+  if(e.code === 'KeyS'){
+    e.preventDefault();
+    document.getElementById('saveProjectBtn')?.click();
+    return;
+  }
+  if(e.code === 'KeyE'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    e.preventDefault();
+    const toggle = document.getElementById('editorModeToggle');
+    if(toggle){ toggle.checked = !toggle.checked; toggle.dispatchEvent(new Event('change')); }
+  }
+}, true); // capture phase
+
+
 document.addEventListener("keydown", (e) => {
   // Undo/Redo shortcuts
   if((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey){
@@ -16268,31 +16479,8 @@ document.addEventListener("keydown", (e) => {
     invertSelection();
     return;
   }
-  // Project shortcuts (Ctrl+N / Ctrl+O / Ctrl+S / Ctrl+E)
-  if((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey){
-    if(e.key === 'n' || e.key === 'N'){
-      e.preventDefault();
-      document.getElementById('newMappingBtn')?.click();
-      return;
-    }
-    if(e.key === 'o' || e.key === 'O'){
-      e.preventDefault();
-      document.getElementById('openProjectBtn')?.click();
-      return;
-    }
-    if(e.key === 's' || e.key === 'S'){
-      e.preventDefault();
-      document.getElementById('saveProjectBtn')?.click();
-      return;
-    }
-    if(e.key === 'e' || e.key === 'E'){
-      if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
-      e.preventDefault();
-      const toggle = document.getElementById('editorModeToggle');
-      if(toggle){ toggle.checked = !toggle.checked; toggle.dispatchEvent(new Event('change')); }
-      return;
-    }
-  }
+  // Project shortcuts (Alt+N / Alt+O / Alt+S / Alt+E)
+  // NOTE: handled in capture-phase window handler above for reliable browser override
   
   // --- Inline rename: let Ctrl+Arrow create shortcuts work from within the input ---
   const _isInlineInput = __inlineRename && e.target && e.target.closest && e.target.closest('.inlineRenameWrap');
@@ -19372,7 +19560,7 @@ function openCtxMenu(items, anchorEl){
     btn.type='button';
     btn.className = 'ctxItem' + (it.danger ? ' danger' : '');
     btn.disabled = !!it.disabled;
-    const kbdHtml = it.kbd ? `<span class="kbd">${escapeHtml(it.kbd)}</span>` : '';
+    const kbdHtml = it.kbd ? `<span class="kbd">${escapeHtml(platformKbd(it.kbd))}</span>` : '';
     btn.innerHTML = `<span class="ico">${it.icon||''}</span><span class="lbl">${escapeHtml(it.label||'')}</span>${kbdHtml}`;
     btn.addEventListener('click', (e)=>{
       e.stopPropagation();
@@ -19643,6 +19831,8 @@ function setEditorMode(on){
   if(typeof updateColumnHeaderSelectionStyles==='function') updateColumnHeaderSelectionStyles();
 
   document.body.classList.toggle('editorMode', state.editorMode);
+  const editorModeBtn = document.getElementById('editorModeBtn');
+  if(editorModeBtn) editorModeBtn.classList.toggle('active', state.editorMode);
   if(!state.editorMode){
     if(editorOverlay) editorOverlay.innerHTML='';
   }
@@ -20375,23 +20565,30 @@ window.addEventListener('resize', ()=>{ if(state.editorMode){/* no-op while edit
 
 if(editorModeToggle) editorModeToggle.addEventListener('change', async ()=>{
   const wantOn = editorModeToggle.checked;
+  const _syncBtn = ()=>{ const b=document.getElementById('editorModeBtn'); if(b) b.classList.toggle('active', editorModeToggle.checked); };
   // Guard: if turning off editor mode with unsaved changes, prompt
   if(!wantOn){
     if(nodeEditIsDirty()){
       if(!await guardNodeAbandon()){
-        editorModeToggle.checked = true; // revert checkbox
+        editorModeToggle.checked = true; _syncBtn(); // revert checkbox + button
         return;
       }
       revertEditSnapshot(); __editSnapshot = null; checkDirtyState();
     }
     if(edgeEditIsDirty()){
       if(!await guardAbandonEdit('mapping', __edgeEditSession?.edgeId || '')){
-        editorModeToggle.checked = true;
+        editorModeToggle.checked = true; _syncBtn();
         return;
       }
     }
   }
   setEditorMode(wantOn);
+});
+
+// Wire the visible button to the hidden checkbox
+const editorModeBtn = document.getElementById('editorModeBtn');
+if(editorModeBtn) editorModeBtn.addEventListener('click', ()=>{
+  if(editorModeToggle){ editorModeToggle.checked = !editorModeToggle.checked; editorModeToggle.dispatchEvent(new Event('change')); }
 });
 
 /* =========================
@@ -20423,6 +20620,7 @@ function refreshViewer(){
   applyHighlight();
   refreshEdgeColorScheme();
   scheduleArrowsUpdate();
+  if(!__applyingView) _clearActiveViewIfDrifted();
 }
 
 
@@ -20904,6 +21102,7 @@ function renderAll(){
 
   // Refresh filter chips (catalogs may have changed)
   renderActiveFilterChips();
+  if(!__applyingView) _clearActiveViewIfDrifted();
 }
 
 /* =========================
@@ -20924,7 +21123,7 @@ function buildDocs(){
 <ol>
   <li>Visit <b>dunnode.com</b> in any modern browser, or download the HTML file to run it locally.</li>
   <li>Click <b>Load example</b> to explore the sample project, or <b>New mapping</b> to start from scratch.</li>
-  <li>To load your own data, click <b>Open project</b> and select a <code>.json</code> file.</li>
+  <li>To load your own data, click <b>Open</b> and select a <code>.json</code> file.</li>
   <li>Use <b>Save project</b> to download your work as JSON (the file includes all columns, mappings, catalogs, and metadata).</li>
 </ol>
 
@@ -21151,9 +21350,9 @@ function buildDocs(){
 <ul>
   <li><b>Toolbar access</b>: the <b>Views</b> toolbar button opens a quick-apply dropdown listing all saved views. Click a view to apply it instantly. Click the active view again to deactivate (toggle off).</li>
   <li><b>View pill</b>: when a view is active, a compact indicator appears in the viewer header showing the emoji and label. Use the &#x2039;/&#x203A; buttons to navigate between views, the dropdown to switch, or &#xD7; to deactivate.</li>
-  <li><b>Save current view</b> (<b>Alt+S</b>): captures all current viewer settings into a new named view. Available from the dropdown, command palette, or keyboard shortcut.</li>
-  <li><b>Previous / Next view</b> (<b>Alt+,</b> / <b>Alt+.</b>): navigate between saved views. The current state is auto-saved before applying, so you can toggle back and forth.</li>
-  <li><b>Reset view</b> (<b>Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode. Returns to a clean-slate default state.</li>
+  <li><b>Save current view</b> (<b>Ctrl+Alt+S</b>): captures all current viewer settings into a new named view. Available from the dropdown, command palette, or keyboard shortcut.</li>
+  <li><b>Previous / Next view</b> (<b>,</b> / <b>.</b>): navigate between saved views. The current state is auto-saved before applying, so you can toggle back and forth.</li>
+  <li><b>Reset view</b> (<b>Ctrl+Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode. Returns to a clean-slate default state.</li>
   <li><b>Catalog management</b>: open the Views catalog from Catalogs &rarr; Views or via <b>Manage views&hellip;</b> in the dropdown. Inline editing: click any view to edit its label, emoji, note; drag to reorder; update snapshot to capture current state; delete.</li>
   <li><b>State captured</b>: active filters, filter mode/logic, &ldquo;only mapped&rdquo;, search text, node selection, highlight mode (chain/direct/selected), arrow mode (selected/all/off), arrow scope (same-column/distant), selection dim mode, hidden columns, collapsed groups, edge color scheme, and node color mode (background tint inheritance).</li>
   <li><b>State not captured</b>: panel position/size, editor mode, scroll position, pan mode &mdash; these are device- or workflow-specific.</li>
@@ -21206,7 +21405,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.4.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.4.1", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {
@@ -21362,16 +21561,16 @@ function buildDocs(){
 </ul>
 <p><b>Project</b>:</p>
 <ul>
-  <li><b>Ctrl+N</b> (Cmd+N) &mdash; New project</li>
-  <li><b>Ctrl+O</b> (Cmd+O) &mdash; Open project</li>
-  <li><b>Ctrl+S</b> (Cmd+S) &mdash; Save project</li>
-  <li><b>Ctrl+E</b> (Cmd+E) &mdash; Toggle editor mode</li>
+  <li><b>Alt+N</b> &mdash; New project</li>
+  <li><b>Alt+O</b> &mdash; Open project</li>
+  <li><b>Alt+S</b> &mdash; Save project</li>
+  <li><b>Alt+E</b> &mdash; Toggle editor mode</li>
 </ul>
 <p><b>Views</b>:</p>
 <ul>
-  <li><b>Alt+S</b> &mdash; Save current view</li>
-  <li><b>Alt+,</b> / <b>Alt+.</b> &mdash; Previous / next view</li>
-  <li><b>Alt+0</b> &mdash; Reset view to defaults</li>
+  <li><b>Ctrl+Alt+S</b> (Cmd+Alt+S) &mdash; Save current view</li>
+  <li><b>,</b> / <b>.</b> &mdash; Previous / next view</li>
+  <li><b>Ctrl+Alt+0</b> &mdash; Reset view to defaults</li>
 </ul>
 <p><b>Drag-and-drop modifiers</b> (hold during drag in Editor mode):</p>
 <ul>
@@ -21407,7 +21606,7 @@ function buildDocs(){
   <li>Save frequently &mdash; the dirty-state indicator (blue Save button) reminds you of unsaved changes. Individual editor Save buttons turn yellow when there are pending changes.</li>
   <li>Create filters for common review tasks (e.g. "unmapped critical fields") and toggle them on/off via filter bar chips.</li>
   <li>Use <b>Highlight</b> display mode when you want to see filter matches in context without hiding anything.</li>
-  <li>Save <b>views</b> for common review states &mdash; e.g. a "Critical Gaps" view with unmapped filters active, or a "Data Formats" view focused on type attributes. Navigate between them with <b>Alt+,</b> / <b>Alt+.</b></li>
+  <li>Save <b>views</b> for common review states &mdash; e.g. a "Critical Gaps" view with unmapped filters active, or a "Data Formats" view focused on type attributes. Navigate between them with <b>,</b> / <b>.</b></li>
   <li>Use Export Report to share a read-only snapshot with reviewers who don't have the tool.</li>
 </ul>
 
@@ -22930,9 +23129,9 @@ function duplicateEdgesForSubtree(idMap, data) {
 
   const COMMANDS = [
     // Project
-    { cat:'Project', icon:'📄', label:'New project',           action:()=> document.getElementById('newMappingBtn')?.click(), hint:'Start blank', kbd:'Ctrl+N' },
-    { cat:'Project', icon:'📂', label:'Open project',          action:()=> document.getElementById('openProjectBtn')?.click(), kbd:'Ctrl+O' },
-    { cat:'Project', icon:'💾', label:'Save project',           action:()=> document.getElementById('saveProjectBtn')?.click(), kbd:'Ctrl+S' },
+    { cat:'Project', icon:'📄', label:'New project',           action:()=> document.getElementById('newMappingBtn')?.click(), hint:'Start blank', kbd:'Alt+N' },
+    { cat:'Project', icon:'📂', label:'Open project',          action:()=> document.getElementById('openProjectBtn')?.click(), kbd:'Alt+O' },
+    { cat:'Project', icon:'💾', label:'Save project',           action:()=> document.getElementById('saveProjectBtn')?.click(), kbd:'Alt+S' },
     { cat:'Project', icon:'ⓘ',  label:'Project properties',    action:()=> document.getElementById('projectInfoBtn')?.click() },
     { cat:'Project', icon:'📦', label:'Load example project',   action:()=> document.getElementById('loadExampleBtn')?.click() },
 
@@ -22942,10 +23141,10 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'Catalogs', icon:'⬡', label:'Attributes catalog',    action:()=> openCustomAttrs() },
     { cat:'Catalogs', icon:'▤', label:'Filters',               action:()=> openFilters() },
     { cat:'Catalogs', icon:'⊡', label:'Views catalog',          action:()=> openViews() },
-    { cat:'Catalogs', icon:'⊕', label:'Save current view',       action:()=> document.getElementById('viewsSaveCurrentBtn')?.click(), kbd:'Alt+S' },
-    { cat:'Catalogs', icon:'←', label:'Previous view',            action:()=> document.getElementById('viewsRestorePrevBtn')?.click(), kbd:'Alt+,' },
-    { cat:'Catalogs', icon:'→', label:'Next view',                action:()=> document.getElementById('viewsNextBtn')?.click(), kbd:'Alt+.' },
-    { cat:'Catalogs', icon:'⊘', label:'Reset view',               action:()=> resetViewState(), kbd:'Alt+0' },
+    { cat:'Catalogs', icon:'⊕', label:'Save current view',       action:()=> document.getElementById('viewsSaveCurrentBtn')?.click(), kbd:'Ctrl+Alt+S' },
+    { cat:'Catalogs', icon:'←', label:'Previous view',            action:()=> document.getElementById('viewsRestorePrevBtn')?.click(), kbd:',' },
+    { cat:'Catalogs', icon:'→', label:'Next view',                action:()=> document.getElementById('viewsNextBtn')?.click(), kbd:'.' },
+    { cat:'Catalogs', icon:'⊘', label:'Reset view',               action:()=> resetViewState(), kbd:'Ctrl+Alt+0' },
     { cat:'Catalogs', icon:'🎨', label:'Highlight colors',      action:()=> document.getElementById('hlColorsBtn')?.click() },
 
     // View
@@ -22965,7 +23164,7 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'View', icon:'▭', label:'Details panel: Hidden',  action:()=> setTab('hidden'), kbd:'D' },
 
     // Edit
-    { cat:'Edit', icon:'✏️', label:'Toggle editor mode',     action:()=> document.getElementById('editorModeToggle')?.click(), kbd:'Ctrl+E' },
+    { cat:'Edit', icon:'✏️', label:'Toggle editor mode',     action:()=> document.getElementById('editorModeToggle')?.click(), kbd:'Alt+E' },
     { cat:'Edit', icon:'↩', label:'Undo',                   action:()=> undo(), kbd:mod+'+Z' },
     { cat:'Edit', icon:'↪', label:'Redo',                   action:()=> redo(), kbd:mod+'+Y' },
     { cat:'Edit', icon:'▫↓', label:'Insert field below',     action:()=> quickCreateNode('below','field'), kbd:mod+'+↓' },
@@ -23241,7 +23440,7 @@ function duplicateEdgesForSubtree(idMap, data) {
       <span class="cmdIcon">${icon}</span>
       <span class="cmdLabel">${labelHtml}${extra}</span>
       ${hint ? `<span class="cmdHint">${escapeHtml(hint)}</span>` : ''}
-      ${kbd ? `<span class="cmdKbd">${escapeHtml(kbd)}</span>` : ''}
+      ${kbd ? `<span class="cmdKbd">${escapeHtml(platformKbd(kbd))}</span>` : ''}
     </div>`;
   }
 
