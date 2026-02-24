@@ -69,10 +69,15 @@
       border-color: rgba(0,0,0,.14);
     }
     body.brightMode .columnsHeader{ background: rgba(0,0,0,.05); }
+    body.brightMode .vcGroup{ background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); }
+    body.brightMode .vcBtn:hover{ background: rgba(0,0,0,.08); }
+    body.brightMode .vcBtn:active{ background: rgba(0,0,0,.12); }
+    body.brightMode .vcBtn.active{ background: rgba(59,130,246,.12); }
     body.brightMode .tbBtn{ color: #64748b; }
     body.brightMode .tbBtn:hover{ background: rgba(0,0,0,.06); border-color: rgba(0,0,0,.14); color: #1e293b; }
     body.brightMode .tbBtn.active{ background: rgba(59,130,246,.1); border-color: rgba(59,130,246,.3); color: #1e293b; }
     body.brightMode .tbPop{ background: rgba(255,255,255,.98); border-color: rgba(0,0,0,.14); box-shadow: 0 8px 32px rgba(0,0,0,.15); }
+    body.brightMode #viewPill{ background: rgba(255,255,255,.95); border-color: rgba(59,130,246,.3); box-shadow: 0 2px 12px rgba(0,0,0,.1); }
     body.brightMode .tbRow1{ background: rgba(255,255,255,.6); border-color: rgba(0,0,0,.12); }
     body.brightMode .tbSep{ background: rgba(0,0,0,.15); }
     body.brightMode .filterChip:hover{ filter:brightness(0.82); box-shadow:0 0 0 1.5px rgba(0,0,0,.2); }
@@ -203,16 +208,20 @@
     body.brightMode .sub span{ color: #475569; }
     /* Context menus */
     body.brightMode .ctxMenu{
-      background: rgba(255,255,255,.97);
-      border-color: rgba(0,0,0,.14);
-      box-shadow: 0 18px 55px rgba(0,0,0,.22);
+      background: rgba(255,255,255,.98);
+      border-color: rgba(0,0,0,.12);
+      box-shadow: 0 12px 40px rgba(0,0,0,.18);
       backdrop-filter: blur(10px);
     }
     body.brightMode .ctxItem{
-      background: rgba(0,0,0,.03);
       color: #1e293b;
     }
-    body.brightMode .ctxItem:hover{ background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.12); }
+    body.brightMode .ctxItem:hover{ background: rgba(0,0,0,.06); }
+    body.brightMode .ctxItem:active{ background: rgba(0,0,0,.1); }
+    body.brightMode .ctxItem.danger{ color: #dc2626; }
+    body.brightMode .ctxItem.danger:hover{ background: rgba(220,38,38,.08); }
+    body.brightMode .ctxSep{ background: rgba(0,0,0,.08); }
+    body.brightMode .ctxLabel{ color: rgba(0,0,0,.35); }
     body.brightMode .ctxItem:disabled{ opacity: .40; }
     body.brightMode .ctxItem.danger{ background: rgba(220,38,38,.06); border-color: rgba(220,38,38,.18); color: #b91c1c; }
     body.brightMode .ctxItem.danger:hover{ background: rgba(220,38,38,.12); border-color: rgba(220,38,38,.30); }
@@ -942,6 +951,41 @@
       flex: 1 1 auto;
     }
 
+    .viewerControls{
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .vcGroup{
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 1px;
+    }
+    .vcBtn{
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .15s;
+      opacity: .65;
+    }
+    .vcBtn:hover{ background: rgba(255,255,255,.1); opacity: 1; color: var(--text); }
+    .vcBtn:active{ background: rgba(255,255,255,.15); }
+    .vcBtn.active{ background: rgba(59,130,246,.2); color: #60a5fa; opacity: 1; }
+    .vcBtn[disabled]{ opacity: .25; pointer-events: none; }
+
     .columnsScroller{
       position: relative;
       overflow: auto;
@@ -1099,6 +1143,11 @@
     }
 /* Hide node IDs in tree rows (IDs remain in Details/breadcrumbs) */
 .row .id{display:none !important;}
+/* Inline rename input (keyboard quick-create) */
+.row .inlineRenameWrap{ flex:1 1 auto; min-width:0; display:flex; align-items:center; }
+.row .inlineRenameWrap input{ background:transparent; border:none; border-bottom:1.5px solid rgba(59,130,246,.55); outline:none; color:var(--text); font:inherit; font-size:12.5px; width:100%; padding:0 0 1px; margin:0; }
+.row .inlineRenameWrap input::placeholder{ color:var(--muted); opacity:.6; }
+body.brightMode .row .inlineRenameWrap input{ border-bottom-color:rgba(59,130,246,.45); }
 
 
     .children{
@@ -1556,24 +1605,29 @@ body.editorMode .miniBtn{padding-top:1px;}
 .miniMenu .miniBtn{width:auto;padding:6px 8px;border-radius:10px;}
 
 /* --- Context menu (vertical, viewport-anchored; avoids clipping in scroll containers) --- */
-.ctxMenu{position:fixed; z-index: 2500; min-width: 176px; max-width: 280px;
-  border:1px solid rgba(255,255,255,.14); border-radius: 14px;
-  background: rgba(11,16,32,.96); backdrop-filter: blur(10px);
-  box-shadow: 0 18px 55px rgba(0,0,0,.55);
-  padding: 6px; display:flex; flex-direction: column; gap: 4px;
+.ctxMenu{position:fixed; z-index: 2500; min-width: 180px; max-width: 260px;
+  border:1px solid rgba(255,255,255,.1); border-radius: 10px;
+  background: rgba(11,16,32,.97); backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.55);
+  padding: 4px; display:flex; flex-direction: column; gap: 1px;
 }
-.ctxItem{display:flex; align-items:center; gap:10px; width:100%;
-  border:1px solid transparent; background: rgba(255,255,255,.03);
-  color: rgba(232,238,252,.95);
-  padding: 9px 10px; border-radius: 12px; cursor:pointer;
-  font-size: 12px; text-align:left;
+.ctxItem{display:flex; align-items:center; gap:8px; width:100%;
+  border:1px solid transparent; background: transparent;
+  color: rgba(232,238,252,.88);
+  padding: 6px 10px; border-radius: 7px; cursor:pointer;
+  font-size: 12px; text-align:left; transition: background .1s;
 }
-.ctxItem:hover{background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10);}
-.ctxItem:disabled{opacity:.45; cursor: not-allowed;}
-.ctxItem .ico{width:16px; text-align:center; opacity:.9; flex: 0 0 auto;}
-.ctxItem.danger{background: rgba(255,154,168,.08); border-color: rgba(255,154,168,.20);}
-.ctxItem.danger:hover{background: rgba(255,154,168,.16); border-color: rgba(255,154,168,.38);}
-.ctxSep{height:1px; background: rgba(255,255,255,.10); margin: 4px 2px;}
+.ctxItem:hover{background: rgba(255,255,255,.08);}
+.ctxItem:active{background: rgba(255,255,255,.12);}
+.ctxItem:disabled{opacity:.3; cursor: not-allowed;}
+.ctxItem:disabled:hover{background:transparent;}
+.ctxItem .ico{width:16px; text-align:center; opacity:.7; flex: 0 0 auto; display:flex; align-items:center; justify-content:center;}
+.ctxItem:hover .ico{opacity:1;}
+.ctxItem .kbd{margin-left:auto; font-size:10px; font-family:var(--mono); opacity:.3; white-space:nowrap;}
+.ctxItem.danger{color: rgba(255,154,168,.95);}
+.ctxItem.danger:hover{background: rgba(255,154,168,.12);}
+.ctxSep{height:1px; background: rgba(255,255,255,.07); margin: 3px 6px;}
+.ctxLabel{font-size:9px; text-transform:uppercase; letter-spacing:.6px; color:rgba(255,255,255,.3); padding:6px 10px 2px; user-select:none;}
 /* Hover menus */
 
 /* Tag create swatches */
@@ -1859,10 +1913,10 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 <button class="btn" id="projectInfoBtn" title="Project properties" style="padding:4px 8px;font-size:13px;min-width:0;line-height:1;">ⓘ</button>
 </div>
 <div class="topRight">
-<button class="btn" id="newMappingBtn" title="Start a new blank project">New project</button>
-<button class="btn" id="openProjectBtn" title="Upload and open a project JSON file">Open project</button>
-<button class="btn" id="saveProjectBtn" title="Download the current project as JSON">Save project</button>
-<label class="toggle modeToggle prominent" title="Toggle inline editing controls in the viewer">
+<button class="btn" id="newMappingBtn" title="Start a new blank project (Ctrl+N)">New project</button>
+<button class="btn" id="openProjectBtn" title="Upload and open a project JSON file (Ctrl+O)">Open project</button>
+<button class="btn" id="saveProjectBtn" title="Download the current project as JSON (Ctrl+S)">Save project</button>
+<label class="toggle modeToggle prominent" title="Toggle inline editing controls in the viewer (Ctrl+E)">
 <input id="editorModeToggle" type="checkbox"/>
 <span>Editor mode</span>
 </label>
@@ -1878,14 +1932,14 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 
 <!-- Filter bar toggle -->
 <div class="tbBtn" id="tbFilterToggle" title="Show/hide filter bar">
-<span class="tbIcon">🔎</span>Filter<span id="filterBadge" style="display:none;background:#3b82f6;color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;"></span>
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;"><circle cx="5.5" cy="5.5" r="4" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>Filter<span id="filterBadge" style="display:none;background:#3b82f6;color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;"></span>
 </div>
 
 <div class="tbSep"></div>
 
 <!-- Graph -->
 <div class="tbBtn" id="tbGraph" title="Arrow & graph display options">
-<span class="tbIcon">⟡</span>Graph
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="3" cy="3" r="2"/><circle cx="11" cy="3" r="2"/><circle cx="7" cy="11" r="2"/><line x1="4.5" y1="4.5" x2="6" y2="9.5"/><line x1="9.5" y1="4.5" x2="8" y2="9.5"/></svg></span>Graph
 <div class="tbPop" id="tbPopGraph" style="min-width:260px;">
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
 <div style="font-size:10px;opacity:.5;margin-bottom:2px;">Show arrows</div>
@@ -1940,11 +1994,18 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 
 <!-- Layout -->
 <div class="tbBtn" id="tbLayout" title="Column layout & details panel position">
-<span class="tbIcon">▦</span>Layout
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="5" height="12" rx="1.5"/><rect x="8" y="1" width="5" height="12" rx="1.5"/><line x1="1" y1="4" x2="6" y2="4" opacity=".4"/><line x1="8" y1="4" x2="13" y2="4" opacity=".4"/></svg></span>Layout
 <div class="tbPop" id="tbPopLayout" style="min-width:260px;">
 <div class="layoutSection">
 <div class="layoutSectionTitle">Columns</div>
-<label class="toggle" title="Wrap columns into rows"><input id="wrapToggle" type="checkbox"/>Wrap columns</label>
+<div class="selMenuActions" style="margin-bottom:8px;">
+<button class="btn selActionBtn" id="wrapToggleBtn" title="Toggle wrap columns into rows" style="justify-content:flex-start;">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="4" height="5" rx="1"/><rect x="9" y="1" width="4" height="5" rx="1"/><rect x="1" y="8" width="4" height="5" rx="1"/><rect x="9" y="8" width="4" height="5" rx="1"/></svg>
+<span>Wrap columns</span>
+<span id="wrapIndicator" style="margin-left:auto;font-size:10px;opacity:.4;">OFF</span>
+</button>
+</div>
+<input id="wrapToggle" type="checkbox" style="display:none;"/>
 <div class="layoutSliderRow">
 <span class="layoutSliderLabel">Width</span>
 <input id="colWidthSlider" type="range" min="200" max="600" step="10" value="300"/>
@@ -2024,7 +2085,7 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 
 <!-- Selection -->
 <div class="tbBtn" id="tbSelection" title="Expand, collapse & clear selection">
-<span class="tbIcon">◎</span>Selection
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7" cy="7" r="5.5"/><circle cx="7" cy="7" r="2" fill="currentColor" opacity=".5"/></svg></span>Selection
 <div class="tbPop" id="tbPopSelection" style="min-width:210px;">
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
 <div style="font-size:10px;opacity:.5;margin-bottom:2px;">Dim unselected</div>
@@ -2093,13 +2154,60 @@ Highlight colors…
 
 <!-- Catalogs -->
 <div class="tbBtn" id="tbCatalogs" title="Tags, transforms, attributes & filters">
-<span class="tbIcon">▤</span>Catalogs
-<div class="tbPop" id="tbPopCatalogs" style="min-width:160px;">
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><rect x="2" y="1" width="10" height="12" rx="1.5"/><line x1="2" y1="4" x2="12" y2="4" opacity=".5"/><line x1="2" y1="7" x2="12" y2="7" opacity=".3"/><line x1="2" y1="10" x2="12" y2="10" opacity=".3"/></svg></span>Catalogs
+<div class="tbPop" id="tbPopCatalogs" style="min-width:180px;">
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
-<button class="btn" id="tagsBtn" title="Manage tags">Tags…</button>
-<button class="btn" id="transformsBtn" title="Manage transformations">Transforms…</button>
-<button class="btn" id="customAttrsBtn" title="Manage attributes">Attributes…</button>
-<button class="btn" id="filtersBtn" title="Manage saved filters and conditional formatting">Filters…</button>
+<button class="btn selActionBtn" id="tagsBtn" title="Manage tags">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.2V2.5a1 1 0 0 1 1-1h5.7a1 1 0 0 1 .7.3l3.8 3.8a1 1 0 0 1 0 1.4l-5 5a1 1 0 0 1-1.4 0L1.8 8.9a1 1 0 0 1-.3-.7z"/><circle cx="5" cy="5" r="1" fill="currentColor"/></svg>
+Tags…
+</button>
+<button class="btn selActionBtn" id="transformsBtn" title="Manage transformations">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3.5A1.5 1.5 0 0 0 2 4.5V5"/><polyline points="7,1 9,3 7,5"/><path d="M5 11h5.5a1.5 1.5 0 0 0 1.5-1.5V9"/><polyline points="7,13 5,11 7,9"/></svg>
+Transforms…
+</button>
+<button class="btn selActionBtn" id="customAttrsBtn" title="Manage attributes">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 1.5L2 7h4.5l-1 5.5L12 5.5H7.5l1-4z"/></svg>
+Attributes…
+</button>
+<button class="btn selActionBtn" id="filtersBtn" title="Manage saved filters and conditional formatting">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2.5h11l-4 5v4l-3 1v-5z"/></svg>
+Filters…
+</button>
+</div>
+</div>
+</div>
+
+<!-- Views -->
+<div class="tbBtn" id="tbViews" title="Saved views — one-click presentation states">
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;"><rect x="1" y="1" width="12" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="5" r="2" fill="currentColor" opacity=".5"/><rect x="3.5" y="11" width="2" height="1.5" rx=".5" fill="currentColor" opacity=".4"/><rect x="6" y="11" width="2" height="1.5" rx=".5" fill="currentColor" opacity=".4"/><rect x="8.5" y="11" width="2" height="1.5" rx=".5" fill="currentColor" opacity=".4"/></svg></span>Views
+<div class="tbPop" id="tbPopViews" style="min-width:240px;max-height:440px;">
+<div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
+<div id="viewsQuickList" style="max-height:280px;overflow-y:auto;"></div>
+<div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+<button class="btn selActionBtn" id="viewsSaveCurrentBtn" title="Save current viewer state as a new view (Alt+S)">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 13H3a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 3 1h6l3.5 3.5v7A1.5 1.5 0 0 1 11 13z"/><rect x="4.5" y="7.5" width="5" height="4" rx=".5"/><line x1="5" y1="1" x2="5" y2="4"/></svg>
+Save current view…
+</button>
+<div id="viewsNavRow" style="display:none;gap:4px;">
+<button class="btn selActionBtn" id="viewsRestorePrevBtn" title="Previous view in catalog (Alt+,)" style="flex:1;">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="2" y2="6"/><polyline points="5,3 2,6 5,9"/></svg>
+Prev
+</button>
+<button class="btn selActionBtn" id="viewsNextBtn" title="Next view in catalog (Alt+.)" style="flex:1;">
+Next
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="6" x2="10" y2="6"/><polyline points="7,3 10,6 7,9"/></svg>
+</button>
+</div>
+<div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+<button class="btn selActionBtn" id="viewsCatalogBtn" title="Manage saved views">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><rect x="1.5" y="1.5" width="11" height="11" rx="2"/><line x1="4.5" y1="5" x2="9.5" y2="5"/><line x1="4.5" y1="7.5" x2="9.5" y2="7.5"/><line x1="4.5" y1="10" x2="7" y2="10"/></svg>
+Manage views…
+</button>
+<div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+<button class="btn selActionBtn" id="viewsResetBtn" title="Reset viewer to default state (Alt+0)">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg>
+Reset view
+</button>
 </div>
 </div>
 </div>
@@ -2108,27 +2216,52 @@ Highlight colors…
 
 <!-- Export -->
 <div class="tbBtn" id="tbExport" title="Export data">
-<span class="tbIcon">↗</span>Export
-<div class="tbPop" id="tbPopExport" style="min-width:140px;">
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="1" x2="7" y2="9"/><polyline points="3.5,5.5 7,1 10.5,5.5"/><path d="M1.5 9.5v2.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V9.5"/></svg></span>Export
+<div class="tbPop" id="tbPopExport" style="min-width:170px;">
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
-<button class="btn" id="exportCsvBtn" title="Export mappings as CSV">Export CSV</button>
-<button class="btn" id="exportReportBtn" title="Export HTML report">Export report</button>
+<button class="btn selActionBtn" id="exportCsvBtn" title="Export mappings as CSV">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1H3.5A1.5 1.5 0 0 0 2 2.5v9A1.5 1.5 0 0 0 3.5 13h7a1.5 1.5 0 0 0 1.5-1.5V5z"/><polyline points="8,1 8,5 12,5"/></svg>
+Export CSV
+</button>
+<button class="btn selActionBtn" id="exportReportBtn" title="Export HTML report">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="11" height="11" rx="2"/><line x1="4.5" y1="5" x2="9.5" y2="5"/><line x1="4.5" y1="7.5" x2="9.5" y2="7.5"/><line x1="4.5" y1="10" x2="7.5" y2="10"/></svg>
+Export report
+</button>
 </div>
 </div>
 </div>
 
 <!-- Help -->
 <div class="tbBtn" id="tbHelp" title="Help, docs & examples">
-<span class="tbIcon">?</span>Help
-<div class="tbPop" id="tbPopHelp" style="min-width:160px;">
+<span class="tbIcon"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5.5 5.5a1.75 1.75 0 0 1 3.25 1c0 1.2-1.75 1.5-1.75 1.5"/><circle cx="7" cy="10" r=".5" fill="currentColor"/></svg></span>Help
+<div class="tbPop" id="tbPopHelp" style="min-width:190px;">
 <div class="tbPopRow" style="flex-direction:column;align-items:stretch;">
-<button class="btn" id="helpBtn" title="Help / shortcuts (press ?)">Quick start</button>
-<button class="btn" id="goDocsBtn" title="Open documentation">Documentation</button>
+<button class="btn selActionBtn" id="helpBtn" title="Help / shortcuts (press ?)">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.5"/><path d="M5.5 5.5a1.75 1.75 0 0 1 3.25 1c0 1.2-1.75 1.5-1.75 1.5"/><circle cx="7" cy="10" r=".5" fill="currentColor"/></svg>
+Quick start
+</button>
+<button class="btn selActionBtn" id="kbdShortcutsBtn" title="Keyboard shortcut reference">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="12" height="8" rx="1.5"/><rect x="3" y="5.5" width="2" height="2" rx=".5"/><rect x="6" y="5.5" width="2" height="2" rx=".5"/><rect x="9" y="5.5" width="2" height="2" rx=".5"/><line x1="4" y1="9" x2="10" y2="9"/></svg>
+Keyboard shortcuts
+</button>
+<button class="btn selActionBtn" id="goDocsBtn" title="Open documentation">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2.5A1.5 1.5 0 0 1 3.5 1H10l2.5 2.5V11a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 11V2.5z"/><line x1="5" y1="5.5" x2="9" y2="5.5"/><line x1="5" y1="8" x2="9" y2="8"/></svg>
+Documentation
+</button>
 <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
-<button class="btn" id="loadExampleBtn" title="Load the built-in example project">Load example</button>
+<button class="btn selActionBtn" id="loadExampleBtn" title="Load the built-in example project">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="3" width="11" height="9" rx="1.5"/><path d="M4 3V2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><line x1="7" y1="6" x2="7" y2="10"/><polyline points="5,8 7,10 9,8"/></svg>
+Load example
+</button>
 <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
-<button class="btn" id="releaseNotesBtn" title="View release notes">Release notes</button>
-<button class="btn" id="aboutBtn" title="About Dunnode">About</button>
+<button class="btn selActionBtn" id="releaseNotesBtn" title="View release notes">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v5l2.5 1.5"/><circle cx="7" cy="7" r="6"/></svg>
+Release notes
+</button>
+<button class="btn selActionBtn" id="aboutBtn" title="About Dunnode">
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><line x1="7" y1="6.5" x2="7" y2="10"/><circle cx="7" cy="4.5" r=".5" fill="currentColor"/></svg>
+About
+</button>
 </div>
 </div>
 </div>
@@ -2138,7 +2271,7 @@ Highlight colors…
 <!-- Row 2: Filter bar (toggleable, below icons) -->
 <div class="tbRow1" id="tbFilterBar" style="display:none;">
 <div class="search" style="flex:1 1 200px;" title="Search labels &amp; IDs across all columns">
-<span style="opacity:.85">🔎</span>
+<span style="opacity:.85"><svg width="13" height="13" viewBox="0 0 14 14" style="vertical-align:middle;"><circle cx="5.5" cy="5.5" r="4" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
 <input id="searchInput" placeholder="Search…" style="min-width:100px;"/>
 <span class="hint">Esc</span>
 </div>
@@ -2175,14 +2308,28 @@ Highlight colors…
 <div class="columnsWrap">
 <div class="columnsHeader">
 <div class="statusLine" id="viewerStatus">Ready.</div>
-<div class="controls" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-<!-- View controls -->
+<div id="viewPill" style="display:none;align-items:center;gap:2px;font-size:12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:16px;padding:2px 4px 2px 8px;white-space:nowrap;flex-shrink:0;position:relative;">
+<span id="viewPillEmoji" style="font-size:12px;"></span>
+<span id="viewPillLabel" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;font-weight:600;padding:0 2px;color:var(--text);"></span>
+<button class="btn" id="viewPillPrev" title="Previous view (Alt+,)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">‹</button>
+<button class="btn" id="viewPillNext" title="Next view (Alt+.)" style="width:20px;height:20px;padding:0;font-size:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;">›</button>
+<button class="btn" id="viewPillClose" title="Deactivate view" style="width:20px;height:20px;padding:0;font-size:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:.4;">×</button>
+<select id="viewPillSelect" title="Switch view" style="position:absolute;top:0;left:0;width:calc(100% - 66px);height:100%;opacity:0;cursor:pointer;"></select>
+</div>
+<div class="viewerControls">
+<!-- Columns button -->
 <button class="btn" id="showAllColumnsBtn" title="Show/hide and reorder columns">Columns…</button>
-<button class="btn" id="panToggleBtn" title="Toggle pan mode (P)" style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:16px;opacity:.6;transition:opacity .15s,background .15s;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/><polyline points="5.5,3.5 8,1 10.5,3.5"/><polyline points="5.5,12.5 8,15 10.5,12.5"/><polyline points="3.5,5.5 1,8 3.5,10.5"/><polyline points="12.5,5.5 15,8 12.5,10.5"/></svg></button>
-<button class="btn" id="clearSelBtn" title="Clear selection (Esc)" style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:14px;opacity:.6;transition:opacity .15s;">⊘</button>
-<!-- Editor mode only -->
-<button class="btn" id="undoBtn" title="Undo (Ctrl+Z)" disabled style="display:none;">↶</button>
-<button class="btn" id="redoBtn" title="Redo (Ctrl+Y)" disabled style="display:none;">↷</button>
+<!-- View actions group -->
+<div class="vcGroup">
+<button class="vcBtn" id="panToggleBtn" title="Toggle pan mode (P)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/><polyline points="5.5,3.5 8,1 10.5,3.5"/><polyline points="5.5,12.5 8,15 10.5,12.5"/><polyline points="3.5,5.5 1,8 3.5,10.5"/><polyline points="12.5,5.5 15,8 12.5,10.5"/></svg></button>
+<button class="vcBtn" id="clearSelBtn" title="Clear selection (Esc)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><line x1="4" y1="4" x2="10" y2="10"/></svg></button>
+<button class="vcBtn" id="resetViewBtn" title="Reset view to defaults (Alt+0)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg></button>
+</div>
+<!-- Editor: history group -->
+<div class="vcGroup vcEditorOnly" id="vcHistoryGroup" style="display:none;">
+<button class="vcBtn" id="undoBtn" title="Undo (Ctrl+Z)" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5h6a3 3 0 0 1 0 6H7"/><polyline points="5.5,3 3,5.5 5.5,8"/></svg></button>
+<button class="vcBtn" id="redoBtn" title="Redo (Ctrl+Y)" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5.5H5a3 3 0 0 0 0 6h2"/><polyline points="8.5,3 11,5.5 8.5,8"/></svg></button>
+</div>
 </div>
 </div>
 <div class="columnsScroller" id="columnsScroller">
@@ -2227,7 +2374,7 @@ Highlight colors…
 <div style="display:flex;align-items:center;gap:6px;">
 <div class="meta" id="detailsMeta">—</div>
 <div class="detailsDockActions" id="detailsDockActions"></div>
-<button class="detailsClose floatOnly" id="detailsOpacityBtn" title="Inactive opacity" style="font-size:11px;display:none;position:relative;overflow:visible;">◐<div id="opacityPopover" style="display:none;position:absolute;bottom:100%;right:0;margin-bottom:6px;padding:8px 12px;background:rgba(11,16,32,.95);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;white-space:nowrap;min-width:140px;">
+<button class="detailsClose floatOnly" id="detailsOpacityBtn" title="Inactive opacity" style="font-size:11px;display:none;position:relative;overflow:visible;">◐<div id="opacityPopover" style="display:none;position:absolute;right:0;padding:8px 12px;background:rgba(11,16,32,.95);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:200;white-space:nowrap;min-width:140px;">
 <div style="font-size:10px;opacity:.5;margin-bottom:6px;letter-spacing:.3px;">INACTIVE OPACITY</div>
 <div style="display:flex;align-items:center;gap:8px;">
 <input type="range" id="opacitySlider" min="10" max="100" value="30" style="flex:1;accent-color:#3b82f6;cursor:pointer;"/>
@@ -2272,7 +2419,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.3.9</span>
+<span id="appVersionLabel">v1.4.0</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -2341,6 +2488,27 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </div>
 </div>
 <div class="modalBody" id="filtersBody"></div>
+</div>
+<!-- Views catalog modal -->
+<div class="modalMask" id="viewsMask"></div>
+<div aria-label="Views" class="modal" id="viewsModal" role="dialog" style="max-width:620px;">
+<div class="modalHeader">
+<div class="title">Views catalog</div>
+<div class="controls">
+<button class="btn" id="addViewBtn">Add view</button>
+<button class="btn" id="closeViewsBtn">Close</button>
+</div>
+</div>
+<div class="modalBody" id="viewsBody"></div>
+</div>
+<!-- Keyboard shortcuts modal -->
+<div class="modalMask" id="kbdShortcutsMask"></div>
+<div aria-label="Keyboard Shortcuts" class="modal" id="kbdShortcutsModal" role="dialog" style="max-width:600px;">
+<div class="modalHeader">
+<div class="title">Keyboard shortcuts</div>
+<div class="controls"><button class="btn" id="kbdShortcutsClose">Close</button></div>
+</div>
+<div class="modalBody" id="kbdShortcutsBody" style="max-height:70vh;overflow-y:auto;padding:18px 22px;"></div>
 </div>
 <!-- Custom alert/confirm modal -->
 <div class="modalMask" id="customDialogMask" style="z-index:10000;"></div>
@@ -2465,6 +2633,7 @@ Multi-value
 <div class="controls"><button class="btn" id="aboutClose">Close</button></div>
 </div>
 <div class="modalBody" style="text-align:center;padding:28px 24px;">
+<div style="font-size:12px;font-style:italic;opacity:.4;margin-bottom:16px;">Dunno where your data goes?</div>
 <div style="font-size:22px;font-weight:800;letter-spacing:1.2px;margin-bottom:2px;text-transform:uppercase;">Dunnode</div>
 <div style="font-size:13px;font-weight:600;opacity:.55;letter-spacing:.4px;margin-bottom:14px;">Done. Now.</div>
 <div style="font-size:12px;opacity:.6;line-height:1.6;margin-bottom:18px;">A lightweight mapping studio for complex flows.</div>
@@ -2568,7 +2737,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.3.9';
+const APP_VERSION = '1.4.0';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -2580,7 +2749,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.3.9", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.4.0", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -2667,7 +2836,7 @@ const EXAMPLE_JSON = {
                 "type": "field",
                 "tags": [
                   "active",
-                   "pending"
+                   "critical"
                 ],
                 "customAttributes": {
                   "format": "string",
@@ -3006,7 +3175,7 @@ const EXAMPLE_JSON = {
                     "id": "lab.experiment.sample_analysis.composition",
                     "label": "composition",
                     "type": "field",
-                    "tags": ["active"],
+                    "tags": ["active", "critical"],
                     "customAttributes": { "format": "string", "domain": ["science"] }
                   },
                   {
@@ -3241,7 +3410,8 @@ const EXAMPLE_JSON = {
                 "label": "recorded_ts",
                 "type": "field",
                 "tags": [
-                  "active"
+                  "active",
+                  "critical"
                 ],
                 "customAttributes": {
                   "format": "datetime"
@@ -3360,6 +3530,15 @@ const EXAMPLE_JSON = {
       "color": "#ef4444",
       "note": "No longer in use. Kept for historical reference.",
       "priority": 3
+    },
+    {
+      "id": "critical",
+      "_autoId": true,
+      "label": "Critical",
+      "abbr": "!",
+      "color": "#dc2626",
+      "note": "High-priority field — must be mapped for go-live.",
+      "priority": 4
     }
   ],
   "transformCatalog": [
@@ -3863,6 +4042,100 @@ const EXAMPLE_JSON = {
         { "field": "transform", "op": "has", "value": "trim" }
       ],
       "highlight": { "bg": "#a855f7", "border": "#a855f7", "edgeColor": "#a855f7", "frameColor": "#a855f7", "bgEnabled": true, "borderEnabled": false, "edgeEnabled": true, "bold": false, "frame": false, "emoji": "✂️" }
+    }
+  ],
+  "viewCatalog": [
+    {
+      "id": "full_overview",
+      "label": "Full Overview",
+      "note": "All columns visible, no filters, everything expanded",
+      "emoji": "🌐",
+      "state": {
+        "activeFilterIds": [],
+        "filterMode": "hide",
+        "filterLogic": "or",
+        "onlyMapped": false,
+        "search": "",
+        "selection": [],
+        "highlightMode": "chain",
+        "arrowMode": "selected",
+        "showSameColumn": true,
+        "showDistant": true,
+        "selectionDim": "all",
+        "hiddenColumns": [],
+        "collapsedGroups": [],
+        "edgeColorScheme": "",
+        "nodeColorMode": "all"
+      }
+    },
+    {
+      "id": "critical_gaps",
+      "label": "Critical Gaps",
+      "note": "Show only critical unmapped fields — red flags for review",
+      "emoji": "🚨",
+      "state": {
+        "activeFilterIds": ["critical_unmapped"],
+        "filterMode": "highlight",
+        "filterLogic": "or",
+        "onlyMapped": false,
+        "search": "",
+        "selection": [],
+        "highlightMode": "chain",
+        "arrowMode": "selected",
+        "showSameColumn": true,
+        "showDistant": true,
+        "selectionDim": "all",
+        "hiddenColumns": ["arch"],
+        "collapsedGroups": [],
+        "edgeColorScheme": "",
+        "nodeColorMode": "all"
+      }
+    },
+    {
+      "id": "mission_chain",
+      "label": "Mission ID Chain",
+      "note": "Trace missionId across all five systems",
+      "emoji": "🔗",
+      "state": {
+        "activeFilterIds": [],
+        "filterMode": "hide",
+        "filterLogic": "or",
+        "onlyMapped": false,
+        "search": "",
+        "selection": ["mc.mission.missionId"],
+        "highlightMode": "chain",
+        "arrowMode": "selected",
+        "showSameColumn": false,
+        "showDistant": true,
+        "selectionDim": "all",
+        "hiddenColumns": [],
+        "collapsedGroups": ["mc.mission", "mc.crew", "sat.telemetry", "sat.payload", "lab.samples", "lab.results", "arch.records", "arch.personnel", "obs.tracking", "obs.weather"],
+        "edgeColorScheme": "cardinality",
+        "nodeColorMode": "all"
+      }
+    },
+    {
+      "id": "data_formats",
+      "label": "Data Formats",
+      "note": "Color by transform to see data conversion patterns",
+      "emoji": "🎨",
+      "state": {
+        "activeFilterIds": ["trimmed_fields"],
+        "filterMode": "highlight",
+        "filterLogic": "or",
+        "onlyMapped": true,
+        "search": "",
+        "selection": [],
+        "highlightMode": "chain",
+        "arrowMode": "all",
+        "showSameColumn": true,
+        "showDistant": true,
+        "selectionDim": "all",
+        "hiddenColumns": ["mc"],
+        "collapsedGroups": [],
+        "edgeColorScheme": "transform",
+        "nodeColorMode": "all"
+      }
     }
   ]
 };/* =========================
@@ -4370,6 +4643,10 @@ function isFallback(edge){
 
 function setGlobalStatus(text){ globalStatus.textContent = text; }
 function setViewerStatus(text){ viewerStatus.textContent = text; }
+function syncBrowserTitle(){
+  const name = (state.data?.title || '').trim();
+  document.title = name ? (name + ' — Dunnode') : 'Dunnode';
+}
 
 // Custom alert/confirm dialogs (replaces browser prompts)
 // Ensure the standard dialog body structure exists (bulk modals may replace innerHTML)
@@ -4410,9 +4687,11 @@ function customAlert(message){
     dialog.classList.add('active');
     okBtn.focus();
     
-    // Close on Escape or mask click
+    // Close on Escape or Enter
     const onEscape = (e) => {
-      if(e.key === 'Escape'){ 
+      if(e.key === 'Escape' || e.key === 'Enter'){ 
+        e.preventDefault();
+        e.stopPropagation();
         mask.classList.remove('active');
         dialog.classList.remove('active');
         document.removeEventListener('keydown', onEscape);
@@ -4473,21 +4752,31 @@ function customConfirm(message){
     dialog.classList.add('active');
     okBtn.focus();
     
-    // Close on Escape
-    const onEscape = (e) => {
-      if(e.key === 'Escape'){ 
+    // Enter = OK, Escape = Cancel
+    const onKey = (e) => {
+      if(e.key === 'Escape'){
+        e.preventDefault();
+        e.stopPropagation();
         mask.classList.remove('active');
         dialog.classList.remove('active');
-        document.removeEventListener('keydown', onEscape);
+        document.removeEventListener('keydown', onKey);
         resolve(false);
       }
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        e.stopPropagation();
+        mask.classList.remove('active');
+        dialog.classList.remove('active');
+        document.removeEventListener('keydown', onKey);
+        resolve(true);
+      }
     };
-    document.addEventListener('keydown', onEscape);
+    document.addEventListener('keydown', onKey);
     
     mask.addEventListener('click', () => {
       mask.classList.remove('active');
       dialog.classList.remove('active');
-      document.removeEventListener('keydown', onEscape);
+      document.removeEventListener('keydown', onKey);
       resolve(false);
     }, {once: true});
   });
@@ -4869,7 +5158,8 @@ function createBlankMappingData(){
     tagCatalog: [],
   transformCatalog: [],
     customAttributeCatalog: [],
-    filterCatalog: []
+    filterCatalog: [],
+    viewCatalog: []
   };
 }
 async function startNewMapping(){
@@ -5096,6 +5386,33 @@ function escapeHtml(s){
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
+
+// ── Shared SVG icon library ──
+const ICONS = {
+  field:  '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1.5L10.5 6L6 10.5L1.5 6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
+  group:  '<svg width="12" height="12" viewBox="0 0 12 12"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1.5" y1="4.5" x2="10.5" y2="4.5" stroke="currentColor" stroke-width=".8" opacity=".4"/></svg>',
+  column: '<svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="1" width="8" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="2" y1="3.5" x2="10" y2="3.5" stroke="currentColor" stroke-width=".8" opacity=".5"/></svg>',
+  edit:     '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2l3 3-7 7H0V9z"/><line x1="5.5" y1="3.5" x2="8.5" y2="6.5" opacity=".3"/></svg>',
+  addFieldUp:   '<svg width="14" height="12" viewBox="0 0 14 12"><path d="M5 4.5L7.5 2L10 4.5L7.5 7Z" fill="none" stroke="currentColor" stroke-width="1"/><line x1="2" y1="1.5" x2="2" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><polyline points="0.5,3.5 2,1.5 3.5,3.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  addFieldDown: '<svg width="14" height="12" viewBox="0 0 14 12"><path d="M5 4.5L7.5 2L10 4.5L7.5 7Z" fill="none" stroke="currentColor" stroke-width="1"/><line x1="2" y1="4" x2="2" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><polyline points="0.5,7.5 2,9.5 3.5,7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  addGroupUp:   '<svg width="14" height="12" viewBox="0 0 14 12"><rect x="5" y="2" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1"/><line x1="5" y1="4.2" x2="11" y2="4.2" stroke="currentColor" stroke-width=".6" opacity=".4"/><line x1="2" y1="1.5" x2="2" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><polyline points="0.5,3.5 2,1.5 3.5,3.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  addGroupDown: '<svg width="14" height="12" viewBox="0 0 14 12"><rect x="5" y="2" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1"/><line x1="5" y1="4.2" x2="11" y2="4.2" stroke="currentColor" stroke-width=".6" opacity=".4"/><line x1="2" y1="4" x2="2" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><polyline points="0.5,7.5 2,9.5 3.5,7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  moveUp:   '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="10" x2="6" y2="2"/><polyline points="3,5 6,2 9,5"/></svg>',
+  moveDown: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="2" x2="6" y2="10"/><polyline points="3,7 6,10 9,7"/></svg>',
+  moveLeft: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="2" y2="6"/><polyline points="5,3 2,6 5,9"/></svg>',
+  moveRight:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="6" x2="10" y2="6"/><polyline points="7,3 10,6 7,9"/></svg>',
+  indent:   '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><polyline points="2,3 5,6 2,9"/><line x1="6" y1="3" x2="10" y2="3"/><line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/></svg>',
+  outdent:  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><polyline points="5,3 2,6 5,9"/><line x1="6" y1="3" x2="10" y2="3"/><line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/></svg>',
+  duplicate:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><path d="M8.5 3.5V2A1.2 1.2 0 0 0 7.3.8H2A1.2 1.2 0 0 0 .8 2v5.3A1.2 1.2 0 0 0 2 8.5h1.5"/></svg>',
+  duplicatePlus:'<svg width="14" height="12" viewBox="0 0 14 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><path d="M8.5 3.5V2A1.2 1.2 0 0 0 7.3.8H2A1.2 1.2 0 0 0 .8 2v5.3A1.2 1.2 0 0 0 2 8.5h1.5"/><line x1="12.5" y1="2" x2="12.5" y2="5" stroke-linecap="round"/><line x1="11" y1="3.5" x2="14" y2="3.5" stroke-linecap="round"/></svg>',
+  insertColLeft: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><rect x="5" y="1" width="6" height="10" rx="1.2"/><line x1="5" y1="3.5" x2="11" y2="3.5" stroke-width=".7" opacity=".4"/><line x1="1.5" y1="3" x2="1.5" y2="9" stroke-width="1.2" stroke-dasharray="1.5 1.5"/></svg>',
+  insertColRight:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><rect x="1" y="1" width="6" height="10" rx="1.2"/><line x1="1" y1="3.5" x2="7" y2="3.5" stroke-width=".7" opacity=".4"/><line x1="10.5" y1="3" x2="10.5" y2="9" stroke-width="1.2" stroke-dasharray="1.5 1.5"/></svg>',
+  hide:     '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><path d="M1 6s2-3.5 5-3.5S11 6 11 6s-2 3.5-5 3.5S1 6 1 6z"/><line x1="2" y1="10" x2="10" y2="2"/></svg>',
+  convert:  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3.5A1.5 1.5 0 0 0 2 4.5V5"/><polyline points="7,1 9,3 7,5"/><path d="M3 9h5.5A1.5 1.5 0 0 0 10 7.5V7"/><polyline points="5,11 3,9 5,7"/></svg>',
+  trash:    '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,3 11,3"/><path d="M4 3V1.5h4V3"/><path d="M2.5 3l.5 7.5a1 1 0 0 0 1 .9h4a1 1 0 0 0 1-.9L9.5 3"/></svg>',
+};
+function nodeIcon(type){ return type === 'group' ? ICONS.group : ICONS.field; }
+
 
 
 
@@ -5914,7 +6231,8 @@ function beginEditSnapshot(kind, id){
     checkDirtyState();
     // Schedule re-render to clear stale viewer state (e.g. tag pills from reverted edits).
     // Use queueMicrotask to avoid recursion since we may be called from inside renderAll.
-    queueMicrotask(()=>{ renderAll(); });
+    // Skip if inline rename is active — the re-render would destroy the inline input.
+    if(!__inlineRename) queueMicrotask(()=>{ renderAll(); });
   }
   __editSnapshot = { kind, id, data: null };
   if(kind==='column'){
@@ -6413,7 +6731,7 @@ function createNodeElement(node, columnId){
   label.className = "label";
   const text = document.createElement("span");
   text.className = "text";
-  text.textContent = node.label ?? node.id;
+  text.textContent = node.label || node.id;
   label.appendChild(text);
   // ID is intentionally hidden in the tree row to save horizontal space.
   // Full ID is still available in Details and status/breadcrumbs.
@@ -8442,9 +8760,9 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
     const colIdx = IDX.columnIndex.get(colId);
     const colObj = colIdx !== undefined ? IDX.columns[colIdx] : null;
     const colLabel = colObj ? (colObj.label || colObj.id) : '';
-    const icon = n.type === 'field' ? '◇' : '▤';
+    const icon = nodeIcon(n.type);
     nodeList += `<div class="miniCard" style="cursor:pointer;padding:4px 6px;border-radius:4px;margin:1px 0;font-size:11.5px;display:flex;align-items:center;gap:6px;" data-jump-id="${escapeHtml(n.id||'')}">
-      <span style="opacity:.4;font-size:10px;">${icon}</span>
+      <span style="opacity:.45;display:flex;align-items:center;">${icon}</span>
       <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(n.label || n.id || '?')}</span>
       <span style="opacity:.35;font-size:10px;">${escapeHtml(colLabel)}</span>
     </div>`;
@@ -9000,6 +9318,8 @@ function selectEdge(eid){
 }
 
 function lockSelection(nodeId, evt){
+  // Commit any active inline rename before changing selection
+  if(__inlineRename && __inlineRename.nodeId !== nodeId) commitInlineRename();
   // Capture edge endpoints BEFORE clearing, so Ctrl+click can preserve them
   const _prevEdgeEndpoints = state._selectedEdgeEndpoints || null;
   state._selectedEdgeEndpoints = null;
@@ -10110,8 +10430,9 @@ function drawArrows(){
       path.__alive = true;
       path.classList.toggle('hl', !!inHL);
       path.classList.toggle('active', !!inActive);
-      path.classList.toggle('dimmed', !!(shouldDimEdges && !inHL && !inActive && !(state.multiSelectArrowMode === 'selected' && !state.allArrows)));
-      path.classList.toggle('fadeOut', !!(shouldDimEdges && !inHL && !inActive && state.multiSelectArrowMode === 'selected' && !state.allArrows));
+      const hideEdge = !!(highlightFields) && (state.multiSelectArrowMode === 'selected' || state.multiSelectArrowMode === 'direct') && !state.allArrows;
+      path.classList.toggle('dimmed', !!(shouldDimEdges && !inHL && !inActive && !hideEdge));
+      path.classList.toggle('fadeOut', !!(!inHL && !inActive && hideEdge));
       
       // Set dash pattern
       if(dashPattern){
@@ -10186,9 +10507,11 @@ function drawArrows(){
       if(state.editorMode && state.selectedEdgeId===e.id) path.classList.add('selected');
       if(inHL) path.classList.add('hl');
       if(inActive) path.classList.add('active');
-      if(shouldDimEdges && !inHL && !inActive){
-        if(state.multiSelectArrowMode === 'selected' && !state.allArrows) path.classList.add('fadeOut');
-        else path.classList.add('dimmed');
+      const hideEdge2 = !!(highlightFields) && (state.multiSelectArrowMode === 'selected' || state.multiSelectArrowMode === 'direct') && !state.allArrows;
+      if(!inHL && !inActive && hideEdge2){
+        path.classList.add('fadeOut');
+      } else if(shouldDimEdges && !inHL && !inActive){
+        path.classList.add('dimmed');
       }
       
       // Set dash pattern
@@ -10824,6 +11147,22 @@ if(docsMask) docsMask.addEventListener('click', closeDocs);
       e.stopPropagation();
       const show = opacityPop.style.display === 'none';
       opacityPop.style.display = show ? 'block' : 'none';
+      if(show){
+        // Position above by default, flip below if not enough space
+        const btnRect = opacityBtn.getBoundingClientRect();
+        opacityPop.style.bottom = ''; opacityPop.style.top = '';
+        opacityPop.style.marginBottom = ''; opacityPop.style.marginTop = '';
+        const popH = opacityPop.offsetHeight;
+        if(btnRect.top - popH - 6 < 4){
+          // Not enough space above — show below
+          opacityPop.style.top = '100%';
+          opacityPop.style.marginTop = '6px';
+        } else {
+          // Show above
+          opacityPop.style.bottom = '100%';
+          opacityPop.style.marginBottom = '6px';
+        }
+      }
     });
     // Prevent slider interaction from triggering panel drag
     opacityPop.addEventListener('mousedown', (e)=> e.stopPropagation());
@@ -11144,9 +11483,7 @@ if(docsMask) docsMask.addEventListener('click', closeDocs);
     // Update pan toggle button
     const panBtn = document.getElementById('panToggleBtn');
     if(panBtn){
-      panBtn.style.opacity = on ? '1' : '.6';
-      panBtn.style.background = on ? 'rgba(59,130,246,.18)' : '';
-      panBtn.style.borderColor = on ? 'rgba(59,130,246,.5)' : '';
+      panBtn.classList.toggle('active', on);
     }
   }
 
@@ -11863,7 +12200,14 @@ let updateArrowModeUI = ()=>{};
 
 if(wrapToggle) wrapToggle.addEventListener("change", () => {
   state.wrapColumns = !!wrapToggle.checked;
+  const ind = document.getElementById('wrapIndicator');
+  if(ind) ind.textContent = wrapToggle.checked ? 'ON' : 'OFF';
+  const btn = document.getElementById('wrapToggleBtn');
+  if(btn) btn.style.background = wrapToggle.checked ? 'rgba(59,130,246,.15)' : '';
   renderAll();
+});
+document.getElementById('wrapToggleBtn')?.addEventListener('click', ()=>{
+  if(wrapToggle){ wrapToggle.checked = !wrapToggle.checked; wrapToggle.dispatchEvent(new Event('change')); }
 });
 
 // Node label display toggles
@@ -11902,7 +12246,807 @@ if(wrapToggle) wrapToggle.addEventListener("change", () => {
   }
 })();
 
-// Column width & gap sliders
+
+// ═══════════════════════════════════════════════════
+// Views — saved viewer state bookmarks
+// ═══════════════════════════════════════════════════
+
+const VIEW_EMOJI_PICKS = ['🌐','🚨','🔗','🎨','📌','🔍','📊','📋','⭐','🎯','🔒','🔥','✅','❌','⚠️','🟢','🔵','🟡','🔴','📐','🗂️','💡','🧪','🏷️'];
+
+function ensureViewCatalog(){
+  if(!state.data) return [];
+  if(!Array.isArray(state.data.viewCatalog)) state.data.viewCatalog = [];
+  return state.data.viewCatalog;
+}
+
+// Tracking
+let __previousViewState = null;
+let __activeViewId = null;
+let __activeViewStateJSON = null;
+
+// Inline edit state
+let __viewEditIdx = -1;
+let __viewIsNew = false;
+let __viewEditSnapshot = null;
+
+function captureViewState(){
+  const collapsedGroups = [];
+  if(IDX && IDX.elementById){
+    for(const [id, el] of IDX.elementById.entries()){
+      if(el.classList.contains('group') && el.classList.contains('collapsed')) collapsedGroups.push(id);
+    }
+  }
+  let arrowMode = 'selected';
+  if(!state.arrowsOn) arrowMode = 'off';
+  else if(state.allArrows) arrowMode = 'all';
+  const selection = [];
+  if(state.lockedId && columnOf(state.lockedId)) selection.push(state.lockedId);
+  if(state.multiSelection && state.multiSelection.size > 0){
+    for(const id of state.multiSelection){ if(!selection.includes(id)) selection.push(id); }
+  }
+  return {
+    activeFilterIds: [...state.activeFilterIds],
+    filterMode: state.filterMode,
+    filterLogic: state.filterLogic,
+    onlyMapped: state.onlyMapped,
+    search: state.search || '',
+    selection,
+    highlightMode: state.multiSelectArrowMode,
+    arrowMode,
+    showSameColumn: state.showSameColumn,
+    showDistant: state.showDistant,
+    selectionDim: state.selectionDim,
+    hiddenColumns: [...state.hiddenColumns],
+    collapsedGroups,
+    edgeColorScheme: state.edgeColorScheme,
+    nodeColorMode: state.nodeColorMode || 'all'
+  };
+}
+
+function _viewStateMatchesCurrent(){
+  if(!__activeViewStateJSON) return false;
+  try { return JSON.stringify(captureViewState()) === __activeViewStateJSON; }
+  catch(e){ return false; }
+}
+function _clearActiveViewIfDrifted(){
+  if(__activeViewId && !_viewStateMatchesCurrent()){
+    __activeViewId = null; __activeViewStateJSON = null; _syncViewNavButtons(); _updateViewPill();
+  }
+}
+function _syncViewNavButtons(){
+  const prevBtn = document.getElementById('viewsRestorePrevBtn');
+  const nextBtn = document.getElementById('viewsNextBtn');
+  const navRow = document.getElementById('viewsNavRow');
+  const cat = ensureViewCatalog();
+  const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
+  const showPrev = idx > 0 || __previousViewState;
+  const showNext = idx >= 0 && idx < cat.length - 1;
+  if(prevBtn) prevBtn.style.visibility = showPrev ? '' : 'hidden';
+  if(nextBtn) nextBtn.style.visibility = showNext ? '' : 'hidden';
+  if(navRow) navRow.style.display = (showPrev || showNext) ? 'flex' : 'none';
+}
+function _applyView(view){
+  if(!view || !view.state) return;
+  __previousViewState = captureViewState();
+  applyViewState(view.state);
+  __activeViewId = view.id;
+  __activeViewStateJSON = JSON.stringify(captureViewState());
+  _syncViewNavButtons();
+  _updateViewPill();
+  setGlobalStatus('Applied view: ' + (view.label || view.id));
+}
+
+function applyViewState(vs){
+  if(!vs || !state.data) return;
+  state.activeFilterIds = Array.isArray(vs.activeFilterIds) ? [...vs.activeFilterIds] : [];
+  state.filterMode = vs.filterMode || 'hide';
+  state.filterLogic = vs.filterLogic || 'or';
+  state.onlyMapped = !!vs.onlyMapped;
+  state.search = vs.search || '';
+  if(vs.arrowMode === 'off'){ state.arrowsOn = false; state.allArrows = false; }
+  else if(vs.arrowMode === 'all'){ state.arrowsOn = true; state.allArrows = true; }
+  else { state.arrowsOn = true; state.allArrows = false; }
+  state.showSameColumn = vs.showSameColumn !== false;
+  state.showDistant = vs.showDistant !== false;
+  state.multiSelectArrowMode = vs.highlightMode || 'chain';
+  state.selectionDim = vs.selectionDim || 'all';
+  state.edgeColorScheme = vs.edgeColorScheme || '';
+  state.nodeColorMode = vs.nodeColorMode || 'all';
+  state.hiddenColumns = new Set(Array.isArray(vs.hiddenColumns) ? vs.hiddenColumns : []);
+  state.lockedId = null; state.hoverId = null;
+  state.selectedEdgeId = null; state.hoverEdgeId = null;
+  state.selectedColumnId = null; state.multiSelection = new Set();
+  __editSnapshot = null;
+  const sel = Array.isArray(vs.selection) ? vs.selection : [];
+  if(sel.length === 1) state.lockedId = sel[0];
+  else if(sel.length > 1){ state.lockedId = sel[0]; for(let i=1;i<sel.length;i++) state.multiSelection.add(sel[i]); }
+
+  const searchInput = document.getElementById('searchInput');
+  if(searchInput) searchInput.value = state.search;
+  const onlyMappedToggle = document.getElementById('onlyMappedToggle');
+  if(onlyMappedToggle) onlyMappedToggle.checked = state.onlyMapped;
+  if(typeof updateFilterModeUI === 'function') updateFilterModeUI();
+  if(typeof updateFilterLogicUI === 'function') updateFilterLogicUI();
+  if(typeof renderActiveFilterChips === 'function') renderActiveFilterChips();
+  if(typeof updateFilterBadge === 'function') updateFilterBadge();
+  const filterBar = document.getElementById('tbFilterBar');
+  if(filterBar && (state.activeFilterIds.length || state.onlyMapped || state.search)) filterBar.style.display = '';
+  if(typeof updateArrowModeUI === 'function') updateArrowModeUI();
+  const svgOverlay = document.getElementById('svgOverlay');
+  if(svgOverlay) svgOverlay.style.display = state.arrowsOn ? 'block' : 'none';
+  const showSameColToggle = document.getElementById('showSameColToggle');
+  const showDistantToggle = document.getElementById('showDistantToggle');
+  if(showSameColToggle) showSameColToggle.checked = state.showSameColumn;
+  if(showDistantToggle) showDistantToggle.checked = state.showDistant;
+  const dimSelector = document.getElementById('dimModeSelector');
+  if(dimSelector) dimSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.dim === state.selectionDim));
+  const multiArrowSel = document.getElementById('multiArrowModeSelector');
+  if(multiArrowSel) multiArrowSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.mode === state.multiSelectArrowMode));
+  const edgeColorSel = document.getElementById('edgeColorSelector');
+  if(edgeColorSel) edgeColorSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.scheme === state.edgeColorScheme));
+  const ncmSelector = document.getElementById('nodeColorModeSelector');
+  if(ncmSelector) ncmSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.ncm === state.nodeColorMode));
+
+  renderAll();
+  if(Array.isArray(vs.collapsedGroups)){
+    const collapseSet = new Set(vs.collapsedGroups);
+    if(IDX && IDX.elementById){
+      for(const [id, el] of IDX.elementById.entries()){
+        if(!el.classList.contains('group')) continue;
+        const shouldCollapse = collapseSet.has(id);
+        if(shouldCollapse && !el.classList.contains('collapsed')){
+          el.classList.add('collapsed');
+          const ch = el.querySelector(':scope > .children');
+          if(ch) ch.style.display = 'none';
+        } else if(!shouldCollapse && el.classList.contains('collapsed')){
+          el.classList.remove('collapsed');
+          const ch = el.querySelector(':scope > .children');
+          if(ch) ch.style.display = '';
+        }
+      }
+    }
+  }
+  refreshViewer();
+  refreshEdgeColorScheme();
+  scheduleArrowsUpdate();
+  if(state.lockedId) scrollIntoView(state.lockedId);
+}
+
+// ── View dirty checking ──
+function viewFormIsDirty(){
+  if(__viewEditIdx < 0) return false;
+  const body = document.getElementById('viewsBody');
+  if(!body) return false;
+  const card = body.querySelector('.catEditing');
+  if(!card || !__viewEditSnapshot) return false;
+  const snap = __viewEditSnapshot;
+  const curLabel = (card.querySelector('[data-f="label"]')?.value||'').trim();
+  const curEmoji = (card.querySelector('[data-f="emoji"]')?.value||'').trim();
+  const curNote = (card.querySelector('[data-f="note"]')?.value||'').trim();
+  return curLabel !== (snap.label||'').trim() || curEmoji !== (snap.emoji||'').trim() || curNote !== (snap.note||'').trim();
+}
+
+async function guardViewAbandon(){
+  if(__viewIsNew){
+    if(viewFormIsDirty()){
+      const ok = await customConfirm('Discard new view?');
+      if(!ok) return false;
+    }
+    const cat = ensureViewCatalog();
+    if(__viewEditIdx >= 0 && __viewEditIdx < cat.length) cat.splice(__viewEditIdx, 1);
+    __viewEditIdx = -1; __viewIsNew = false; __viewEditSnapshot = null;
+    return true;
+  }
+  if(!viewFormIsDirty()) return true;
+  const cat = ensureViewCatalog();
+  const v = cat[__viewEditIdx];
+  return await guardAbandonEdit(v?.label || 'view', v?.id || '');
+}
+
+function viewEditBegin(idx, isNew){
+  const cat = ensureViewCatalog();
+  const v = cat[idx];
+  if(!v) return;
+  __viewEditIdx = idx;
+  __viewIsNew = !!isNew;
+  __viewEditSnapshot = { label: v.label||'', emoji: v.emoji||'', note: v.note||'' };
+}
+function viewEditEnd(){
+  __viewEditIdx = -1; __viewIsNew = false; __viewEditSnapshot = null;
+}
+
+// ── Quick-apply dropdown ──
+function renderViewsQuickList(){
+  const listEl = document.getElementById('viewsQuickList');
+  if(!listEl) return;
+  const cat = ensureViewCatalog();
+  _clearActiveViewIfDrifted();
+  if(!cat.length){
+    listEl.innerHTML = '<div style="padding:8px 4px;opacity:.5;font-size:12px;">No saved views yet.</div>';
+    return;
+  }
+  listEl.innerHTML = cat.map(v => {
+    const isActive = v.id === __activeViewId;
+    const noteAttr = v.note ? ` title="${escapeHtml(v.note)}"` : '';
+    return `<button class="btn viewQuickBtn${isActive?' viewActive':''}" data-vid="${escapeHtml(v.id)}"${noteAttr} style="text-align:left;justify-content:flex-start;width:100%;display:flex;align-items:center;gap:6px;padding:6px 10px;${isActive?'background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4);':''}">
+      <span style="flex-shrink:0;">${escapeHtml(v.emoji || '\uD83D\uDCCC')}</span>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(v.label || v.id)}</span>
+      ${isActive?'<span style="font-size:9px;opacity:.5;">\u25CF</span>':''}
+    </button>`;
+  }).join('');
+  listEl.querySelectorAll('.viewQuickBtn').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      const vid = btn.dataset.vid;
+      // Toggle off if clicking the active view
+      if(vid === __activeViewId){
+        __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+        _syncViewNavButtons(); _updateViewPill();
+        renderViewsQuickList();
+        setGlobalStatus('View deactivated — current state kept');
+        const pop = document.getElementById('tbPopViews');
+        if(pop) pop.classList.remove('open');
+        return;
+      }
+      const view = cat.find(v => v.id === vid);
+      if(!view) return;
+      _applyView(view);
+      const pop = document.getElementById('tbPopViews');
+      if(pop) pop.classList.remove('open');
+    });
+  });
+  _syncViewNavButtons();
+}
+
+// Prev/Next
+document.getElementById('viewsRestorePrevBtn')?.addEventListener('click', ()=>{
+  const cat = ensureViewCatalog();
+  const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
+  if(idx > 0){ _applyView(cat[idx - 1]); }
+  else if(__previousViewState){
+    const prev = __previousViewState;
+    __previousViewState = captureViewState();
+    applyViewState(prev);
+    __activeViewId = null; __activeViewStateJSON = null; _syncViewNavButtons(); _updateViewPill();
+    setGlobalStatus('Restored previous view');
+  }
+  const pop = document.getElementById('tbPopViews');
+  if(pop) pop.classList.remove('open');
+});
+document.getElementById('viewsNextBtn')?.addEventListener('click', ()=>{
+  const cat = ensureViewCatalog();
+  const idx = __activeViewId ? cat.findIndex(v => v.id === __activeViewId) : -1;
+  if(idx >= 0 && idx < cat.length - 1) _applyView(cat[idx + 1]);
+  const pop = document.getElementById('tbPopViews');
+  if(pop) pop.classList.remove('open');
+});
+
+// Alt+, / Alt+.
+document.addEventListener('keydown', (e)=>{
+  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey){
+    if(e.key === ',' || e.key === '<'){ e.preventDefault(); document.getElementById('viewsRestorePrevBtn')?.click(); }
+    else if(e.key === '.' || e.key === '>'){ e.preventDefault(); document.getElementById('viewsNextBtn')?.click(); }
+  }
+});
+
+// "Save current view" opens catalog with new inline editor
+document.getElementById('viewsSaveCurrentBtn')?.addEventListener('click', ()=>{
+  const pop = document.getElementById('tbPopViews');
+  if(pop) pop.classList.remove('open');
+  if(!state.editorMode){ customAlert('Switch to Editor mode to save views.'); return; }
+  _createNewView();
+});
+
+function _createNewView(){
+  const cat = ensureViewCatalog();
+  const id = 'view_' + Date.now().toString(36);
+  cat.unshift({ id, label: '', note: '', emoji: '', _autoId: true, state: captureViewState() });
+  viewEditBegin(0, true);
+  openViews();
+}
+
+document.getElementById('viewsCatalogBtn')?.addEventListener('click', ()=> openViews());
+document.getElementById('tbViews')?.addEventListener('click', ()=> renderViewsQuickList());
+
+// ── Views catalog modal ──
+const viewsMask = document.getElementById('viewsMask');
+const viewsModal = document.getElementById('viewsModal');
+const closeViewsBtn = document.getElementById('closeViewsBtn');
+const addViewBtn = document.getElementById('addViewBtn');
+
+function openViews(){
+  ensureViewCatalog();
+  renderViewsManager();
+  if(addViewBtn) addViewBtn.style.display = state.editorMode ? '' : 'none';
+  viewsMask?.classList.add('active');
+  viewsModal?.classList.add('active');
+}
+async function closeViews(){
+  if(__viewEditIdx >= 0){
+    if(!await guardViewAbandon()) return;
+    viewEditEnd();
+  }
+  viewsMask?.classList.remove('active');
+  viewsModal?.classList.remove('active');
+  renderViewsQuickList();
+}
+if(closeViewsBtn) closeViewsBtn.addEventListener('click', closeViews);
+if(viewsMask) viewsMask.addEventListener('click', closeViews);
+if(addViewBtn) addViewBtn.addEventListener('click', async ()=>{
+  if(!state.editorMode) return;
+  if(__viewEditIdx >= 0){
+    if(!await guardViewAbandon()) return;
+    viewEditEnd();
+  }
+  _createNewView();
+});
+
+function renderViewsManager(){
+  const body = document.getElementById('viewsBody');
+  if(!body) return;
+  const cat = ensureViewCatalog();
+  const editable = state.editorMode;
+  if(!cat.length){
+    body.innerHTML = `<div class="empty" style="padding:18px;">No saved views yet.${editable?' Click <b>Add view</b> to create one.':''}</div>`;
+    return;
+  }
+  _clearActiveViewIfDrifted();
+
+  body.innerHTML = cat.map((v, idx) => {
+    const isFirst = idx === 0;
+    const isLast = idx === cat.length - 1;
+    const isActive = v.id === __activeViewId;
+    const isEditing = __viewEditIdx === idx;
+    const vs = v.state || {};
+
+    if(isEditing){
+      const _isNew = __viewIsNew;
+      const label = escapeHtml(v.label||'');
+      const emoji = escapeHtml(v.emoji||'');
+      const note = escapeHtml(v.note||'');
+      return `<div class="catCard catItem catEditing viewCard" data-vidx="${idx}" style="margin-bottom:8px;padding:14px;border-radius:10px;border:1px solid rgba(59,130,246,.5);background:var(--panel);box-shadow:0 0 0 2px rgba(59,130,246,.12);">
+        <div class="kv" style="grid-template-columns:70px 1fr;gap:8px 10px;">
+          <div class="k">Label<span class="req">*</span></div>
+          <div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Full Overview"/></div>
+          <div class="k">Emoji</div>
+          <div class="v" style="display:flex;align-items:center;gap:6px;">
+            <input class="inp" data-f="emoji" value="${_isNew ? '' : emoji}" placeholder="\u2014" style="width:38px;font-size:15px;text-align:center;padding:2px;" maxlength="4"/>
+            <button class="btn veEmojiToggle" style="font-size:11px;padding:2px 5px;" title="Pick emoji">\uD83D\uDE00\u25BE</button>
+          </div>
+          <div class="k"></div>
+          <div class="v">
+            <div class="veEmojiPicker" style="display:none;flex-wrap:wrap;gap:2px;margin:2px 0 4px;">
+              ${VIEW_EMOJI_PICKS.map(e => `<button class="feEmojiOption" data-emoji="${e}" style="font-size:16px;padding:3px 5px;border:1px solid transparent;border-radius:6px;background:transparent;cursor:pointer;transition:all .1s;" title="${e}">${e}</button>`).join('')}<button class="feEmojiOption" data-emoji="" style="font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:transparent;cursor:pointer;color:var(--muted);" title="Clear emoji">\u2715</button>
+            </div>
+          </div>
+          <div class="k">Note</div>
+          <div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="Optional description"/></div>
+        </div>
+        <div style="font-size:11px;opacity:.4;margin-top:10px;line-height:1.5;">Snapshot captures the current viewer state. To change settings, adjust the viewer then click <svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;opacity:.6;"><path d="M10 2.5A4.5 4.5 0 0 0 2.3 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 9.5A4.5 4.5 0 0 0 9.7 8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><polyline points="10,0.5 10,3 7.5,3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="2,11.5 2,9 4.5,9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> on the card.</div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+          ${_isNew ? '' : '<button class="btn" data-act="del" style="border-color:rgba(255,154,168,.45);">Delete</button>'}
+          <span style="flex:1;"></span>
+          <button class="btn" data-act="cancel">Cancel</button>
+          <button class="btn btnSave" data-act="save">Save</button>
+        </div>
+      </div>`;
+    }
+
+    // Collapsed card
+    const parts = [];
+    if(vs.activeFilterIds && vs.activeFilterIds.length) parts.push(vs.activeFilterIds.length + ' filter' + (vs.activeFilterIds.length>1?'s':''));
+    if(vs.selection && vs.selection.length) parts.push(vs.selection.length + ' selected');
+    if(vs.hiddenColumns && vs.hiddenColumns.length) parts.push(vs.hiddenColumns.length + ' col hidden');
+    if(vs.onlyMapped) parts.push('mapped only');
+    if(vs.arrowMode === 'all') parts.push('all arrows');
+    if(vs.arrowMode === 'off') parts.push('arrows off');
+    if(vs.edgeColorScheme) parts.push('color: ' + vs.edgeColorScheme);
+    if(vs.collapsedGroups && vs.collapsedGroups.length) parts.push(vs.collapsedGroups.length + ' collapsed');
+    const summary = parts.join(' \u00B7 ') || 'Default settings';
+
+    return `<div class="catCard catItem viewCard" data-vidx="${idx}" ${editable?'draggable="true"':''} style="margin-bottom:8px;padding:10px 14px;border-radius:10px;border:1px solid ${isActive?'rgba(59,130,246,.5)':'var(--border)'};background:${isActive?'rgba(59,130,246,.07)':'var(--panel)'};display:flex;align-items:center;gap:10px;${editable?'cursor:pointer;':''}" ${editable?'title="Click to edit \u00B7 Drag to reorder"':''}>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:16px;">${escapeHtml(v.emoji || '\uD83D\uDCCC')}</span>
+          <b style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(v.label || v.id)}</b>
+          <span style="font-family:var(--mono);font-size:10px;opacity:.35;flex-shrink:0;">${escapeHtml(v.id)}</span>
+          ${isActive?'<span style="font-size:8px;color:#3b82f6;">\u25CF active</span>':''}
+        </div>
+        <div style="font-size:11px;opacity:.6;margin-top:3px;">${escapeHtml(summary)}</div>
+        ${v.note ? `<div style="font-size:11px;opacity:.5;margin-top:2px;">${escapeHtml(v.note)}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <button class="btn viewApplyBtn" data-vidx="${idx}" title="Apply this view" style="padding:4px 12px;">\u25B6 Apply</button>
+        ${editable ? `
+          <button class="btn viewUpdateBtn" data-vidx="${idx}" title="Update snapshot with current viewer state" style="padding:4px 8px;"><svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;"><path d="M10 2.5A4.5 4.5 0 0 0 2.3 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 9.5A4.5 4.5 0 0 0 9.7 8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><polyline points="10,0.5 10,3 7.5,3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="2,11.5 2,9 4.5,9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        ` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  body.classList.toggle('catEditActive', __viewEditIdx >= 0);
+
+  // ── Wire inline edit card ──
+  const editCard = body.querySelector('.catEditing');
+  if(editCard){
+    const labelInp = editCard.querySelector('[data-f="label"]');
+    const emojiInp = editCard.querySelector('[data-f="emoji"]');
+    const noteInp = editCard.querySelector('[data-f="note"]');
+    const saveBtn = editCard.querySelector('[data-act="save"]');
+
+    // Emoji picker
+    const pickerToggle = editCard.querySelector('.veEmojiToggle');
+    const pickerEl = editCard.querySelector('.veEmojiPicker');
+    if(pickerToggle && pickerEl){
+      pickerToggle.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        pickerEl.style.display = pickerEl.style.display === 'none' ? 'flex' : 'none';
+      });
+      pickerEl.addEventListener('click', (e)=>{
+        const opt = e.target.closest('[data-emoji]');
+        if(!opt) return;
+        e.stopPropagation();
+        if(emojiInp) emojiInp.value = opt.dataset.emoji;
+        if(saveBtn && saveBtn.__dirtyUpdate) saveBtn.__dirtyUpdate();
+      });
+    }
+
+    // Enter/Escape on inputs
+    [labelInp, noteInp].forEach(inp => {
+      if(!inp) return;
+      inp.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){ e.preventDefault(); if(saveBtn && !saveBtn.disabled) saveBtn.click(); }
+        if(e.key === 'Escape'){ e.preventDefault(); editCard.querySelector('[data-act="cancel"]')?.click(); }
+      });
+    });
+
+    requestAnimationFrame(()=> labelInp?.focus());
+
+    // Save
+    if(saveBtn) saveBtn.addEventListener('click', ()=>{
+      const cat = ensureViewCatalog();
+      const v = cat[__viewEditIdx];
+      if(!v) return;
+      const newLabel = (labelInp?.value||'').trim();
+      if(!newLabel){ customAlert('Please enter a label.'); labelInp?.focus(); return; }
+      const newEmoji = (emojiInp?.value||'').trim();
+      const newNote = (noteInp?.value||'').trim();
+      const wasNew = __viewIsNew;
+      if(wasNew) cat.splice(__viewEditIdx, 1);
+      pushUndo();
+      if(wasNew) cat.splice(__viewEditIdx, 0, v);
+      v.label = newLabel;
+      v.emoji = newEmoji || '\uD83D\uDCCC';
+      v.note = newNote;
+      checkDirtyState();
+      viewEditEnd();
+      renderViewsManager();
+      renderViewsQuickList();
+      setGlobalStatus((wasNew ? 'Saved' : 'Updated') + ' view: ' + newLabel);
+    });
+
+    // Cancel — no guard, just abandon
+    editCard.querySelector('[data-act="cancel"]')?.addEventListener('click', ()=>{
+      if(__viewIsNew){
+        const cat = ensureViewCatalog();
+        if(__viewEditIdx >= 0 && __viewEditIdx < cat.length) cat.splice(__viewEditIdx, 1);
+      }
+      viewEditEnd();
+      renderViewsManager();
+    });
+
+    // Delete
+    editCard.querySelector('[data-act="del"]')?.addEventListener('click', async ()=>{
+      const cat = ensureViewCatalog();
+      const v = cat[__viewEditIdx];
+      if(!v) return;
+      if(!await customConfirm('Delete view \u201c' + (v.label||v.id) + '\u201d?')) return;
+      pushUndo();
+      cat.splice(__viewEditIdx, 1);
+      if(__activeViewId === v.id){ __activeViewId = null; __activeViewStateJSON = null; }
+      checkDirtyState();
+      viewEditEnd();
+      renderViewsManager();
+      renderViewsQuickList();
+    });
+
+    // Dirty highlight
+    wireDirtyHighlight(editCard, saveBtn, viewFormIsDirty, ()=> !!(labelInp?.value||'').trim());
+  }
+
+  // ── Wire collapsed cards ──
+  body.querySelectorAll('.viewApplyBtn').forEach(btn => {
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const v = cat[Number(btn.dataset.vidx)];
+      if(!v) return;
+      _applyView(v);
+      renderViewsManager();
+    });
+  });
+
+  body.querySelectorAll('.viewUpdateBtn').forEach(btn => {
+    btn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      const v = cat[Number(btn.dataset.vidx)];
+      if(!v) return;
+      const ok = await customConfirm('Update \u201c' + (v.label||v.id) + '\u201d snapshot with the current viewer state?');
+      if(!ok) return;
+      pushUndo();
+      v.state = captureViewState();
+      checkDirtyState();
+      renderViewsManager();
+      setGlobalStatus('Updated view: ' + (v.label || v.id));
+    });
+  });
+
+  // DnD reorder
+  let __vDragIdx = null;
+  let __vDragTime = 0;
+  body.querySelectorAll('.catItem:not(.catEditing)').forEach(card => {
+    if(!card.draggable) return;
+    card.addEventListener('dragstart', (e)=>{
+      __vDragIdx = Number(card.dataset.vidx);
+      __vDragTime = Date.now();
+      card.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+    });
+    card.addEventListener('dragend', ()=>{
+      card.style.opacity = '';
+      body.querySelectorAll('.catItem').forEach(c => c.classList.remove('dragOver'));
+      __vDragIdx = null;
+    });
+    card.addEventListener('dragover', (e)=>{
+      e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+      body.querySelectorAll('.catItem').forEach(c => c.classList.remove('dragOver'));
+      card.classList.add('dragOver');
+    });
+    card.addEventListener('dragleave', ()=>{ card.classList.remove('dragOver'); });
+    card.addEventListener('drop', (e)=>{
+      e.preventDefault(); card.classList.remove('dragOver');
+      const fromIdx = __vDragIdx;
+      const toIdx = Number(card.dataset.vidx);
+      if(fromIdx === null || fromIdx === toIdx) return;
+      pushUndo();
+      const [moved] = cat.splice(fromIdx, 1);
+      cat.splice(toIdx, 0, moved);
+      checkDirtyState();
+      renderViewsManager();
+      renderViewsQuickList();
+    });
+  });
+
+  // Click-to-edit
+  body.querySelectorAll('.catItem:not(.catEditing)').forEach(card => {
+    card.addEventListener('click', async (e)=>{
+      if(!state.editorMode) return;
+      if(e.target.closest('.viewApplyBtn') || e.target.closest('.viewUpdateBtn')) return;
+      if(Date.now() - __vDragTime < 300) return;
+      const idx = Number(card.dataset.vidx);
+      if(__viewEditIdx >= 0){
+        if(!await guardViewAbandon()) return;
+        viewEditEnd();
+      }
+      viewEditBegin(idx, false);
+      renderViewsManager();
+    });
+  });
+}
+
+// ── View pill (main screen indicator) ──
+function _updateViewPill(){
+  const pill = document.getElementById('viewPill');
+  if(!pill) return;
+  const cat = ensureViewCatalog();
+  const view = __activeViewId ? cat.find(v => v.id === __activeViewId) : null;
+  if(!view){
+    pill.style.display = 'none';
+    return;
+  }
+  pill.style.display = 'inline-flex';
+  const emojiEl = document.getElementById('viewPillEmoji');
+  const labelEl = document.getElementById('viewPillLabel');
+  if(emojiEl) emojiEl.textContent = view.emoji || '\uD83D\uDCCC';
+  if(labelEl) labelEl.textContent = view.label || view.id;
+  // Prev/Next button visibility
+  const idx = cat.indexOf(view);
+  const prevBtn = document.getElementById('viewPillPrev');
+  const nextBtn = document.getElementById('viewPillNext');
+  if(prevBtn) prevBtn.style.visibility = idx > 0 ? '' : 'hidden';
+  if(nextBtn) nextBtn.style.visibility = idx < cat.length - 1 ? '' : 'hidden';
+  // Populate select dropdown
+  const sel = document.getElementById('viewPillSelect');
+  if(sel){
+    sel.innerHTML = cat.map(v => `<option value="${escapeHtml(v.id)}"${v.id===__activeViewId?' selected':''}>${escapeHtml(v.emoji||'')} ${escapeHtml(v.label||v.id)}</option>`).join('');
+  }
+}
+
+(function(){
+  const prevBtn = document.getElementById('viewPillPrev');
+  const nextBtn = document.getElementById('viewPillNext');
+  const closeBtn = document.getElementById('viewPillClose');
+  const sel = document.getElementById('viewPillSelect');
+  if(prevBtn) prevBtn.addEventListener('click', ()=> document.getElementById('viewsRestorePrevBtn')?.click());
+  if(nextBtn) nextBtn.addEventListener('click', ()=> document.getElementById('viewsNextBtn')?.click());
+  if(closeBtn) closeBtn.addEventListener('click', ()=>{
+    // Just clear tracking — don't change any state
+    __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+    _syncViewNavButtons(); _updateViewPill();
+    setGlobalStatus('View deactivated — current state kept');
+  });
+  if(sel) sel.addEventListener('change', ()=>{
+    const cat = ensureViewCatalog();
+    const view = cat.find(v => v.id === sel.value);
+    if(view) _applyView(view);
+  });
+})();
+
+// ── Reset view ──
+function resetViewState(){
+  if(!state.data) return;
+  state.activeFilterIds = [];
+  state.filterMode = 'hide';
+  state.filterLogic = 'or';
+  state.onlyMapped = false;
+  state.search = '';
+  state.lockedId = null; state.hoverId = null;
+  state.selectedEdgeId = null; state.hoverEdgeId = null;
+  state.selectedColumnId = null;
+  state.multiSelection = new Set();
+  state.arrowsOn = true; state.allArrows = false;
+  state.showSameColumn = true; state.showDistant = true;
+  state.multiSelectArrowMode = 'chain';
+  state.selectionDim = 'all';
+  state.edgeColorScheme = '';
+  state.nodeColorMode = 'all';
+  state.hiddenColumns = new Set();
+  __editSnapshot = null;
+  __activeViewId = null; __activeViewStateJSON = null; __previousViewState = null;
+
+  // Sync UI controls
+  const searchInput = document.getElementById('searchInput');
+  if(searchInput) searchInput.value = '';
+  const onlyMappedToggle = document.getElementById('onlyMappedToggle');
+  if(onlyMappedToggle) onlyMappedToggle.checked = false;
+  if(typeof updateFilterModeUI === 'function') updateFilterModeUI();
+  if(typeof updateFilterLogicUI === 'function') updateFilterLogicUI();
+  if(typeof renderActiveFilterChips === 'function') renderActiveFilterChips();
+  if(typeof updateFilterBadge === 'function') updateFilterBadge();
+  const filterBar = document.getElementById('tbFilterBar');
+  if(filterBar) filterBar.style.display = 'none';
+  if(typeof updateArrowModeUI === 'function') updateArrowModeUI();
+  const svgOverlay = document.getElementById('svgOverlay');
+  if(svgOverlay) svgOverlay.style.display = 'block';
+  const showSameColToggle = document.getElementById('showSameColToggle');
+  const showDistantToggle = document.getElementById('showDistantToggle');
+  if(showSameColToggle) showSameColToggle.checked = true;
+  if(showDistantToggle) showDistantToggle.checked = true;
+  const dimSelector = document.getElementById('dimModeSelector');
+  if(dimSelector) dimSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.dim === 'all'));
+  const multiArrowSel = document.getElementById('multiArrowModeSelector');
+  if(multiArrowSel) multiArrowSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.mode === 'chain'));
+  const edgeColorSel = document.getElementById('edgeColorSelector');
+  if(edgeColorSel) edgeColorSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.scheme === ''));
+  const ncmSelector = document.getElementById('nodeColorModeSelector');
+  if(ncmSelector) ncmSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.ncm === 'all'));
+
+  // Expand all collapsed groups
+  renderAll();
+  if(IDX && IDX.elementById){
+    for(const [id, el] of IDX.elementById.entries()){
+      if(el.classList.contains('group') && el.classList.contains('collapsed')){
+        el.classList.remove('collapsed');
+        const ch = el.querySelector(':scope > .children');
+        if(ch) ch.style.display = '';
+      }
+    }
+  }
+  refreshViewer();
+  refreshEdgeColorScheme();
+  scheduleArrowsUpdate();
+  _syncViewNavButtons(); _updateViewPill();
+  setGlobalStatus('View reset to defaults');
+}
+
+document.getElementById('viewsResetBtn')?.addEventListener('click', ()=>{
+  resetViewState();
+  const pop = document.getElementById('tbPopViews');
+  if(pop) pop.classList.remove('open');
+});
+document.getElementById('resetViewBtn')?.addEventListener('click', ()=>{
+  resetViewState();
+});
+
+// Alt+0 — Reset view
+document.addEventListener('keydown', (e)=>{
+  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.key === '0'){
+    e.preventDefault();
+    resetViewState();
+  }
+});
+
+// Save current view shortcut: Alt+S
+document.addEventListener('keydown', (e)=>{
+  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 's' || e.key === 'S')){
+    e.preventDefault();
+    document.getElementById('viewsSaveCurrentBtn')?.click();
+  }
+});
+
+// ── Keyboard shortcuts modal ──
+function openKbdShortcuts(){
+  const body = document.getElementById('kbdShortcutsBody');
+  if(!body) return;
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform||'');
+  const mod = isMac ? '\u2318' : 'Ctrl';
+  const sections = [
+    { title: 'Navigation', shortcuts: [
+      ['\u2191 / \u2193', 'Move selection up / down in tree'],
+      ['\u2190 / \u2192', 'Collapse / expand group, or move to parent / first child'],
+      ['Home / End', 'Jump to first / last node in column'],
+      ['Tab / Shift+Tab', 'Jump to next / previous column'],
+    ]},
+    { title: 'Selection', shortcuts: [
+      ['Shift+\u2191 / Shift+\u2193', 'Extend multi-selection up / down'],
+      [mod+'+A', 'Select all visible nodes'],
+      [mod+'+Shift+I', 'Invert selection'],
+      ['Esc', 'Clear selection / close popover'],
+    ]},
+    { title: 'Editing (Editor mode)', shortcuts: [
+      [mod+'+\u2193 / '+mod+'+\u2191', 'Quick-create field below / above with inline rename'],
+      [mod+'+Alt+\u2193 / '+mod+'+Alt+\u2191', 'Quick-create group below / above'],
+      [mod+'+\u2192', 'Add child field to selected group'],
+      ['Alt+\u2191 / Alt+\u2193', 'Move node up / down'],
+      ['F2 / Enter', 'Start inline rename / focus details editor'],
+      ['Delete', 'Delete selected node'],
+    ]},
+    { title: 'Views', shortcuts: [
+      ['Alt+S', 'Save current view'],
+      ['Alt+,', 'Previous view'],
+      ['Alt+.', 'Next view'],
+      ['Alt+0', 'Reset view to defaults'],
+    ]},
+    { title: 'Project', shortcuts: [
+      [mod+'+N', 'New project'],
+      [mod+'+O', 'Open project'],
+      [mod+'+S', 'Save project'],
+      [mod+'+E', 'Toggle editor mode'],
+    ]},
+    { title: 'Global', shortcuts: [
+      [mod+'+K', 'Open command palette'],
+      [mod+'+Z', 'Undo'],
+      [mod+'+Shift+Z / '+mod+'+Y', 'Redo'],
+      ['?', 'Open quick start guide'],
+      ['P', 'Toggle pan mode'],
+      ['D', 'Toggle details panel'],
+    ]},
+  ];
+  body.innerHTML = sections.map(s => `
+    <div style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.5;margin-bottom:6px;">${s.title}</div>
+      ${s.shortcuts.map(([key, desc]) => `
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0;font-size:13px;">
+          <kbd style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:2px 7px;min-width:80px;text-align:center;white-space:nowrap;">${key}</kbd>
+          <span style="opacity:.8;">${desc}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  document.getElementById('kbdShortcutsMask')?.classList.add('active');
+  document.getElementById('kbdShortcutsModal')?.classList.add('active');
+}
+(function(){
+  const mask = document.getElementById('kbdShortcutsMask');
+  const modal = document.getElementById('kbdShortcutsModal');
+  const closeBtn = document.getElementById('kbdShortcutsClose');
+  const openBtn = document.getElementById('kbdShortcutsBtn');
+  function close(){ mask?.classList.remove('active'); modal?.classList.remove('active'); }
+  if(closeBtn) closeBtn.addEventListener('click', close);
+  if(mask) mask.addEventListener('click', close);
+  if(openBtn) openBtn.addEventListener('click', openKbdShortcuts);
+})();
+
 (function(){
   const widthSlider = document.getElementById('colWidthSlider');
   const widthVal = document.getElementById('colWidthVal');
@@ -12216,6 +13360,10 @@ function openHelp(){
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
   <li>Toggle <b>Editor mode</b> (top-right) to unlock editing.</li>
   <li><b>Add nodes</b>: hover a row to reveal ↳ (add child) and ⫶ (context menu) buttons.</li>
+  <li><b>Quick-create (keyboard)</b>: select a node and press <b>Ctrl+↓</b> (Cmd+↓) to insert a field below with inline rename. Type a label and press Enter, or press Ctrl+↓ again to rapid-fire more fields. <b>Ctrl+Alt+↓</b> for groups, <b>Ctrl+→</b> for child nodes.</li>
+  <li><b>Navigate</b>: <b>↑/↓</b> arrows move selection between nodes. <b>Shift+↑/↓</b> extends multi-selection. <b>Enter</b> focuses the label editor.</li>
+  <li><b>Rearrange</b>: <b>Alt+↑/↓</b> moves a node up/down. <b>Tab</b> indents (into sibling group above), <b>Shift+Tab</b> outdents.</li>
+  <li><b>Convert type</b>: right-click context menu (⫶) to convert a field to group or vice versa.</li>
   <li><b>Create mappings</b>: drag a field onto a field in another column.</li>
   <li><b>Edit properties</b>: click any field/mapping and use the Details pane on the right.</li>
   <li><b>Drag-and-drop</b>: reorder, move, copy, or map nodes using modifier keys:</li>
@@ -12227,13 +13375,13 @@ function openHelp(){
   <li><b>Ctrl+A</b> (Cmd+A) &mdash; select all visible nodes. <b>Ctrl+Shift+I</b> (Cmd+Shift+I) &mdash; invert selection. Also in the Selection menu.</li>
   <li><b>Ctrl+K</b> (Cmd+K) &mdash; command palette: search all commands, jump to any node by name, or search the documentation.</li>
   <li><b>D</b> &mdash; toggle details panel. <b>P</b> &mdash; pan mode (drag to scroll). <b>Esc</b> &mdash; clear selection.</li>
-  <li><b>Toolbar buttons</b>: <b>⊞</b> toggles pan mode, <b>⊘</b> clears the current selection.</li>
+  <li><b>Viewer toolbar</b>: icon buttons above the columns for pan mode, clear selection, and reset view.</li>
 </ul>
 
 <h4 style="margin:14px 0 6px;">4. Filter &amp; highlight</h4>
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
-  <li>Click <b>🔎</b> to open the filter bar &mdash; type to search nodes, toggle <b>Only mapped</b> to focus.</li>
-  <li>Open the <b>Filters</b> catalog (▤) to create rule-based filters with colored highlights.</li>
+  <li>Click the <b>Filter</b> toolbar button to open the filter bar &mdash; type to search nodes, toggle <b>Only mapped</b> to focus.</li>
+  <li>Open the <b>Filters</b> catalog (from Catalogs menu) to create rule-based filters with colored highlights.</li>
   <li>Toggle active filters via checkboxes &mdash; chips appear in the filter bar.</li>
   <li><b>Display mode</b> (<b>Hide</b> / <b>Dim</b> / <b>Highlight</b>) &mdash; segmented selector controls how non-matching nodes appear.</li>
   <li><b>AND / OR</b> &mdash; segmented selector controls whether nodes must match ALL or ANY active filter. Search is always ANDed with filters.</li>
@@ -12244,7 +13392,8 @@ function openHelp(){
   <li><b>Tags</b> &mdash; colored labels for nodes (e.g. Active, Draft, Retired). Drag to set priority order.</li>
   <li><b>Transforms</b> &mdash; reusable data conversion steps attached to mappings (e.g. Trim, Uppercase). Supports per-instance parameters.</li>
   <li><b>Custom attributes</b> &mdash; domain metadata on nodes (e.g. Data Type, Sensitivity). Each attribute can have its own <b>color</b> (inherited by values without their own). Each value has a color with an <b>Apply</b> checkbox &mdash; unchecked values inherit from the attribute color. Enable "Display on node" per attribute to show value pills on tree nodes. Pill order: Tags &gt; Attribute priority &gt; Value priority.</li>
-  <li><b>Filters</b> &mdash; rule-based visual highlights (see section 4 above). Also managed from the ▤ catalog toolbar group.</li>
+  <li><b>Filters</b> &mdash; rule-based visual highlights (see section 4 above). Also managed from the Catalogs toolbar menu.</li>
+  <li><b>Views</b> &mdash; saved snapshots of the viewer state (filters, selection, arrows, collapsed groups, hidden columns, display settings). Click <b>Views</b> in the toolbar to apply a saved view with one click. <b>Save current view</b> (<b>Alt+S</b>) bookmarks the current state. <b>Alt+,</b> / <b>Alt+.</b> navigate between views. <b>Reset view</b> (<b>Alt+0</b>) returns to clean defaults. A <b>view pill</b> indicator appears in the viewer header when a view is active.</li>
   <li><b>Inline editing</b> &mdash; click <b>Add</b> to create items directly inside the catalog list. Click any existing item to edit it in place. When creating a node, selecting "+ New tag…" or "+ New attribute…" opens a nested create modal &mdash; the node form is saved and restored automatically.</li>
   <li><b>Auto-ID &amp; abbreviation</b> &mdash; ID and abbreviation auto-generate from the label as you type. A blue <b style="font-size:9px;padding:1px 4px;border-radius:4px;background:rgba(59,130,246,.15);color:rgba(130,180,255,.8);">auto</b> badge shows when a field is linked. Edit the field to override; clear it to re-link.</li>
   <li><b>Save / Cancel / Delete</b> &mdash; Save activates when you make changes. Label is required (marked with <span style="color:rgba(239,130,130,.7);font-weight:700;">*</span>) &mdash; Save stays disabled until a label is entered. New items have no Delete button.</li>
@@ -12252,7 +13401,9 @@ function openHelp(){
 
 <h4 style="margin:14px 0 6px;">6. Save &amp; share</h4>
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
-  <li><b>Save project</b> &mdash; downloads your complete project as JSON. Blue button = unsaved changes.</li>
+  <li><b>New project</b> (<b>Ctrl+N</b>) &mdash; start blank. <b>Open project</b> (<b>Ctrl+O</b>) &mdash; load a JSON file.</li>
+  <li><b>Save project</b> (<b>Ctrl+S</b>) &mdash; downloads your complete project as JSON. Blue button = unsaved changes.</li>
+  <li><b>Editor mode</b> (<b>Ctrl+E</b>) &mdash; toggle inline editing on/off.</li>
   <li><b>Export CSV</b> &mdash; all visible mappings as a spreadsheet-ready file.</li>
   <li><b>Export report</b> &mdash; standalone HTML snapshot for stakeholders.</li>
 </ul>
@@ -12288,6 +13439,34 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.4.0',
+    date: '2026-02-24',
+    highlights: 'Views catalog with inline editing, SVG icon system, context menu redesign, keyboard shortcuts, reset view, view pill indicator',
+    changes: [
+      '<b>Views catalog</b>: save and restore viewer state snapshots — filters, selection, arrows, collapse state, hidden columns, edge color scheme, node color mode, and more. <b>Views</b> toolbar button for one-click apply. <b>Save current view</b> (<b>Alt+S</b>) captures current state. <b>Previous view / Next view</b> (<b>Alt+,</b> / <b>Alt+.</b>) navigate between saved views. Full catalog management with inline editing, emoji picker, drag-and-drop reordering, and update snapshot. Click an active view to deactivate (toggle off). Tooltips show view notes on hover. Four sample views in the example project',
+      '<b>View pill indicator</b>: when a view is active, a compact pill appears in the viewer header showing the emoji + label with ‹/› navigation buttons, an × to deactivate, and a dropdown overlay for quick switching',
+      '<b>Reset view</b> (<b>Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode — returns to clean-slate state. Available in the Views menu, as an icon button in the viewer toolbar, and in the command palette',
+      '<b>Project keyboard shortcuts</b>: <b>Ctrl+N</b> new project, <b>Ctrl+O</b> open project, <b>Ctrl+S</b> save project, <b>Ctrl+E</b> toggle editor mode. All shown in tooltips, command palette, and keyboard shortcuts modal',
+      '<b>SVG icon system</b>: new shared <code>ICONS</code> object with 20+ monochrome SVG icons at consistent stroke weight. Replaces all Unicode text glyphs in context menus, toolbar buttons, dropdown menus, and the multi-select details panel. New <code>nodeIcon()</code> helper provides unified diamond (field) and rect-with-header (group) icons across the app',
+      '<b>Context menu redesign</b>: tighter layout with section labels (Add, Insert, Arrange), keyboard shortcut hints, transparent backgrounds with hover fills, and SVG icons for every action. Delete uses colored text instead of colored background. Column and node menus both restructured',
+      '<b>Toolbar menu revamp</b>: all toolbar buttons (Graph, Layout, Selection, Catalogs, Views, Export, Help) now use SVG icons instead of text glyphs. All dropdown menus now use the <code>selActionBtn</code> pattern with SVG icons — matching the Selection menu style established in v1.3.8',
+      '<b>Viewer controls redesign</b>: icon buttons above the viewer are now grouped into logical capsules — View actions (pan, clear, reset) and History (undo, redo). All buttons use consistent SVG icons with hover/active states. History group shows/hides with editor mode',
+      '<b>Layout wrap toggle</b>: the bare checkbox for "Wrap columns" is now a styled button matching the rest of the Layout menu, with an ON/OFF indicator',
+      '<b>Keyboard shortcuts</b>: ↑/↓ arrow navigation, Shift+↑/↓ multi-select, Ctrl+↓/↑ quick-create field below/above with inline rename, Ctrl+Alt+↓/↑ for groups, Ctrl+→ add child, Alt+↑/↓ move node, Tab/Shift+Tab indent/outdent, Enter to focus editor, Delete to remove node',
+      '<b>Inline rename</b>: new nodes created via keyboard start with an inline label editor. Type a name and press Enter to commit, Escape to cancel (removes the node), or Ctrl+↓ to commit and create the next field — enabling rapid-fire schema building',
+      '<b>Field ↔ group conversion</b>: right-click context menu and command palette entries to convert fields to groups and vice versa (groups must be empty to convert to fields)',
+      '<b>Cancel button fix</b>: Cancel in catalog editors now closes immediately without triggering the unsaved changes guard',
+      '<b>Edit field/group fix</b>: the context menu "Edit field" / "Edit group" action no longer clears the selection — it directly focuses the node without toggle behavior',
+      '<b>Opacity popover fix</b>: the floating panel\'s opacity slider now renders below the icon row when there is not enough space above (e.g. when the panel is at the top of the screen)',
+      '<b>About dialog</b>: new tagline — <i>"Dunno where your data goes?"</i> above the DUNNODE wordmark',
+      '<b>Filter selection clearing</b>: when filter mode is Hide and selected nodes become hidden, selection is automatically cleared',
+      '<b>Enter/Escape in all dialogs</b>: Enter confirms and Escape cancels in all custom alert, confirm, and prompt dialogs',
+      '<b>Column-level keyboard shortcuts</b>: when a column header is selected, Ctrl+↓/↑ adds fields to the top/bottom of the column. Arrow keys from column header jump to the first node',
+      '<b>Browser tab title sync</b>: the browser tab title now reflects the project title',
+      '<b>Edge hiding fix</b>: Direct and Selected highlight modes now correctly hide non-highlighted edges when arrow mode is set to Selected'
+    ]
+  },
   {
     version: '1.3.9',
     date: '2026-02-23',
@@ -14828,6 +16007,7 @@ async function undo(){
 
   updateUndoRedoButtons();
   checkDirtyState();
+  syncBrowserTitle();
   setViewerStatus('Undo');
 }
 
@@ -14951,6 +16131,7 @@ async function redo(){
 
   updateUndoRedoButtons();
   checkDirtyState();
+  syncBrowserTitle();
   setViewerStatus('Redo');
 }
 
@@ -15087,7 +16268,177 @@ document.addEventListener("keydown", (e) => {
     invertSelection();
     return;
   }
+  // Project shortcuts (Ctrl+N / Ctrl+O / Ctrl+S / Ctrl+E)
+  if((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey){
+    if(e.key === 'n' || e.key === 'N'){
+      e.preventDefault();
+      document.getElementById('newMappingBtn')?.click();
+      return;
+    }
+    if(e.key === 'o' || e.key === 'O'){
+      e.preventDefault();
+      document.getElementById('openProjectBtn')?.click();
+      return;
+    }
+    if(e.key === 's' || e.key === 'S'){
+      e.preventDefault();
+      document.getElementById('saveProjectBtn')?.click();
+      return;
+    }
+    if(e.key === 'e' || e.key === 'E'){
+      if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+      e.preventDefault();
+      const toggle = document.getElementById('editorModeToggle');
+      if(toggle){ toggle.checked = !toggle.checked; toggle.dispatchEvent(new Event('change')); }
+      return;
+    }
+  }
   
+  // --- Inline rename: let Ctrl+Arrow create shortcuts work from within the input ---
+  const _isInlineInput = __inlineRename && e.target && e.target.closest && e.target.closest('.inlineRenameWrap');
+
+  // Ctrl/Cmd + Arrow = quick-create node (works even during inline rename)
+  if((e.ctrlKey || e.metaKey) && !e.shiftKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowRight')){
+    if(!_isInlineInput && e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if(!state.editorMode) return;
+    e.preventDefault();
+    const isGroup = e.altKey;
+    const type = isGroup ? 'group' : 'field';
+    if(e.key === 'ArrowDown') quickCreateNode('below', type);
+    else if(e.key === 'ArrowUp') quickCreateNode('above', type);
+    else if(e.key === 'ArrowRight') quickCreateNode('child', type);
+    return;
+  }
+
+  // Don't intercept normal typing in inputs (except inline rename specials handled above)
+  if(!_isInlineInput && e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)){
+    // Still allow Escape from any input
+    if(e.key !== 'Escape') return;
+  }
+  // If inline rename is active, only allow specific keys through
+  if(_isInlineInput && !['Tab','Delete','Enter','Escape'].includes(e.key) && !e.key.startsWith('Arrow')) return;
+
+  // ↑/↓ arrow navigation
+  if((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !e.ctrlKey && !e.metaKey && !e.altKey){
+    if(_isInlineInput) return; // let cursor move in input
+    e.preventDefault();
+    const order = getVisibleNodeOrder();
+    if(!order.length) return;
+
+    // Find current position
+    const currentId = state.lockedId;
+    let currentIdx = currentId ? order.findIndex(o => o.nodeId === currentId) : -1;
+
+    // If column header is selected (lockedId = column ID), jump to first node in that column
+    if(currentIdx < 0 && state.selectedColumnId){
+      const colFirst = order.findIndex(o => o.colId === state.selectedColumnId);
+      if(colFirst >= 0){
+        // Position so either ↓ or ↑ lands on first node in this column
+        const dir = e.key === 'ArrowDown' ? 1 : -1;
+        currentIdx = colFirst - dir;
+      }
+    }
+
+    // If multi-selection active and no lockedId, use the last multi-selected as anchor
+    if(currentIdx < 0 && state.multiSelection.size > 0){
+      const lastMulti = [...state.multiSelection].pop();
+      currentIdx = order.findIndex(o => o.nodeId === lastMulti);
+    }
+
+    const dir = e.key === 'ArrowDown' ? 1 : -1;
+    let nextIdx = currentIdx + dir;
+    if(nextIdx < 0) nextIdx = 0;
+    if(nextIdx >= order.length) nextIdx = order.length - 1;
+    if(nextIdx === currentIdx && currentIdx >= 0) return;
+
+    const next = order[nextIdx];
+    if(!next) return;
+
+    if(e.shiftKey){
+      // Shift+Arrow: extend multi-selection
+      if(state.multiSelection.size === 0 && currentId){
+        state.multiSelection.add(currentId);
+      }
+      if(!state.multiSelection.has(next.nodeId)){
+        state.multiSelection.add(next.nodeId);
+      }
+      state.lockedId = next.nodeId;
+      state.hoverId = null;
+      state.selectedColumnId = null;
+      state.selectedEdgeId = null;
+      applyHighlight();
+      scrollIntoView(next.nodeId);
+    } else {
+      // Plain arrow: single select
+      state.multiSelection = new Set();
+      state.selectedColumnId = null;
+      state.selectedEdgeId = null;
+      lockSelection(next.nodeId);
+      scrollIntoView(next.nodeId);
+    }
+    return;
+  }
+
+  // Alt+↑/↓: move node up/down among siblings (editor mode)
+  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+    if(_isInlineInput) return;
+    if(!state.editorMode || !state.lockedId) return;
+    e.preventDefault();
+    const nid = state.lockedId;
+    const cid = columnOf(nid);
+    if(!cid) return;
+    moveNode(nid, cid, e.key === 'ArrowDown' ? 1 : -1);
+    return;
+  }
+
+  // Tab / Shift+Tab: indent / outdent (editor mode)
+  if(e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey){
+    if(_isInlineInput){ e.preventDefault(); commitInlineRename(); return; }
+    if(!state.editorMode || !state.lockedId) return;
+    e.preventDefault();
+    const nid = state.lockedId;
+    const cid = columnOf(nid);
+    if(!cid) return;
+    if(e.shiftKey) inlineOutdent(nid, cid);
+    else inlineIndent(nid, cid);
+    return;
+  }
+
+  // Enter: focus label in details editor (editor mode) or open details panel
+  if(e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey){
+    if(_isInlineInput) return; // handled by input's own keydown
+    if(!state.lockedId) return;
+    e.preventDefault();
+    // Open details panel if hidden
+    const vg = document.getElementById('viewerGrid');
+    if(vg && vg.dataset.panel === 'hidden') setTab('right');
+    if(state.editorMode){
+      // Re-render to show editor, then focus label
+      renderAll();
+      requestAnimationFrame(() => {
+        const ndLabel = document.getElementById('ndLabel');
+        if(ndLabel){ ndLabel.focus(); ndLabel.select(); }
+      });
+    }
+    return;
+  }
+
+  // Delete / Backspace: delete selected node(s) (editor mode)
+  if((e.key === 'Delete' || (e.key === 'Backspace' && !_isInlineInput)) && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey){
+    if(_isInlineInput) return; // let backspace work in input
+    if(!state.editorMode) return;
+    if(state.multiSelection.size > 1){
+      // Bulk delete is handled elsewhere
+      return;
+    }
+    if(!state.lockedId) return;
+    e.preventDefault();
+    const nid = state.lockedId;
+    const cid = columnOf(nid);
+    if(cid) deleteNodeInline(nid, cid);
+    return;
+  }
+
   if(e.key === "?") { openHelp(); return; }
   if(e.key === "Escape") {
     // If editing a node, Escape should cancel node edits (revert snapshot) before clearing selection.
@@ -16197,8 +17548,8 @@ function customPrompt(message, defaultValue){
       document.removeEventListener('keydown', onKey);
     };
     const onKey = (e) => {
-      if(e.key === 'Escape'){ cleanup(); resolve(null); }
-      if(e.key === 'Enter'){ cleanup(); resolve(inputEl.value); }
+      if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); cleanup(); resolve(null); }
+      if(e.key === 'Enter'){ e.preventDefault(); e.stopPropagation(); cleanup(); resolve(inputEl.value); }
     };
     document.addEventListener('keydown', onKey);
     mask.addEventListener('click', () => { cleanup(); resolve(null); }, {once: true});
@@ -16223,21 +17574,20 @@ function openColumnMenu(anchorEl, colId){
   const canMoveLeft = i>0;
   const canMoveRight = i>=0 && i<cols.length-1;
   openCtxMenu([
-    { label:'Edit column',        icon:'✎',   onClick: ()=> selectColumn(colId) },
+    { label:'Edit column',        icon:ICONS.edit,   onClick: ()=> selectColumn(colId) },
+    { type:'label', text:'Add' },
+    { label:'Field on top',       icon:ICONS.addFieldUp,   onClick: ()=> addChildNode(colId, colId, true,  true) },
+    { label:'Field at bottom',    icon:ICONS.addFieldDown, onClick: ()=> addChildNode(colId, colId, true,  false) },
+    { label:'Group on top',       icon:ICONS.addGroupUp,   onClick: ()=> addChildNode(colId, colId, false, true) },
+    { label:'Group at bottom',    icon:ICONS.addGroupDown, onClick: ()=> addChildNode(colId, colId, false, false) },
+    { type:'label', text:'Arrange' },
+    { label:'Move column left',   icon:ICONS.moveLeft,   disabled:!canMoveLeft,  onClick: ()=> moveColumn(colId, -1) },
+    { label:'Move column right',  icon:ICONS.moveRight,  disabled:!canMoveRight, onClick: ()=> moveColumn(colId, +1) },
     { type:'sep' },
-    { label:'Add field on top',    icon:'▫↑', onClick: ()=> addChildNode(colId, colId, true,  true) },
-    { label:'Add field at bottom', icon:'▫↓', onClick: ()=> addChildNode(colId, colId, true,  false) },
+    { label:'Insert column left', icon:ICONS.insertColLeft,  onClick: ()=> addColumnLeftOf(colId) },
+    { label:'Insert column right',icon:ICONS.insertColRight, onClick: ()=> addColumnRightOf(colId) },
     { type:'sep' },
-    { label:'Add group on top',    icon:'□↑', onClick: ()=> addChildNode(colId, colId, false, true) },
-    { label:'Add group at bottom', icon:'□↓', onClick: ()=> addChildNode(colId, colId, false, false) },
-    { type:'sep' },
-    { label:'Move column left',          icon:'←',   disabled:!canMoveLeft,  onClick: ()=> moveColumn(colId, -1) },
-    { label:'Move column right',         icon:'→',   disabled:!canMoveRight, onClick: ()=> moveColumn(colId, +1) },
-    { type:'sep' },
-    { label:'Insert column left',  icon:'⇤', onClick: ()=> addColumnLeftOf(colId) },
-    { label:'Insert column right', icon:'⇥', onClick: ()=> addColumnRightOf(colId) },
-    { type:'sep' },
-    { label:'Hide column',      icon:'◡', onClick: ()=> {
+    { label:'Hide column',      icon:ICONS.hide, onClick: ()=> {
         state.hiddenColumns.add(colId); 
         state.selectedEdgeId = null;
         state.hoverEdgeId = null;
@@ -16246,7 +17596,7 @@ function openColumnMenu(anchorEl, colId){
         renderAll();
       } },
     { type:'sep' },
-    { label:'Delete',      icon:'🗑️', danger:true, onClick: ()=> deleteColumnById(colId) },
+    { label:'Delete',      icon:ICONS.trash, danger:true, onClick: ()=> deleteColumnById(colId) },
   ], anchorEl);
   __ctxMenuColId = colId;
 }function selectColumn(colId){
@@ -16295,8 +17645,8 @@ function attachColumnHeaderActions(){
       const btnHide = document.createElement('button');
       btnHide.className='miniBtn';
       btnHide.title='Hide column';
-      btnHide.textContent='◡';
-      btnHide.style.opacity = '0.7';
+      btnHide.innerHTML=ICONS.hide;
+      btnHide.style.opacity = '0.7'; btnHide.style.display='inline-flex'; btnHide.style.alignItems='center'; btnHide.style.justifyContent='center';
       actions.appendChild(btnHide);
       btnHide.addEventListener('click', async (e)=>{
         e.stopPropagation();
@@ -16361,8 +17711,8 @@ function attachColumnHeaderActions(){
       const btnHide = document.createElement('button');
       btnHide.className='miniBtn';
       btnHide.title='Hide column';
-      btnHide.textContent='◡';
-      btnHide.style.opacity = '0.7';
+      btnHide.innerHTML=ICONS.hide;
+      btnHide.style.opacity = '0.7'; btnHide.style.display='inline-flex'; btnHide.style.alignItems='center'; btnHide.style.justifyContent='center';
       actions.appendChild(btnHide);
       
       btnHide.addEventListener('click', (e)=>{
@@ -16741,7 +18091,7 @@ function renderSelectedNodeEditor(nodeId){
         <span class="dtEditorLabel">Editor</span>
       </div>
       <div class="kv" style="grid-template-columns: 80px 1fr;">
-        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" id="ndLabel" value="${escapeHtml(node.label||node.id)}"/></div>
+        <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" id="ndLabel" value="${escapeHtml(node.label||'')}" placeholder="${escapeHtml(node.id)}"/></div>
         <div class="k">ID <span class="autoTag" id="ndIdAuto">auto</span></div><div class="v" style="display:flex;align-items:center;gap:0;"><span style="font-family:var(--mono);font-size:11px;opacity:.55;white-space:nowrap;">${escapeHtml(idPathPrefix(node.id))}</span><input class="inp" id="ndId" value="${escapeHtml(localIdSegment(node.id))}" style="font-family:var(--mono);font-size:11px;flex:1 1 auto;min-width:80px;"/></div>
         <div class="k">Summary</div><div class="v"><div class="dtStatRow" style="padding:0;"><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${inbound.length}</span><span class="dtStatL">in</span></span><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${outbound.length}</span><span class="dtStatL">out</span></span></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" id="ndNote" value="${escapeHtml(node.note||'')}" placeholder="optional"/></div>
@@ -17343,7 +18693,7 @@ function rebuildTagOptions(){
 
   // Save / Cancel
   document.getElementById('ndSave').addEventListener('click', async ()=>{
-    const newLabel = (document.getElementById('ndLabel')?.value || '').trim() || node.label;
+    const newLabel = (document.getElementById('ndLabel')?.value || '').trim() || node.label || localIdSegment(node.id);
     const newLocalSeg = sanitizeManualId(document.getElementById('ndId')?.value || '') || localIdSegment(node.id);
     const oldId = node.id;
     const prefix = idPathPrefix(oldId);
@@ -17708,6 +19058,282 @@ function addChildNode(nodeId, colId, isFieldNew, atTop=false){
 }
 
 
+// --- Visible node ordering (for keyboard navigation) ---
+function getVisibleNodeOrder(){
+  const order = [];
+  const panels = columnsRow.querySelectorAll('.panel:not(.hiddenCol)');
+  panels.forEach(panel => {
+    const colId = panel.dataset.columnId;
+    if(!colId) return;
+    panel.querySelectorAll('.row[data-node-id]').forEach(row => {
+      if(!row.offsetParent) return;
+      order.push({ nodeId: row.dataset.nodeId, colId });
+    });
+  });
+  return order;
+}
+
+// --- Inline rename system (for keyboard quick-create) ---
+let __inlineRename = null; // { nodeId, colId, isNew, blurTimer }
+
+function startInlineRename(nodeId){
+  if(__inlineRename) commitInlineRename();
+  const row = IDX.rowById.get(nodeId);
+  if(!row) return;
+  const label = row.querySelector('.label');
+  if(!label) return;
+  const textSpan = label.querySelector('.text');
+  if(!textSpan) return;
+  const colId = row.dataset.columnId;
+  const node = IDX.nodeById.get(nodeId);
+  if(!node) return;
+
+  __inlineRename = { nodeId, colId, isNew: true, blurTimer: null };
+
+  textSpan.style.display = 'none';
+  const wrap = document.createElement('div');
+  wrap.className = 'inlineRenameWrap';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = '';
+  input.placeholder = node.type === 'group' ? 'Group label…' : 'Field label…';
+  wrap.appendChild(input);
+  label.appendChild(wrap);
+
+  requestAnimationFrame(() => input.focus());
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.altKey){
+      e.preventDefault();
+      e.stopPropagation();
+      commitInlineRename();
+      return;
+    }
+    if(e.key === 'Escape'){
+      e.preventDefault();
+      e.stopPropagation();
+      cancelInlineRename();
+      return;
+    }
+    // Let Ctrl+↓/↑ etc. bubble to main handler which commits first
+  });
+
+  input.addEventListener('blur', () => {
+    if(!__inlineRename || __inlineRename.nodeId !== nodeId) return;
+    // Save the current value so it's available even after DOM rebuild
+    __inlineRename._savedValue = input.value;
+    __inlineRename.blurTimer = setTimeout(() => {
+      if(__inlineRename && __inlineRename.nodeId === nodeId) commitInlineRename();
+    }, 150);
+  });
+}
+
+function commitInlineRename(defaultLabel){
+  if(!__inlineRename) return;
+  if(__inlineRename.blurTimer) { clearTimeout(__inlineRename.blurTimer); __inlineRename.blurTimer = null; }
+  const { nodeId, colId } = __inlineRename;
+  const node = IDX.nodeById.get(nodeId);
+  const col = findColumnById(colId);
+  if(!node || !col) { __inlineRename = null; return; }
+
+  const row = IDX.rowById.get(nodeId);
+  const input = row?.querySelector('.inlineRenameWrap input');
+  let label = (input?.value ?? __inlineRename?._savedValue ?? '').trim();
+
+  if(!label){
+    const base = defaultLabel || (node.type === 'group' ? 'New Group' : 'New Field');
+    // Make label unique if needed
+    const existingLabels = new Set();
+    (function walk(n){ if(!n) return; if(n.id !== nodeId && n.label) existingLabels.add(n.label); (n.children||[]).forEach(walk); })(col.schema);
+    label = base;
+    if(existingLabels.has(label)){
+      let i = 2;
+      while(existingLabels.has(base + ' ' + i)) i++;
+      label = base + ' ' + i;
+    }
+  }
+
+  node.label = label;
+
+  // Regenerate ID from label
+  const parentId = IDX.parentById.get(nodeId) || colId;
+  const taken = collectNodeIds(col);
+  taken.delete(nodeId);
+  const slug = transliterate(label).replace(/[^a-z0-9_]/gi, '_').replace(/__+/g,'_').replace(/^_|_$/g,'').toLowerCase();
+  const baseId = (parentId === colId ? colId : parentId) + '.' + (slug || 'node');
+  const newId = ensureUniqueId(baseId, taken);
+
+  if(newId !== nodeId){
+    const idMap = {};
+    buildSubtreeIdMap(node, nodeId, newId, idMap);
+    replaceIdsInMappings(state.data, idMap);
+  }
+  node._autoId = true;
+
+  // Clear edit snapshot so beginEditSnapshot doesn't auto-revert our changes
+  __editSnapshot = null;
+  __inlineRename = null;
+
+  // Set selection directly (bypass lockSelection to avoid snapshot cascade)
+  state.selectedColumnId = null;
+  state.lockedId = node.id;
+  state.hoverId = null;
+  state._lastClickedNodeId = node.id;
+
+  renderAll();
+  // Clear any snapshot created during renderAll's applyHighlight
+  __editSnapshot = null;
+  applyHighlight();
+  __editSnapshot = null;
+  scrollIntoView(node.id);
+}
+
+function cancelInlineRename(){
+  if(!__inlineRename) return;
+  if(__inlineRename.blurTimer) { clearTimeout(__inlineRename.blurTimer); __inlineRename.blurTimer = null; }
+  const wasNew = __inlineRename.isNew;
+  __editSnapshot = null; // Don't auto-revert on next selection
+  __inlineRename = null;
+  if(wasNew){
+    undo();
+  } else {
+    renderAll();
+  }
+}
+
+// --- Quick-create node via keyboard ---
+function quickCreateNode(position, type){
+  // position: 'below' | 'above' | 'child'
+  // type: 'field' | 'group'
+  if(!state.editorMode) return;
+
+  // If inline rename is active, commit it first (saves label, renames ID)
+  if(__inlineRename){
+    commitInlineRename();
+  }
+
+  const rawId = state.lockedId;
+  const colId = state.selectedColumnId;
+
+  // Determine if lockedId is a node or a column
+  const isNodeId = rawId && columnOf(rawId);  // node IDs have a "." prefix
+  const nodeId = isNodeId ? rawId : null;
+  const effectiveColId = colId || (!isNodeId && rawId ? rawId : null);
+
+  // Determine target column and insertion point
+  let col, loc, parentId, siblings, insertIdx;
+
+  if(nodeId){
+    const c = columnOf(nodeId);
+    col = findColumnById(c);
+    if(!col) return;
+
+    if(position === 'child'){
+      // Add inside the selected node (must be a group)
+      const node = IDX.nodeById.get(nodeId);
+      if(!node || node.type !== 'group') return;
+      if(!node.children) node.children = [];
+      parentId = nodeId;
+      siblings = node.children;
+      insertIdx = siblings.length; // append at bottom
+      // Expand the group if collapsed
+      toggleCollapse(nodeId, false, true);
+    } else {
+      loc = locateNode(col.schema, nodeId);
+      if(!loc || !loc.parent || !loc.siblings || loc.idx === null) return;
+      parentId = loc.parent.id === col.id ? col.id : loc.parent.id;
+      siblings = loc.siblings;
+      insertIdx = position === 'below' ? loc.idx + 1 : loc.idx;
+    }
+  } else if(effectiveColId){
+    col = findColumnById(effectiveColId);
+    if(!col || !col.schema) return;
+    if(!col.schema.children) col.schema.children = [];
+    parentId = effectiveColId;
+    siblings = col.schema.children;
+    // above → top, below/child → bottom
+    insertIdx = position === 'above' ? 0 : siblings.length;
+  } else {
+    return;
+  }
+
+  // Generate temporary ID
+  const taken = collectNodeIds(col);
+  const tempBase = (parentId === col.id ? col.id : parentId) + '.' + (type === 'group' ? 'new_group' : 'new_field');
+  const tempId = ensureUniqueId(tempBase, taken);
+
+  // Record undo snapshot BEFORE creation
+  recordChange();
+
+  const newNode = { id: tempId, label: '', _autoId: true, type };
+  if(type === 'group') newNode.children = [];
+
+  siblings.splice(insertIdx, 0, newNode);
+
+  // IMPORTANT: We bypass lockSelection entirely to avoid its snapshot-revert
+  // cascade which triggers deferred renderAll() microtasks that destroy the
+  // inline rename input. Instead we set selection state directly.
+  __editSnapshot = null;
+  state.selectedColumnId = null;
+  state.selectedEdgeId = null;
+  state.hoverEdgeId = null;
+  state.hoverId = null;
+  if(state.multiSelection instanceof Set) state.multiSelection.clear();
+  else state.multiSelection = new Set();
+  state._consolidatedEdgeCache = null;
+  state.lockedId = tempId;
+  state._lastClickedNodeId = tempId;
+
+  renderAll();
+
+  // After renderAll, beginEditSnapshot may have been called and created a snapshot.
+  // Clear it so no deferred re-render can fire when we start inline rename.
+  __editSnapshot = null;
+
+  // Re-apply highlight with the correct lockedId (renderAll's applyHighlight
+  // already ran but may have used stale state; this ensures correct visuals)
+  applyHighlight();
+
+  // Final safety: clear any snapshot that applyHighlight→updateDetails may have created
+  __editSnapshot = null;
+
+  startInlineRename(tempId);
+  scrollIntoView(tempId);
+}
+
+// --- Convert field ↔ group ---
+function convertNodeType(nodeId, colId){
+  if(!state.editorMode) return;
+  const col = findColumnById(colId);
+  if(!col) return;
+  const loc = locateNode(col.schema, nodeId);
+  if(!loc || !loc.node) return;
+  const node = loc.node;
+
+  if(node.type === 'field'){
+    // Field → Group
+    recordChange();
+    node.type = 'group';
+    if(!node.children) node.children = [];
+    renderAll();
+    lockSelection(nodeId);
+    setViewerStatus(`Converted "${node.label || nodeId}" to group`);
+  } else if(node.type === 'group'){
+    // Group → Field: only if no children
+    if(node.children && node.children.length > 0){
+      customAlert('Remove all children before converting this group to a field.');
+      return;
+    }
+    recordChange();
+    node.type = 'field';
+    delete node.children;
+    renderAll();
+    lockSelection(nodeId);
+    setViewerStatus(`Converted "${node.label || nodeId}" to field`);
+  }
+}
+
+
 // --- Context menu (vertical, viewport-anchored; avoids clipping) ---
 let __ctxMenuEl = null;
 let __ctxOwnerEl = null;
@@ -17737,11 +19363,17 @@ function openCtxMenu(items, anchorEl){
       const sep=document.createElement('div'); sep.className='ctxSep';
       menu.appendChild(sep); return;
     }
+    if(it.type==='label'){
+      const lbl=document.createElement('div'); lbl.className='ctxLabel';
+      lbl.textContent = it.text||'';
+      menu.appendChild(lbl); return;
+    }
     const btn=document.createElement('button');
     btn.type='button';
     btn.className = 'ctxItem' + (it.danger ? ' danger' : '');
     btn.disabled = !!it.disabled;
-    btn.innerHTML = `<span class="ico">${it.icon||''}</span><span class="lbl">${escapeHtml(it.label||'')}</span>`;
+    const kbdHtml = it.kbd ? `<span class="kbd">${escapeHtml(it.kbd)}</span>` : '';
+    btn.innerHTML = `<span class="ico">${it.icon||''}</span><span class="lbl">${escapeHtml(it.label||'')}</span>${kbdHtml}`;
     btn.addEventListener('click', (e)=>{
       e.stopPropagation();
       if(btn.disabled) return;
@@ -17856,11 +19488,11 @@ function addRowActions(){
     // For groups: add "+" menu for Add child (unchanged options; icon changed)
     if(node && node.type==='group'){
       const addChildItems = [
-        {label:'Add field on top', icon:'▫↑', onClick: ()=> addChildNode(nodeId, colId, true, true)},
-        {label:'Add field at bottom', icon:'▫↓', onClick: ()=> addChildNode(nodeId, colId, true, false)},
+        {label:'Field on top', icon:ICONS.addFieldUp, onClick: ()=> addChildNode(nodeId, colId, true, true)},
+        {label:'Field at bottom', icon:ICONS.addFieldDown, onClick: ()=> addChildNode(nodeId, colId, true, false)},
         {type:'sep'},
-        {label:'Add group on top', icon:'□↑', onClick: ()=> addChildNode(nodeId, colId, false, true)},
-        {label:'Add group at bottom', icon:'□↓', onClick: ()=> addChildNode(nodeId, colId, false, false)},
+        {label:'Group on top', icon:ICONS.addGroupUp, onClick: ()=> addChildNode(nodeId, colId, false, true)},
+        {label:'Group at bottom', icon:ICONS.addGroupDown, onClick: ()=> addChildNode(nodeId, colId, false, false)},
       ];
       const btnPlus=document.createElement('button');
       btnPlus.className='miniBtn';
@@ -17892,31 +19524,45 @@ function addRowActions(){
 
     // Build ⫶ menu for both fields and groups
     const menuItems = [];
-    menuItems.push({ label: node.type==='field' ? 'Edit field' : 'Edit group', icon:'✎', onClick: ()=>{ lockSelection(nodeId); scrollIntoView(nodeId); }});
-    if(hasParent) menuItems.push({ type:'sep' });
-    // Insert siblings (above/below)
+    menuItems.push({ label: node.type==='field' ? 'Edit field' : 'Edit group', icon:ICONS.edit, onClick: ()=>{
+      // Focus on this node without toggling selection
+      state.selectedEdgeId = null; state.hoverEdgeId = null; state.selectedColumnId = null;
+      if(state.multiSelection.size > 0){ state.multiSelection.clear(); }
+      state.lockedId = nodeId; state.hoverId = null;
+      applyHighlight();
+      scrollIntoView(nodeId);
+    }});
+    // Insert siblings
     if(hasParent){
-      menuItems.push({ label:'Insert field above', icon:'▫⤒', onClick: ()=> addAboveNode(nodeId, colId, true) });
-      menuItems.push({ label:'Insert field below', icon:'▫⤓', onClick: ()=> addBelowNode(nodeId, colId, true) });
-      menuItems.push({ type:'sep' });
-      menuItems.push({ label:'Insert group above', icon:'□⤒', onClick: ()=> addAboveNode(nodeId, colId, false) });
-      menuItems.push({ label:'Insert group below', icon:'□⤓', onClick: ()=> addBelowNode(nodeId, colId, false) });
+      menuItems.push({ type:'label', text:'Insert' });
+      menuItems.push({ label:'Field above', icon:ICONS.addFieldUp, onClick: ()=> addAboveNode(nodeId, colId, true) });
+      menuItems.push({ label:'Field below', icon:ICONS.addFieldDown, onClick: ()=> addBelowNode(nodeId, colId, true) });
+      menuItems.push({ label:'Group above', icon:ICONS.addGroupUp, onClick: ()=> addAboveNode(nodeId, colId, false) });
+      menuItems.push({ label:'Group below', icon:ICONS.addGroupDown, onClick: ()=> addBelowNode(nodeId, colId, false) });
     }
-    if(hasParent) menuItems.push({ type:'sep' });
     // Move
-    menuItems.push({ label:'Move up', icon:'↑', disabled:!canMoveUp, onClick: ()=> moveNode(nodeId, colId, -1) });
-    menuItems.push({ label:'Move down', icon:'↓', disabled:!canMoveDown, onClick: ()=> moveNode(nodeId, colId, +1) });
+    menuItems.push({ type:'label', text:'Arrange' });
+    menuItems.push({ label:'Move up', icon:ICONS.moveUp, disabled:!canMoveUp, onClick: ()=> moveNode(nodeId, colId, -1), kbd:'Alt+↑' });
+    menuItems.push({ label:'Move down', icon:ICONS.moveDown, disabled:!canMoveDown, onClick: ()=> moveNode(nodeId, colId, +1), kbd:'Alt+↓' });
     if(hasParent) menuItems.push({ type:'sep' });
     // Indent/Outdent
-    menuItems.push({ label:'Indent', icon:'→', disabled:!canIndent, onClick: ()=> inlineIndent(nodeId, colId) });
-    menuItems.push({ label:'Outdent', icon:'←', disabled:!canOutdent, onClick: ()=> inlineOutdent(nodeId, colId) });
+    menuItems.push({ label:'Indent', icon:ICONS.indent, disabled:!canIndent, onClick: ()=> inlineIndent(nodeId, colId), kbd:'Tab' });
+    menuItems.push({ label:'Outdent', icon:ICONS.outdent, disabled:!canOutdent, onClick: ()=> inlineOutdent(nodeId, colId), kbd:'Shift+Tab' });
     if(hasParent) menuItems.push({ type:'sep' });
     // Duplicate
-    menuItems.push({ label:'Duplicate', icon:'⧉', disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, false) });
-    menuItems.push({ label:'Duplicate+', icon:'⧉⁺', disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, true) });
-    if(hasParent) menuItems.push({ type:'sep' });
+    menuItems.push({ label:'Duplicate', icon:ICONS.duplicate, disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, false) });
+    menuItems.push({ label:'Duplicate+', icon:ICONS.duplicatePlus, disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, true) });
+    menuItems.push({ type:'sep' });
+    // Convert type
+    if(node.type === 'field'){
+      menuItems.push({ label:'Convert to group', icon:ICONS.convert, onClick: ()=> convertNodeType(nodeId, colId) });
+    } else if(node.type === 'group'){
+      const canConvert = !(node.children && node.children.length > 0);
+      menuItems.push({ label:'Convert to field', icon:ICONS.convert, disabled:!canConvert, onClick: ()=> convertNodeType(nodeId, colId) });
+    }
+    menuItems.push({ type:'sep' });
     // Delete
-    menuItems.push({ label: 'Delete', icon:'🗑️', danger:true, disabled:!hasParent, onClick: ()=> deleteNodeInline(nodeId, colId) });
+    menuItems.push({ label: 'Delete', icon:ICONS.trash, danger:true, disabled:!hasParent, onClick: ()=> deleteNodeInline(nodeId, colId) });
 
     const btnMenu=document.createElement('button');
     btnMenu.className='miniBtn';
@@ -18002,8 +19648,8 @@ function setEditorMode(on){
   }
   
   // Show/hide editor-only buttons
-  if(undoBtn) undoBtn.style.display = state.editorMode ? '' : 'none';
-  if(redoBtn) redoBtn.style.display = state.editorMode ? '' : 'none';
+  const vcHistoryGroup = document.getElementById('vcHistoryGroup');
+  if(vcHistoryGroup) vcHistoryGroup.style.display = state.editorMode ? '' : 'none';
   const addTagBtn = document.getElementById('addTagBtn');
   const addTransformBtn = document.getElementById('addTransformBtn');
   const addCustomAttrBtn = document.getElementById('addCustomAttrBtn');
@@ -18754,6 +20400,26 @@ if(editorModeToggle) editorModeToggle.addEventListener('change', async ()=>{
 function refreshViewer(){
   if(!state.data) return;
   applyVisibility();
+  // Clear selection if selected node(s) became hidden (filter mode = hide)
+  if(state.filterMode === 'hide' && (hasActiveFilters() || state.onlyMapped || state.search)){
+    let cleared = false;
+    if(state.lockedId){
+      const el = IDX.elementById.get(state.lockedId);
+      if(el && el.classList.contains('hidden')){ state.lockedId = null; state.hoverId = null; cleared = true; }
+    }
+    if(state.multiSelection.size){
+      const before = state.multiSelection.size;
+      for(const id of [...state.multiSelection]){
+        const el = IDX.elementById.get(id);
+        if(!el || el.classList.contains('hidden')) state.multiSelection.delete(id);
+      }
+      if(state.multiSelection.size !== before) cleared = true;
+    }
+    if(cleared){
+      state.selectedEdgeId = null;
+      state._consolidatedEdgeCache = null;
+    }
+  }
   applyHighlight();
   refreshEdgeColorScheme();
   scheduleArrowsUpdate();
@@ -19231,6 +20897,7 @@ function renderAll(){
   if(titleInput && state.data) {
     titleInput.value = state.data.title || 'New Project';
   }
+  syncBrowserTitle();
 
   // quick meta in status
   setViewerStatus(`Loaded: ${IDX.columns.length} columns • ${IDX.fieldIds.size} fields • ${IDX.edges.length} mappings`);
@@ -19360,7 +21027,8 @@ function buildDocs(){
 <h3>Nodes (fields &amp; groups)</h3>
 <ul>
   <li><b>Add nodes</b>: hover a row to reveal action buttons &mdash; &#x21B3; (add child inside group), &#x2AFA; (context menu with insert, move, indent, duplicate/duplicate+, delete).</li>
-  <li><b>Context menu</b>: click the ⫶ button on any node for insert above/below, move, indent/outdent, duplicate (without mappings) and duplicate+ (with mappings), and delete.</li>
+  <li><b>Context menu</b>: click the ⫶ button on any node for insert above/below, move, indent/outdent, duplicate (without mappings), duplicate+ (with mappings), convert type (field ↔ group), and delete.</li>
+  <li><b>Convert to field/group</b>: available in the context menu. Fields can be converted to empty groups. Groups can be converted to fields only when they have no children.</li>
   <li><b>Edit node properties</b>: click a field to select it, then edit label, ID, note, color, tags, custom attributes, and mappings in the details pane.</li>
   <li><b>Drag-and-drop nodes</b>: drag a field or group to reorder, move between groups, or move to another column. Hold modifier keys during drag for different operations:
     <ul>
@@ -19434,7 +21102,7 @@ function buildDocs(){
 </ul>
 
 <h2>Catalogs</h2>
-<p>Four catalogs are managed via modal panels (accessible from the CATALOGS toolbar group). All catalog editors share a unified editing pattern:</p>
+<p>Five catalogs are managed via modal panels (accessible from the CATALOGS toolbar group). All catalog editors share a unified editing pattern:</p>
 <ul>
   <li><b>Inline creation</b>: clicking <b>Add</b> inserts a blank editor card at the top of the list. No popup — edit in place. When creating a node, selecting "+ New tag…", "+ New attribute…", or "+ New value…" opens a nested create modal — the node form is saved and restored automatically after committing or cancelling.</li>
   <li><b>Auto-ID &amp; abbreviation</b>: as you type a label, the ID and abbreviation auto-generate in real time. A blue <b>auto</b> badge indicates the field is linked to the label. Edit the field to override (badge disappears); clear it to re-link (badge reappears).</li>
@@ -19477,6 +21145,21 @@ function buildDocs(){
 
 <h3>Filters</h3>
 <p>Filters are rule-based visual highlights. They follow the same inline creation and editing pattern as other catalogs, with additional controls for highlight style (background, stripe, mapping color, frame, bold, emoji) and condition rules.</p>
+
+<h3>Views</h3>
+<p>Views are saved snapshots of the viewer state &mdash; filters, selection, arrows, collapse state, hidden columns, and display settings. They let you bookmark presentation-ready states and switch between them with one click.</p>
+<ul>
+  <li><b>Toolbar access</b>: the <b>Views</b> toolbar button opens a quick-apply dropdown listing all saved views. Click a view to apply it instantly. Click the active view again to deactivate (toggle off).</li>
+  <li><b>View pill</b>: when a view is active, a compact indicator appears in the viewer header showing the emoji and label. Use the &#x2039;/&#x203A; buttons to navigate between views, the dropdown to switch, or &#xD7; to deactivate.</li>
+  <li><b>Save current view</b> (<b>Alt+S</b>): captures all current viewer settings into a new named view. Available from the dropdown, command palette, or keyboard shortcut.</li>
+  <li><b>Previous / Next view</b> (<b>Alt+,</b> / <b>Alt+.</b>): navigate between saved views. The current state is auto-saved before applying, so you can toggle back and forth.</li>
+  <li><b>Reset view</b> (<b>Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode. Returns to a clean-slate default state.</li>
+  <li><b>Catalog management</b>: open the Views catalog from Catalogs &rarr; Views or via <b>Manage views&hellip;</b> in the dropdown. Inline editing: click any view to edit its label, emoji, note; drag to reorder; update snapshot to capture current state; delete.</li>
+  <li><b>State captured</b>: active filters, filter mode/logic, &ldquo;only mapped&rdquo;, search text, node selection, highlight mode (chain/direct/selected), arrow mode (selected/all/off), arrow scope (same-column/distant), selection dim mode, hidden columns, collapsed groups, edge color scheme, and node color mode (background tint inheritance).</li>
+  <li><b>State not captured</b>: panel position/size, editor mode, scroll position, pan mode &mdash; these are device- or workflow-specific.</li>
+  <li><b>Command palette</b>: type a view name to apply it directly. Also includes &ldquo;Save current view&rdquo;, &ldquo;Reset view&rdquo;, and per-view entries.</li>
+  <li>Each view has an <b>emoji</b> for quick visual identification in the dropdown, pill indicator, and catalog.</li>
+</ul>
 
 <h2>Project properties</h2>
 <p>Click the <b>&#x24D8;</b> button next to the project title to open the Project Properties modal. Available fields:</p>
@@ -19523,7 +21206,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.3.9", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.4.0", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {
@@ -19591,6 +21274,19 @@ function buildDocs(){
         "bgEnabled": true, "borderEnabled": true,
         "edgeEnabled": false, "bold": true,
         "frame": false, "emoji": "" } }
+  ],
+  "viewCatalog": [
+    { "id": "v1", "label": "Full Overview", "emoji": "🌐",
+      "note": "All columns visible, no filters",
+      "state": {
+        "activeFilterIds": [], "filterMode": "hide",
+        "filterLogic": "or", "onlyMapped": false,
+        "search": "", "selection": [],
+        "highlightMode": "chain", "arrowMode": "selected",
+        "showSameColumn": true, "showDistant": true,
+        "selectionDim": "all", "hiddenColumns": [],
+        "collapsedGroups": [], "edgeColorScheme": "",
+        "nodeColorMode": "all" } }
   ]
 }</code></pre>
 
@@ -19633,16 +21329,49 @@ function buildDocs(){
 </ul>
 
 <h2>Keyboard shortcuts</h2>
+<p><b>Navigation</b>:</p>
+<ul>
+  <li><b>↑ / ↓</b> &mdash; Move selection to previous/next visible node</li>
+  <li><b>Shift+↑ / Shift+↓</b> &mdash; Extend multi-selection up/down</li>
+  <li><b>Enter</b> &mdash; Focus the label field in the details editor (opens panel if hidden)</li>
+  <li><b>Esc</b> &mdash; Clear selection and search / cancel edit / close modal</li>
+</ul>
+<p><b>Editing</b> (Editor mode):</p>
+<ul>
+  <li><b>Ctrl+↓</b> (Cmd+↓ on Mac) &mdash; Insert new field below selection with inline rename</li>
+  <li><b>Ctrl+↑</b> (Cmd+↑ on Mac) &mdash; Insert new field above selection</li>
+  <li><b>Ctrl+Alt+↓</b> / <b>Ctrl+Alt+↑</b> &mdash; Insert new group below/above</li>
+  <li><b>Ctrl+→</b> (Cmd+→ on Mac) &mdash; Add child field inside selected group</li>
+  <li><b>Ctrl+Alt+→</b> &mdash; Add child group inside selected group</li>
+  <li><b>Alt+↑ / Alt+↓</b> &mdash; Move node up/down among siblings</li>
+  <li><b>Tab</b> &mdash; Indent: make child of sibling group above</li>
+  <li><b>Shift+Tab</b> &mdash; Outdent: move up to parent&rsquo;s level</li>
+  <li><b>Delete</b> &mdash; Delete selected node(s) with confirmation</li>
+</ul>
+<p><b>Inline rename</b>: when creating via keyboard, an inline input appears. Type a label and press <b>Enter</b> to commit (or <b>Escape</b> to cancel and remove). Press another create shortcut (Ctrl+↓) to commit the current name and immediately create the next node — empty labels default to "New Field" / "New Group".</p>
+<p><b>General</b>:</p>
 <ul>
   <li><b>Ctrl+K</b> (Cmd+K on Mac) &mdash; Open command palette — search commands, nodes, and documentation</li>
   <li><b>Ctrl+A</b> (Cmd+A on Mac) &mdash; Select all visible nodes</li>
   <li><b>Ctrl+Shift+I</b> (Cmd+Shift+I on Mac) &mdash; Invert current selection</li>
   <li><b>Ctrl+Z</b> (Cmd+Z on Mac) &mdash; Undo</li>
   <li><b>Ctrl+Y</b> (Cmd+Y / Cmd+Shift+Z on Mac) &mdash; Redo</li>
-  <li><b>Esc</b> &mdash; Clear selection and search / cancel edit / close modal</li>
   <li><b>?</b> &mdash; Open quick help</li>
   <li><b>D</b> &mdash; Toggle details panel (cycles: show → hide → show)</li>
   <li><b>P</b> &mdash; Toggle pan mode (drag to scroll the viewer). Press P or Esc to exit</li>
+</ul>
+<p><b>Project</b>:</p>
+<ul>
+  <li><b>Ctrl+N</b> (Cmd+N) &mdash; New project</li>
+  <li><b>Ctrl+O</b> (Cmd+O) &mdash; Open project</li>
+  <li><b>Ctrl+S</b> (Cmd+S) &mdash; Save project</li>
+  <li><b>Ctrl+E</b> (Cmd+E) &mdash; Toggle editor mode</li>
+</ul>
+<p><b>Views</b>:</p>
+<ul>
+  <li><b>Alt+S</b> &mdash; Save current view</li>
+  <li><b>Alt+,</b> / <b>Alt+.</b> &mdash; Previous / next view</li>
+  <li><b>Alt+0</b> &mdash; Reset view to defaults</li>
 </ul>
 <p><b>Drag-and-drop modifiers</b> (hold during drag in Editor mode):</p>
 <ul>
@@ -19678,6 +21407,7 @@ function buildDocs(){
   <li>Save frequently &mdash; the dirty-state indicator (blue Save button) reminds you of unsaved changes. Individual editor Save buttons turn yellow when there are pending changes.</li>
   <li>Create filters for common review tasks (e.g. "unmapped critical fields") and toggle them on/off via filter bar chips.</li>
   <li>Use <b>Highlight</b> display mode when you want to see filter matches in context without hiding anything.</li>
+  <li>Save <b>views</b> for common review states &mdash; e.g. a "Critical Gaps" view with unmapped filters active, or a "Data Formats" view focused on type attributes. Navigate between them with <b>Alt+,</b> / <b>Alt+.</b></li>
   <li>Use Export Report to share a read-only snapshot with reviewers who don't have the tool.</li>
 </ul>
 
@@ -21157,6 +22887,7 @@ function duplicateEdgesForSubtree(idMap, data) {
       recordChange();
       state.data.title = newVal;
       titleInput.value = newVal;
+      syncBrowserTitle();
       try{ if(jsonArea) jsonArea.value = JSON.stringify(state.data, null, 2); }catch(e){}
     }
   });
@@ -21199,9 +22930,9 @@ function duplicateEdgesForSubtree(idMap, data) {
 
   const COMMANDS = [
     // Project
-    { cat:'Project', icon:'📄', label:'New project',           action:()=> document.getElementById('newMappingBtn')?.click(), hint:'Start blank' },
-    { cat:'Project', icon:'📂', label:'Open project',          action:()=> document.getElementById('openProjectBtn')?.click() },
-    { cat:'Project', icon:'💾', label:'Save project',           action:()=> document.getElementById('saveProjectBtn')?.click() },
+    { cat:'Project', icon:'📄', label:'New project',           action:()=> document.getElementById('newMappingBtn')?.click(), hint:'Start blank', kbd:'Ctrl+N' },
+    { cat:'Project', icon:'📂', label:'Open project',          action:()=> document.getElementById('openProjectBtn')?.click(), kbd:'Ctrl+O' },
+    { cat:'Project', icon:'💾', label:'Save project',           action:()=> document.getElementById('saveProjectBtn')?.click(), kbd:'Ctrl+S' },
     { cat:'Project', icon:'ⓘ',  label:'Project properties',    action:()=> document.getElementById('projectInfoBtn')?.click() },
     { cat:'Project', icon:'📦', label:'Load example project',   action:()=> document.getElementById('loadExampleBtn')?.click() },
 
@@ -21210,6 +22941,11 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'Catalogs', icon:'⚙', label:'Transform library',     action:()=> openTransforms() },
     { cat:'Catalogs', icon:'⬡', label:'Attributes catalog',    action:()=> openCustomAttrs() },
     { cat:'Catalogs', icon:'▤', label:'Filters',               action:()=> openFilters() },
+    { cat:'Catalogs', icon:'⊡', label:'Views catalog',          action:()=> openViews() },
+    { cat:'Catalogs', icon:'⊕', label:'Save current view',       action:()=> document.getElementById('viewsSaveCurrentBtn')?.click(), kbd:'Alt+S' },
+    { cat:'Catalogs', icon:'←', label:'Previous view',            action:()=> document.getElementById('viewsRestorePrevBtn')?.click(), kbd:'Alt+,' },
+    { cat:'Catalogs', icon:'→', label:'Next view',                action:()=> document.getElementById('viewsNextBtn')?.click(), kbd:'Alt+.' },
+    { cat:'Catalogs', icon:'⊘', label:'Reset view',               action:()=> resetViewState(), kbd:'Alt+0' },
     { cat:'Catalogs', icon:'🎨', label:'Highlight colors',      action:()=> document.getElementById('hlColorsBtn')?.click() },
 
     // View
@@ -21229,16 +22965,46 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'View', icon:'▭', label:'Details panel: Hidden',  action:()=> setTab('hidden'), kbd:'D' },
 
     // Edit
-    { cat:'Edit', icon:'✏️', label:'Toggle editor mode',     action:()=> document.getElementById('editorModeToggle')?.click() },
+    { cat:'Edit', icon:'✏️', label:'Toggle editor mode',     action:()=> document.getElementById('editorModeToggle')?.click(), kbd:'Ctrl+E' },
     { cat:'Edit', icon:'↩', label:'Undo',                   action:()=> undo(), kbd:mod+'+Z' },
     { cat:'Edit', icon:'↪', label:'Redo',                   action:()=> redo(), kbd:mod+'+Y' },
+    { cat:'Edit', icon:'▫↓', label:'Insert field below',     action:()=> quickCreateNode('below','field'), kbd:mod+'+↓' },
+    { cat:'Edit', icon:'▫↑', label:'Insert field above',     action:()=> quickCreateNode('above','field'), kbd:mod+'+↑' },
+    { cat:'Edit', icon:'□↓', label:'Insert group below',     action:()=> quickCreateNode('below','group'), kbd:mod+'+Alt+↓' },
+    { cat:'Edit', icon:'□↑', label:'Insert group above',     action:()=> quickCreateNode('above','group'), kbd:mod+'+Alt+↑' },
+    { cat:'Edit', icon:'▫→', label:'Add child field',        action:()=> quickCreateNode('child','field'), kbd:mod+'+→' },
+    { cat:'Edit', icon:'□→', label:'Add child group',        action:()=> quickCreateNode('child','group'), kbd:mod+'+Alt+→' },
+    { cat:'Edit', icon:'→', label:'Indent',                  action:()=>{ if(state.lockedId) inlineIndent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Tab' },
+    { cat:'Edit', icon:'←', label:'Outdent',                 action:()=>{ if(state.lockedId) inlineOutdent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Shift+Tab' },
+    { cat:'Edit', icon:'□', label:'Convert to group',        action:()=>{ if(state.lockedId){ const c=columnOf(state.lockedId); if(c) convertNodeType(state.lockedId,c); } } },
+    { cat:'Edit', icon:'▫', label:'Convert to field',        action:()=>{ if(state.lockedId){ const c=columnOf(state.lockedId); if(c) convertNodeType(state.lockedId,c); } } },
 
     // Help
     { cat:'Help', icon:'❓', label:'Quick Start Guide',      action:()=> openHelp(), kbd:'?' },
+    { cat:'Help', icon:'⌨', label:'Keyboard shortcuts',     action:()=> openKbdShortcuts() },
     { cat:'Help', icon:'📖', label:'Documentation',          action:()=> openDocs() },
     { cat:'Help', icon:'📋', label:'Release notes',           action:()=> openReleaseNotes() },
     { cat:'Help', icon:'💡', label:'About Dunnode',           action:()=> document.getElementById('aboutBtn')?.click() },
   ];
+
+  // Add dynamic per-view entries
+  // (refreshed each time the palette opens via _refreshDynamicCommands)
+  let _dynamicViewStart = COMMANDS.length;
+  function _refreshDynamicCommands(){
+    // Remove old dynamic entries
+    COMMANDS.length = _dynamicViewStart;
+    const viewCat = state.data?.viewCatalog;
+    if(Array.isArray(viewCat)){
+      viewCat.forEach(v => {
+        COMMANDS.push({
+          cat: 'Views', icon: v.emoji || '📌',
+          label: 'Apply view: ' + (v.label || v.id),
+          hint: v.note || '',
+          action: ()=>{ _applyView(v); }
+        });
+      });
+    }
+  }
 
   // --- Fuzzy match ---
   function fuzzyMatch(query, text){
@@ -21500,6 +23266,7 @@ function duplicateEdgesForSubtree(idMap, data) {
 
   // --- Open/close ---
   function openPalette(){
+    _refreshDynamicCommands();
     input.value = '';
     renderResults('');
     mask.classList.add('active');
@@ -21644,6 +23411,7 @@ function duplicateEdgesForSubtree(idMap, data) {
       // Sync title input in header
       const titleInput = document.getElementById('projectTitle');
       if(titleInput) titleInput.value = state.data.title || 'New Project';
+      syncBrowserTitle();
       try{ if(jsonArea) jsonArea.value = JSON.stringify(state.data, null, 2); }catch(e){}
       renderAll();
       setGlobalStatus('Project properties saved.');

@@ -4,6 +4,33 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.4.0] – 2026-02-24
+**Highlights:** Views catalog with inline editing, SVG icon system, context menu redesign, keyboard shortcuts, reset view, view pill indicator
+
+- **Views catalog**: save and restore viewer state snapshots — filters, selection, arrows, collapse state, hidden columns, edge color scheme, node color mode, and more. **Views** toolbar button for one-click apply. **Save current view** (**Alt+S**) captures current state. **Previous view / Next view** (**Alt+,** / **Alt+.**) navigate between saved views. Full catalog management with inline editing, emoji picker, drag-and-drop reordering, and update snapshot. Click an active view to deactivate (toggle off). Tooltips show view notes on hover. Four sample views in the example project
+- **View pill indicator**: when a view is active, a compact pill appears in the viewer header showing the emoji + label with ‹/› navigation buttons, an × to deactivate, and a dropdown overlay for quick switching
+- **Reset view** (**Alt+0**): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode — returns to clean-slate state. Available in the Views menu, as an icon button in the viewer toolbar, and in the command palette
+- **Project keyboard shortcuts**: **Ctrl+N** new project, **Ctrl+O** open project, **Ctrl+S** save project, **Ctrl+E** toggle editor mode. All shown in tooltips, command palette, and keyboard shortcuts modal
+- **SVG icon system**: new shared `ICONS` object with 20+ monochrome SVG icons at consistent stroke weight. Replaces all Unicode text glyphs in context menus, toolbar buttons, dropdown menus, and the multi-select details panel. New `nodeIcon()` helper provides unified diamond (field) and rect-with-header (group) icons across the app
+- **Context menu redesign**: tighter layout with section labels (Add, Insert, Arrange), keyboard shortcut hints, transparent backgrounds with hover fills, and SVG icons for every action. Delete uses colored text instead of colored background. Column and node menus both restructured
+- **Toolbar menu revamp**: all toolbar buttons (Graph, Layout, Selection, Catalogs, Views, Export, Help) now use SVG icons instead of text glyphs. All dropdown menus now use the `selActionBtn` pattern with SVG icons — matching the Selection menu style established in v1.3.8
+- **Viewer controls redesign**: icon buttons above the viewer are now grouped into logical capsules — View actions (pan, clear, reset) and History (undo, redo). All buttons use consistent SVG icons with hover/active states. History group shows/hides with editor mode
+- **Layout wrap toggle**: the bare checkbox for "Wrap columns" is now a styled button matching the rest of the Layout menu, with an ON/OFF indicator
+- **Keyboard shortcuts**: ↑/↓ arrow navigation, Shift+↑/↓ multi-select, Ctrl+↓/↑ quick-create field below/above with inline rename, Ctrl+Alt+↓/↑ for groups, Ctrl+→ add child, Alt+↑/↓ move node, Tab/Shift+Tab indent/outdent, Enter to focus editor, Delete to remove node
+- **Inline rename**: new nodes created via keyboard start with an inline label editor. Type a name and press Enter to commit, Escape to cancel (removes the node), or Ctrl+↓ to commit and create the next field — enabling rapid-fire schema building
+- **Field ↔ group conversion**: right-click context menu and command palette entries to convert fields to groups and vice versa (groups must be empty to convert to fields)
+- **Cancel button fix**: Cancel in catalog editors now closes immediately without triggering the unsaved changes guard
+- **Edit field/group fix**: the context menu "Edit field" / "Edit group" action no longer clears the selection — it directly focuses the node without toggle behavior
+- **Opacity popover fix**: the floating panel's opacity slider now renders below the icon row when there is not enough space above (e.g. when the panel is at the top of the screen)
+- **About dialog**: new tagline — *"Dunno where your data goes?"* above the DUNNODE wordmark
+- **Filter selection clearing**: when filter mode is Hide and selected nodes become hidden, selection is automatically cleared
+- **Enter/Escape in all dialogs**: Enter confirms and Escape cancels in all custom alert, confirm, and prompt dialogs
+- **Column-level keyboard shortcuts**: when a column header is selected, Ctrl+↓/↑ adds fields to the top/bottom of the column. Arrow keys from column header jump to the first node
+- **Browser tab title sync**: the browser tab title now reflects the project title
+- **Edge hiding fix**: Direct and Selected highlight modes now correctly hide non-highlighted edges when arrow mode is set to Selected
+
+---
+
 ## [1.3.9] – 2026-02-23
 **Highlights:** Unified color editor UX, nested create modals, required field indicators, undo improvements
 
