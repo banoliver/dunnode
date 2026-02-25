@@ -10,14 +10,19 @@ Client-side by design. No data leaves your browser.
 
 ## ✨ Features
 
-- Multi-column schema viewer with nested groups
-- Drag-and-drop mapping editor
-- Transform chaining with parameters
-- Tag and custom attribute catalogs
-- Advanced filtering & highlighting
-- Undo/redo with dirty tracking
-- Dark & light mode
-- JSON-based project format
+- **Multi-column schema viewer** with nested groups, collapsible trees, and bezier curve arrows
+- **Drag-and-drop mapping editor** with cardinality, defaults, labels, notes, and ordered transforms
+- **Tags & custom attributes** on both nodes and edges — with emoji display mode, color coding, and priority ordering
+- **Edge labels** rendered on arrow lines with Always / Highlight / Off visibility modes
+- **Transform catalog** with per-instance parameters and chaining
+- **Advanced filtering** with recursive condition groups (AND/OR), colored highlights, and Hide / Dim / Highlight display modes
+- **Views** — saved snapshots of the full viewer state for one-click switching
+- **Bulk editing** — copy/paste, duplicate, group/ungroup, multi-select move/indent/outdent
+- **Keyboard-driven workflow** — rapid-fire node creation, inline rename, arrow navigation, and 30+ shortcuts
+- **Undo/redo** with snapshot-based dirty tracking
+- **Dark & light mode** with full theme coverage
+- **Export** — CSV edge list and standalone HTML report
+- **JSON-based project format** — human-readable, version-stamped, fully portable
 
 ---
 
@@ -25,8 +30,8 @@ Client-side by design. No data leaves your browser.
 
 Open `index.html` in any modern browser.
 
-Or visit the live version:  
-👉 https://dunnode.pages.dev
+Or visit the live version:
+👉 [dunnode.com](https://dunnode.com)
 
 No build step. No backend. Fully static.
 
@@ -34,10 +39,10 @@ No build step. No backend. Fully static.
 
 ## 🔒 Privacy & Architecture
 
-Dunnode runs entirely in your browser.  
+Dunnode runs entirely in your browser.
 No project data is transmitted, uploaded, or stored on any server.
 
-All processing happens client-side.  
+All processing happens client-side.
 Your project files remain local unless you explicitly export or share them.
 
 ---
@@ -50,7 +55,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## 🪪 License
 
-This project is licensed under the MIT License.  
+This project is licensed under the MIT License.
 See the [LICENSE](LICENSE) file for details.
 
 Copyright (c) 2026 Olivér Bán
