@@ -4,6 +4,35 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.6.0] – 2026-02-26
+**Highlights:** Import system (SQL DDL, CSV/TSV files, mappings, catalog items, preset bundles), meta-only category tags, comprehensive shortcuts reference, mapping terminology
+
+### Import system
+- **SQL DDL import**: **Import → Import SQL/DDL…** parses `CREATE TABLE` statements from pasted SQL or uploaded `.sql` files. Each table becomes a column; each SQL column becomes a field. Auto-detects data types, PRIMARY KEY, NOT NULL, UNIQUE, FOREIGN KEY, AUTO_INCREMENT, and DEFAULT values. Creates or reuses a Data Type attribute, Nullable attribute, and standard tags (Primary Key, Foreign Key, Required, Unique). Supports MySQL, PostgreSQL, SQL Server, and Oracle syntax including quoted identifiers, schema prefixes, and IF NOT EXISTS
+- **CSV/TSV file import**: **Import → Import CSV/TSV file…** uploads a file and shows an interactive column mapping UI. Each CSV column gets a role dropdown: Label, ID, Parent (nesting), Column (grouping), Note, Tag, Skip, or Custom attribute. Auto-detects common header names. Import into new columns or an existing column. Supports comma, tab, and semicolon separators with quoted field parsing
+- **Import mappings**: **Import → Import mappings…** creates mappings between existing fields from pasted text or uploaded CSV/TSV files. Multi-strategy field resolution: exact ID, `column.label`, or unambiguous label. Supports cardinality, labels, notes, defaults, tags, transforms, and extra columns as custom attributes. Compatible with **Export CSV** output for round-tripping
+- **Catalog import**: import tags, transforms, and attributes from pasted text or uploaded files. Supports plain lines and tab-separated formats with auto-detection. Match & merge: items matched by ID or label show **new** / **will update** / **exists — no changes** badges. TSV imports support `id` and `tag`/`tags` columns
+- **Preset bundles**: four domain presets (Database, API/JSON, Data Governance, ETL/Integration) populate tags, attributes, and transforms in a single click. Per-catalog presets bar in individual import modals
+
+### Import infrastructure
+- **TSV parent column**: field and column TSV imports recognize a `parent` column for multi-level nested hierarchies
+- **TSV column import**: Import Columns supports tab-separated format with `column`, `parent`, and extra columns for tags/attributes
+- **Auto-create attributes**: unrecognized TSV columns automatically create custom attributes and values
+- **Tab indentation**: all import textareas intercept Tab/Shift+Tab for 4-space indent/outdent
+- **Import file upload**: all import modals include a file upload button (.csv/.tsv/.txt)
+
+### Meta-only tags
+- **Meta-only tags**: **Meta only** checkbox marks tags as category headers, hidden from node/mapping selectors. Dropdowns group items under labeled optgroup sections
+- **Category assignment**: catalog items (tags, attributes, transforms) can only be tagged with meta-only category tags
+
+### Shortcuts & UI
+- **Keyboard & mouse shortcuts reference**: expanded from 6 to 11 sections — now covers click modifiers (Ctrl/Shift/Alt+click), edge click modifiers, marquee & lasso (with Shift/Ctrl/Alt combinations), and drag-and-drop modifiers (Move / Map / Copy / Copy+)
+- **Mapping terminology**: all user-facing "arrow" and "edge" references updated to "mapping" — Graph menu headers (Show mappings, Mapping scope), button tooltips, filter editor labels, documentation, and quick-start guide
+- **Mapping labels layout**: full-width row format with title above, matching other Graph menu sections
+- **Preset bundle fix**: status message no longer shows "undefined"
+
+---
+
 ## [1.5.0] – 2026-02-25
 **Highlights:** Edge tags & attributes, emoji display mode, edge labels, bulk editing, attribute editor UX overhaul
 
