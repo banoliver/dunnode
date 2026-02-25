@@ -139,6 +139,9 @@
     body.brightMode .edge{ stroke: rgba(0,0,0,.18); }
     body.brightMode .edge.hl{ stroke: rgba(30,80,200,.85); }
     body.brightMode .edge.active{ stroke: rgba(160,110,0,.90); }
+    body.brightMode .edgeLabel{ fill: rgba(0,0,0,.7); stroke: #f8fafc; }
+    body.brightMode .edgeLabel.hl{ fill: rgba(30,80,200,.85); }
+    body.brightMode .edgeLabel.active{ fill: rgba(160,110,0,.90); }
     /* Search */
     body.brightMode .search{
       background: rgba(255,255,255,.75);
@@ -411,9 +414,13 @@
     .req{ color: rgba(239,130,130,.7); font-weight: 700; margin-left: 2px; font-size: 11px; }
     .btn.btnDanger{ border-color: rgba(239,68,68,.5); color: #ef4444; }
     .btn.btnDanger:hover{ background: rgba(239,68,68,.15); }
-    .autoTag{ display:inline-block; font-size:9px; padding:1px 5px; border-radius:6px; background:rgba(59,130,246,.15); color:rgba(130,180,255,.8); vertical-align:middle; margin-left:6px; pointer-events:none; letter-spacing:.3px; user-select:none; transition: opacity .15s; white-space:nowrap; flex-shrink:0; }
+    .autoTag{ display:inline-block; font-size:9px; padding:1px 5px; border-radius:6px; background:rgba(59,130,246,.15); color:rgba(130,180,255,.8); vertical-align:middle; margin-left:6px; pointer-events:none; letter-spacing:.3px; user-select:none; transition: opacity .15s, background .15s; white-space:nowrap; flex-shrink:0; }
+    .autoTag.clickable{ pointer-events:auto; cursor:pointer; }
+    .autoTag.clickable:hover{ background:rgba(59,130,246,.3); }
+    .autoTag.clickable::after{ content:' ×'; font-size:8px; opacity:.6; }
     .k .autoTag{ margin-left:4px; font-size:8px; padding:1px 4px; vertical-align:baseline; }
     body.brightMode .autoTag{ background:rgba(59,130,246,.1); color:rgba(37,99,235,.6); }
+    body.brightMode .autoTag.clickable:hover{ background:rgba(59,130,246,.2); }
     .miniCard:hover{ background: rgba(255,255,255,.06); }
     body.brightMode .miniCard:hover{ background: rgba(0,0,0,.05); }
     body.brightMode .btn.btnDanger{ border-color: rgba(220,38,38,.4); color: #dc2626; }
@@ -1179,7 +1186,7 @@ body.brightMode .row .inlineRenameWrap input{ border-bottom-color:rgba(59,130,24
     .filterBold > .row .label .text{ font-weight: 700 !important; }
     .filterFrame{ outline: 2px solid var(--filter-frame, #3b82f6); outline-offset: -1px; border-radius: 5px; }
     .filterEmoji{ font-style: normal; }
-    .catItem.dragOver{ border-color: rgba(59,130,246,.6) !important; box-shadow: 0 -2px 0 0 rgba(59,130,246,.7) !important; }
+    .catItem.dragOver{ border-color: rgba(59,130,246,.6) !important; box-shadow: 0 0 0 1px rgba(59,130,246,.4) !important; background:rgba(59,130,246,.04) !important; }
     .condGroup{ border-left: 2px solid var(--accent); margin: 4px 0 4px 8px; padding: 2px 0 2px 10px; border-radius: 0 0 0 6px; }
     .condDragHandle{ cursor:grab; opacity:.35; font-size:11px; user-select:none; padding:0 2px; transition:opacity .15s; }
     .condDragHandle:hover{ opacity:.8; }
@@ -1358,6 +1365,15 @@ body.brightMode .row .inlineRenameWrap input{ border-bottom-color:rgba(59,130,24
     }
     .edge.dimmed{ opacity: var(--dim); }
     .edge.fadeOut{ opacity: 0 !important; }
+    .edgeLabel{
+      font-family: var(--sans); font-size: 10px; fill: #94a3b8; opacity: .95;
+      pointer-events: none; text-anchor: middle; dominant-baseline: central;
+      paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .edgeLabel.hl{ opacity: 1; font-weight: 600; fill: var(--line-hl); }
+    .edgeLabel.active{ opacity: 1; font-weight: 700; fill: var(--line-active); }
+    .edgeLabel.dimmed{ opacity: var(--dim); }
+    .edgeLabel.fadeOut{ opacity: 0 !important; }
  .edge.active{
       stroke: var(--line-active);
       stroke-width: 2.4;
@@ -1576,14 +1592,23 @@ select.inp option:disabled{ color: rgba(155,176,230,.95); }
     .catActions{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto;}
     .catMoveBtn{width:24px;height:24px;padding:0;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;opacity:.5;transition:all .12s;flex-shrink:0;}
     .catMoveBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
-    .catMoveBtn[disabled],.catMoveBtn[style*="visibility:hidden"]{opacity:.15;pointer-events:none;}
+    .catMoveBtn[disabled]{opacity:.15;pointer-events:none;}
     body.brightMode .catMoveBtn{border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.02);}
     body.brightMode .catMoveBtn:hover{background:rgba(0,0,0,.07);border-color:rgba(0,0,0,.18);}
     .catValMoveBtn{width:20px;height:20px;padding:0;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;opacity:.4;transition:all .12s;flex-shrink:0;}
     .catValMoveBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
-    .catValMoveBtn[style*="visibility:hidden"]{opacity:.1;pointer-events:none;}
+    .catValMoveBtn[disabled]{opacity:.1;pointer-events:none;}
     body.brightMode .catValMoveBtn{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.02);}
     body.brightMode .catValMoveBtn:hover{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.14);}
+    body.brightMode .attrValRow{background:rgba(0,0,0,.02) !important;border-color:rgba(0,0,0,.1) !important;}
+    .attrValRow:hover{border-color:rgba(255,255,255,.15) !important;}
+    .attrValRow[draggable]:active{cursor:grabbing;}
+    .attrValRow.valDragOver{border-color:rgba(59,130,246,.6) !important;box-shadow:0 0 0 1px rgba(59,130,246,.4) !important;background:rgba(59,130,246,.04) !important;}
+    .valDragHandle:hover{opacity:.6 !important;}
+    .catGrip{opacity:.2;line-height:0;flex-shrink:0;cursor:grab;align-self:center;}
+    .catGrip:hover{opacity:.5 !important;}
+    body.brightMode .attrValRow:hover{border-color:rgba(0,0,0,.18) !important;}
+    body.brightMode .attrValRow.valDragOver{border-color:rgba(59,130,246,.6) !important;box-shadow:0 0 0 1px rgba(59,130,246,.4) !important;background:rgba(59,130,246,.04) !important;}
     .ruleActBtn{width:22px;height:22px;padding:0;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;opacity:.45;transition:all .12s;flex-shrink:0;}
     .ruleActBtn:hover{opacity:1;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
     .ruleActBtn.ruleDel{border-color:rgba(255,100,100,.25);color:#f87171;opacity:.5;}
@@ -2031,6 +2056,23 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 <div style="display:flex;gap:6px;flex-wrap:wrap;">
 <label class="toggle" style="flex:1;" title="Show arrows within the same column"><input id="showSameColToggle" type="checkbox" checked/>Same-column</label>
 <label class="toggle" style="flex:1;" title="Show arrows across non-adjacent columns"><input id="showDistantToggle" type="checkbox" checked/>Distant</label>
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+<span style="font-size:10px;opacity:.5;white-space:nowrap;">Edge labels</span>
+<div id="edgeLabelModeSelector" class="dockSelector" style="flex:1;">
+<button class="dockOpt active" data-elm="always" title="Always show edge labels">
+<svg width="20" height="10" viewBox="0 0 20 10"><line x1="0" y1="5" x2="18" y2="5" stroke="currentColor" stroke-width="1.2" opacity=".3"/><polygon points="16,2.5 20,5 16,7.5" fill="currentColor" opacity=".3"/><text x="10" y="7.5" text-anchor="middle" font-size="7" font-weight="bold" font-family="sans-serif" fill="currentColor">Ab</text></svg>
+<span>Always</span>
+</button>
+<button class="dockOpt" data-elm="highlight" title="Show edge labels only when highlighted">
+<svg width="20" height="10" viewBox="0 0 20 10"><line x1="0" y1="5" x2="18" y2="5" stroke="currentColor" stroke-width="1.2" opacity=".3"/><polygon points="16,2.5 20,5 16,7.5" fill="currentColor" opacity=".3"/><text x="10" y="7.5" text-anchor="middle" font-size="7" font-family="sans-serif" fill="currentColor" opacity=".25">Ab</text><circle cx="3" cy="5" r="2.2" fill="currentColor" opacity=".5"/><text x="10" y="7.5" text-anchor="middle" font-size="7" font-weight="bold" font-family="sans-serif" fill="currentColor" opacity=".85" stroke="rgba(59,130,246,.6)" stroke-width=".5">Ab</text></svg>
+<span>Highlight</span>
+</button>
+<button class="dockOpt" data-elm="off" title="Hide edge labels">
+<svg width="20" height="10" viewBox="0 0 20 10"><line x1="0" y1="5" x2="18" y2="5" stroke="currentColor" stroke-width="1.2" opacity=".3"/><polygon points="16,2.5 20,5 16,7.5" fill="currentColor" opacity=".3"/><text x="10" y="7.5" text-anchor="middle" font-size="7" font-family="sans-serif" fill="currentColor" opacity=".15">Ab</text><line x1="4" y1="1" x2="16" y2="9" stroke="currentColor" stroke-width="1.3" opacity=".5"/></svg>
+<span>Off</span>
+</button>
+</div>
 </div>
 <div style="border-top:1px solid var(--border);margin:6px 0 4px;"></div>
 <div style="font-size:10px;opacity:.5;margin-bottom:4px;">Color mappings by</div>
@@ -2488,7 +2530,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.4.1</span>
+<span id="appVersionLabel">v1.5.0</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -2514,7 +2556,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 <div class="modalMask" id="tagsMask"></div>
 <div aria-label="Tags" class="modal" id="tagsModal" role="dialog">
 <div class="modalHeader">
-<div class="title">Tag manager</div>
+<div class="title">Tags catalog</div>
 <div class="controls">
 <button class="btn" id="addTagBtn">Add tag</button>
 <button class="btn" id="closeTagsBtn">Close</button>
@@ -2526,7 +2568,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 <div class="modalMask" id="transformsMask"></div>
 <div aria-label="Transforms" class="modal" id="transformsModal" role="dialog">
 <div class="modalHeader">
-<div class="title">Transformation library</div>
+<div class="title">Transforms catalog</div>
 <div class="controls">
 <button class="btn" id="addTransformBtn">Add transform</button>
 <button class="btn" id="closeTransformsBtn">Close</button>
@@ -2611,6 +2653,20 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </div>
 <div class="k crOpt" id="crAbbrK" style="display:none">Abbr <span class="autoTag" id="createAbbrAuto">auto</span></div>
 <div class="v crOpt" id="crAbbrV" data-flex="1" style="display:none;align-items:center;"><input class="inp" id="createAbbr" placeholder="e.g. S" style="flex:1;"/></div>
+<div class="k crOpt" id="crEmojiK" style="display:none">Emoji</div>
+<div class="v crOpt" id="crEmojiV" style="display:none">
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+<input class="inp" id="createEmoji" value="" style="width:42px;text-align:center;font-size:16px;" placeholder="—" maxlength="4"/>
+<div id="createEmojiGrid" style="display:flex;flex-wrap:wrap;gap:2px;"></div>
+</div>
+</div>
+<div class="k crOpt" id="crDisplayK" style="display:none">Display</div>
+<div class="v crOpt" id="crDisplayV" style="display:none">
+<div id="createDisplayMode" style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+<button class="crDmOpt" data-dm="abbr" style="padding:2px 10px;font-size:11px;border:none;cursor:pointer;background:rgba(59,130,246,.25);color:var(--fg);transition:all .15s;">Abbr</button>
+<button class="crDmOpt" data-dm="emoji" style="padding:2px 10px;font-size:11px;border:none;border-left:1px solid var(--border);cursor:pointer;background:transparent;color:var(--fg);opacity:.4;transition:all .15s;">Emoji</button>
+</div>
+</div>
 <div class="k crOpt" id="crColorK" style="display:none">Color</div>
 <div class="v crOpt" id="crColorV" style="display:none">
 <div id="createColors" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
@@ -2795,7 +2851,7 @@ Created by Olivér Bán<br/>
        ...
      ],
      mappings: [
-       { from, to, cardinality, transforms: [{ref, params?}], note, default }
+       { from, to, cardinality, transforms: [{ref, params?}], label, note, default, tags, customAttributes }
      ],
      transformCatalog: [{ id, label, abbr, note, color?, params?: [{id, label, type, default?}] }],
      customAttributeCatalog: [{ id, label, abbr, note, multi, displayOnNode?, priority?,
@@ -2806,7 +2862,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.4.1';
+const APP_VERSION = '1.5.0';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -2818,7 +2874,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.4.1", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.5.0", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -3578,6 +3634,8 @@ const EXAMPLE_JSON = {
       "_autoId": true,
       "label": "Active",
       "abbr": "A",
+      "emoji": "✅",
+      "displayMode": "emoji",
       "color": "#22c55e",
       "note": "Field is active in production.",
       "priority": 1
@@ -3587,6 +3645,8 @@ const EXAMPLE_JSON = {
       "_autoId": true,
       "label": "Pending",
       "abbr": "?",
+      "emoji": "⚠️",
+      "displayMode": "abbr",
       "color": "#f59e0b",
       "note": "Mapping or field is still being defined — may change.",
       "priority": 2
@@ -3798,19 +3858,24 @@ const EXAMPLE_JSON = {
       "from": "mc.mission.missionId",
       "to": "sat.vehicle.vehicleCode",
       "cardinality": "1:1",
+      "label": "ID → Code",
       "transforms": [
         {"ref": "trim"}
       ],
+      "tags": ["active"],
       "note": "Mission Control ID becomes spacecraft vehicle code."
     },
     {
       "from": "mc.mission.missionName",
       "to": "sat.vehicle.missionLabel",
       "cardinality": "1:1",
+      "label": "Name copy",
       "transforms": [
         {"ref": "trim"},
         {"ref": "norm_ws"}
       ],
+      "tags": ["pending"],
+      "customAttributes": {"fidelity": "string"},
       "note": "Mission name flows to telemetry label."
     },
     {
@@ -4235,6 +4300,7 @@ const state = {
   wrapColumns: false,
   showTagPills: true,      // display tag pills on nodes
   showAttrPills: true,     // display custom attribute pills on nodes
+  showEdgeLabels: 'always', // edge label display: 'off', 'always', 'highlight'
   nodeColorMode: 'all',    // 'all' | 'groups' | 'column' | 'off'
   
   // project state
@@ -4400,7 +4466,7 @@ function idPartFromLabel(label, {lower=false}={}){
   // Replace spaces with underscore, keep existing underscores and alphanumerics.
   s = s.replace(/\s+/g,'_').replace(/[^A-Za-z0-9_]/g,'').replace(/_+/g,'_');
   if(lower) s = s.toLowerCase();
-  if(!s) s = 'node';
+  if(!s) return '';
   // Avoid starting with a digit
   if(/^[0-9]/.test(s)) s = 'n_' + s;
   return s;
@@ -4422,7 +4488,7 @@ function ensureUniqueId(baseId, taken){
 // --- v20.1: always compute a unique ID within target parent/group (sibling scope)
 function uniqueSiblingId(parentId, label, siblings) {
   const taken = new Set((siblings || []).map(n => n && n.id).filter(Boolean));
-  const base = parentId + '.' + idPartFromLabel(label, { lower:false });
+  const base = parentId + '.' + (idPartFromLabel(label, { lower:false }) || 'node');
   return ensureUniqueId(base, taken);
 }
 
@@ -4912,9 +4978,9 @@ function formatTransformAbbr(inst){
   const rid = transformRefId(inst);
   const t = transformById(rid);
   if(!t) return rid;
-  const abbr = transformAbbr(t);
+  const label = transformDisplayLabel(t);
   const p = (typeof inst === 'object' && inst.params && Object.keys(inst.params).length > 0);
-  return p ? abbr + '(…)' : abbr;
+  return p ? label + '(…)' : label;
 }
 
 // Normalize a transforms array: convert legacy strings to {ref} objects
@@ -4928,6 +4994,7 @@ function normalizeTransforms(arr){
 }
 // --- Tags (node-level) ---
 const DEFAULT_TAG_COLOR = '#3b82f6';
+const CATALOG_EMOJI_PICKS = ['🏷️','📌','⭐','🔥','🎯','✅','❌','🚨','⚠️','🔴','🟢','🔵','🟡','✂️','🔗','📋','📊','💡','🧪','🔒','🏠','📦','🔧','⚡'];
 function ensureTagCatalog(){
   if(!state.data) return [];
   if(!Array.isArray(state.data.tagCatalog)) state.data.tagCatalog = [];
@@ -4952,6 +5019,26 @@ function tagAbbr(tag){
   if(a) return a;
   const lbl = (tag.label||tag.id||'').trim();
   return lbl ? lbl.slice(0,1).toUpperCase() : '';
+}
+function tagDisplayLabel(tag){
+  if(!tag) return '';
+  if(tag.displayMode === 'emoji' && tag.emoji) return tag.emoji;
+  return tagAbbr(tag);
+}
+function transformDisplayLabel(t){
+  if(!t) return '';
+  if(t.displayMode === 'emoji' && t.emoji) return t.emoji;
+  return transformAbbr(t);
+}
+function attrValDisplayLabel(vDef){
+  if(!vDef) return '';
+  if(vDef.displayMode === 'emoji' && vDef.emoji) return vDef.emoji;
+  return (vDef.abbr || vDef.label || vDef.id || '');
+}
+function attrDisplayLabel(attr){
+  if(!attr) return '';
+  if(attr.displayMode === 'emoji' && attr.emoji) return attr.emoji;
+  return (attr.abbr || attr.label || attr.id || '');
 }
 function sortTagIdsByPriority(tagIds){
   if(!tagIds || !tagIds.length) return tagIds;
@@ -5011,7 +5098,7 @@ function openTransformCreateModal(opts={}){
     placeholder: 'e.g. Trim whitespace',
     hint: 'ID is generated from the label. You can override it.',
     taken,
-    onCommit: ({label, id, abbr, note, color, _autoId, _autoAbbr})=>{
+    onCommit: ({label, id, abbr, note, color, emoji, displayMode, _autoId, _autoAbbr})=>{
       const finalAbbr = (abbr||'').trim() || label.replace(/\s+/g,'').slice(0,2).toUpperCase();
       const finalNote = (note||'').trim();
       // Read params from create modal
@@ -5035,6 +5122,8 @@ function openTransformCreateModal(opts={}){
       recordChange();
       const entry = { id, label, abbr: finalAbbr, note: finalNote, _autoId, _autoAbbr };
       if(color) { entry.color = color; entry.colorEnabled = true; }
+      if(emoji) entry.emoji = emoji;
+      if(displayMode) entry.displayMode = displayMode;
       if(newParams.length) entry.params = newParams;
       cat2.push(entry);
       renderAll();
@@ -5168,13 +5257,16 @@ function openTagCreateModal(opts={}){
     placeholder: 'e.g. Screening',
     hint: 'ID is generated from the label. You can override it.',
     taken,
-    onCommit: ({label, id, abbr, note, color, _autoId, _autoAbbr})=>{
+    onCommit: ({label, id, abbr, note, color, emoji, displayMode, _autoId, _autoAbbr})=>{
       const finalAbbr = (abbr||'').trim() || label.slice(0,1).toUpperCase();
       const finalColor = color || DEFAULT_TAG_COLOR;
       const finalNote = (note||'').trim();
       const cat2 = ensureTagCatalog();
       recordChange();
-      cat2.push({ id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: finalNote, priority: nextTagPriority(), _autoId, _autoAbbr });
+      const newTag = { id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: finalNote, priority: nextTagPriority(), _autoId, _autoAbbr };
+      if(emoji) newTag.emoji = emoji;
+      if(displayMode) newTag.displayMode = displayMode;
+      cat2.push(newTag);
       // Attach to node if requested
       if(__tagCreateCtx.attachNodeId){
         const node = IDX?.nodeById?.get(__tagCreateCtx.attachNodeId);
@@ -5493,6 +5585,10 @@ const ICONS = {
   moon:     '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5A5.5 5.5 0 0 1 5.5 2a5.5 5.5 0 1 0 6.5 6.5Z"/></svg>',
   cmdPalette:'<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx=".5"/><circle cx="3" cy="3" r="2"/><circle cx="11" cy="3" r="2"/><circle cx="3" cy="11" r="2"/><circle cx="11" cy="11" r="2"/></svg>',
   columns:  '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="5" height="12" rx="1.5"/><rect x="8" y="1" width="5" height="12" rx="1.5"/><line x1="1" y1="4" x2="6" y2="4" opacity=".4"/><line x1="8" y1="4" x2="13" y2="4" opacity=".4"/></svg>',
+  copy:     '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><path d="M8 4V2.5a1 1 0 0 0-1-1H2.5a1 1 0 0 0-1 1V7a1 1 0 0 0 1 1H4"/></svg>',
+  paste:    '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2.5" width="8" height="8.5" rx="1"/><path d="M4.5 2.5V2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v.5"/></svg>',
+  groupWrap:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="10" height="10" rx="1.5"/><line x1="1" y1="3.5" x2="11" y2="3.5" opacity=".5"/><line x1="3.5" y1="5.5" x2="8.5" y2="5.5"/><line x1="3.5" y1="7.5" x2="8.5" y2="7.5"/></svg>',
+  ungroupDissolve:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke-dasharray="2 2"/><line x1="3.5" y1="4.5" x2="8.5" y2="4.5"/><line x1="3.5" y1="6.5" x2="8.5" y2="6.5"/><line x1="3.5" y1="8.5" x2="8.5" y2="8.5"/></svg>',
 };
 function nodeIcon(type){ return type === 'group' ? ICONS.group : ICONS.field; }
 
@@ -5547,7 +5643,7 @@ function computeAutoIdFromLabel(label, ctx){
   }
 
   if(ctx.kind==='node'){
-    const base0 = (ctx.parentId || ctx.colId) + '.' + idPartFromLabel(raw, {lower:false});
+    const base0 = (ctx.parentId || ctx.colId) + '.' + (idPartFromLabel(raw, {lower:true}) || 'node');
     const taken = ctx.taken || new Set();
     return ensureUniqueId(base0 || ((ctx.parentId||ctx.colId)+'.node'), taken);
   }
@@ -5558,10 +5654,10 @@ function computeAutoIdFromLabel(label, ctx){
 const CREATE_FIELDS = {
   column:          { color: true, note: true },
   node:            { note: true, tags: true, customAttrs: true },
-  tag:             { abbr: true, color: true, note: true },
-  transform:       { abbr: true, color: true, note: true, params: true },
-  customAttr:      { abbr: true, color: true, multi: true, note: true },
-  customAttrValue: { abbr: true, color: true, note: true },
+  tag:             { abbr: true, emoji: true, color: true, note: true },
+  transform:       { abbr: true, emoji: true, color: true, note: true, params: true },
+  customAttr:      { abbr: true, emoji: true, color: true, multi: true, note: true },
+  customAttrValue: { abbr: true, emoji: true, color: true, note: true },
 };
 
 let __createSelectedColor = null;
@@ -5853,11 +5949,14 @@ function _openNestedCreateFromNodeCreate(kind, extraCtx){
       placeholder: 'e.g. Screening',
       hint: 'ID is generated from the label.',
       taken,
-      onCommit: ({label, id, abbr, note, color, _autoId, _autoAbbr})=>{
+      onCommit: ({label, id, abbr, note, color, emoji, displayMode, _autoId, _autoAbbr})=>{
         const finalAbbr = (abbr||'').trim() || label.slice(0,1).toUpperCase();
         const finalColor = color || DEFAULT_TAG_COLOR;
         recordChange();
-        ensureTagCatalog().push({ id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: (note||'').trim(), priority: nextTagPriority(), _autoId, _autoAbbr });
+        const nt = { id, label, abbr: finalAbbr, color: finalColor, colorEnabled: true, note: (note||'').trim(), priority: nextTagPriority(), _autoId, _autoAbbr };
+        if(emoji) nt.emoji = emoji;
+        if(displayMode) nt.displayMode = displayMode;
+        ensureTagCatalog().push(nt);
         saved.tags.push(id);
         renderAll();
         _restore();
@@ -5872,9 +5971,11 @@ function _openNestedCreateFromNodeCreate(kind, extraCtx){
       placeholder: 'Attribute label…',
       hint: 'ID is generated from the label.',
       taken,
-      onCommit: ({label, id, abbr, note, color, multi, _autoId, _autoAbbr})=>{
+      onCommit: ({label, id, abbr, note, color, multi, emoji, displayMode, _autoId, _autoAbbr})=>{
         const entry = { id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), multi: !!multi, values: [], _autoId, _autoAbbr };
         if(color){ entry.color = color; entry.colorEnabled = true; }
+        if(emoji) entry.emoji = emoji;
+        if(displayMode) entry.displayMode = displayMode;
         recordChange();
         ensureCustomAttributeCatalog().push(entry);
         renderAll();
@@ -5893,11 +5994,13 @@ function _openNestedCreateFromNodeCreate(kind, extraCtx){
       placeholder: 'Value label…',
       hint: 'ID is generated from the value label.',
       taken,
-      onCommit: ({label, id, note, color, abbr, _autoId, _autoAbbr})=>{
+      onCommit: ({label, id, note, color, abbr, emoji, displayMode, _autoId, _autoAbbr})=>{
         let maxVP = 0;
         a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
         const vObj = { id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr };
         if(abbr) vObj.abbr = abbr;
+        if(emoji) vObj.emoji = emoji;
+        if(displayMode) vObj.displayMode = displayMode;
         if(color){ vObj.color = color; vObj.colorEnabled = true; }
         recordChange();
         a.values.push(vObj);
@@ -5946,6 +6049,8 @@ function openCreateModal(ctx){
   if(noteEl) noteEl.value = '';
   if(multiEl) multiEl.checked = false;
   if(idInput) idInput.value = '';
+  const _crEmojiEl = document.getElementById('createEmoji');
+  if(_crEmojiEl) _crEmojiEl.value = '';
 
   // Node prefix
   if(ctx.kind==='node'){
@@ -5964,12 +6069,49 @@ function openCreateModal(ctx){
     if(vEl) vEl.style.display = v ? (vEl.dataset.flex ? 'flex' : '') : 'none';
   };
   show('abbr', fields.abbr);
+  show('emoji', fields.emoji);
+  show('display', fields.emoji);
   show('color', fields.color);
   show('multi', fields.multi);
   show('note', true); // always show note
   show('params', fields.params);
   show('tags', fields.tags);
   show('attrs', fields.customAttrs);
+
+  // Wire emoji picker + display mode in create modal
+  let __crDM = 'abbr';
+  if(fields.emoji){
+    const emojiGrid = document.getElementById('createEmojiGrid');
+    const crDmWrap = document.getElementById('createDisplayMode');
+    if(emojiGrid) emojiGrid.innerHTML = CATALOG_EMOJI_PICKS.map(e=>`<button class="crEmojiPick" data-emoji="${e}" style="font-size:14px;padding:2px 4px;border:1px solid transparent;border-radius:5px;background:transparent;cursor:pointer;line-height:1;" title="${e}">${e}</button>`).join('') + '<button class="crEmojiPick" data-emoji="" style="font-size:10px;padding:2px 5px;border:1px solid var(--border);border-radius:5px;background:transparent;cursor:pointer;color:var(--muted);line-height:1;" title="Clear">✕</button>';
+    const _refreshCrDm = ()=>{
+      if(!crDmWrap) return;
+      const has = !!(_crEmojiEl && _crEmojiEl.value.trim());
+      crDmWrap.querySelectorAll('.crDmOpt').forEach(b=>{
+        b.style.background = b.dataset.dm === __crDM ? 'rgba(59,130,246,.25)' : 'transparent';
+        if(b.dataset.dm === 'emoji') b.style.opacity = has ? '1' : '.4';
+      });
+    };
+    if(emojiGrid) emojiGrid.querySelectorAll('.crEmojiPick').forEach(btn => btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(_crEmojiEl) _crEmojiEl.value = btn.dataset.emoji;
+      if(btn.dataset.emoji && __crDM === 'abbr') __crDM = 'emoji';
+      if(!btn.dataset.emoji && __crDM === 'emoji') __crDM = 'abbr';
+      _refreshCrDm();
+    }));
+    if(_crEmojiEl) _crEmojiEl.addEventListener('input', ()=>{
+      if(_crEmojiEl.value.trim() && __crDM === 'abbr') __crDM = 'emoji';
+      if(!_crEmojiEl.value.trim() && __crDM === 'emoji') __crDM = 'abbr';
+      _refreshCrDm();
+    });
+    if(crDmWrap) crDmWrap.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.crDmOpt');
+      if(!btn) return;
+      if(btn.dataset.dm === 'emoji' && !(_crEmojiEl && _crEmojiEl.value.trim())) return;
+      __crDM = btn.dataset.dm;
+      _refreshCrDm();
+    });
+  }
 
   // Transform params in create modal
   if(fields.params){
@@ -6117,11 +6259,9 @@ function openCreateModal(ctx){
     if(ctx.kind==='node'){
       const prefix = (ctx.parentId || ctx.colId || '') + '.';
       const seg = autoId ? autoId.slice(prefix.length) : '';
-      if(idInput) idInput.value = seg;
-      __lastAutoId = seg;
+      if(seg){ if(idInput) idInput.value = seg; __lastAutoId = seg; }
     } else {
-      if(idInput) idInput.value = autoId || '';
-      __lastAutoId = autoId || '';
+      if(autoId){ if(idInput) idInput.value = autoId; __lastAutoId = autoId; }
     }
   };
   __lastAutoAbbr = '';
@@ -6136,14 +6276,21 @@ function openCreateModal(ctx){
     const curAbbr = abbrEl.value.trim();
     if(!curAbbr || curAbbr === __lastAutoAbbr){
       const a = computeAutoAbbr((labelEl?.value||'').trim());
-      abbrEl.value = a;
-      __lastAutoAbbr = a;
+      if(a){ abbrEl.value = a; __lastAutoAbbr = a; }
     }
   };
   const refreshAutoTags = ()=>{
-    if(idAutoTag) idAutoTag.style.display = __lastAutoId !== '' ? '' : 'none';
-    if(abbrAutoTag) abbrAutoTag.style.display = __lastAutoAbbr !== '' ? '' : 'none';
+    if(idAutoTag){ const on = __lastAutoId !== ''; idAutoTag.style.display = on ? '' : 'none'; idAutoTag.classList.toggle('clickable', on); }
+    if(abbrAutoTag){ const on = __lastAutoAbbr !== ''; abbrAutoTag.style.display = on ? '' : 'none'; abbrAutoTag.classList.toggle('clickable', on); }
   };
+  if(idAutoTag){ idAutoTag.title = 'Click to freeze ID'; idAutoTag.addEventListener('click', ()=>{
+    __lastAutoId = '';
+    refreshAutoTags();
+  }); }
+  if(abbrAutoTag){ abbrAutoTag.title = 'Click to freeze abbreviation'; abbrAutoTag.addEventListener('click', ()=>{
+    __lastAutoAbbr = '';
+    refreshAutoTags();
+  }); }
   if(labelEl){
     labelEl.oninput = ()=>{
       refreshId();
@@ -6247,6 +6394,12 @@ function commitCreateModal(){
   const fields = CREATE_FIELDS[ctx.kind] || {};
   const result = { label: raw, id, _autoId: __lastAutoId !== '' };
   if(fields.abbr) { result.abbr = (abbrEl?.value||'').trim(); result._autoAbbr = __lastAutoAbbr !== ''; }
+  if(fields.emoji) {
+    const crEm = (document.getElementById('createEmoji')?.value||'').trim();
+    if(crEm) result.emoji = crEm;
+    const activeBtn = document.querySelector('#createDisplayMode .crDmOpt[style*="rgba(59,130,246"]');
+    result.displayMode = activeBtn?.dataset?.dm || 'abbr';
+  }
   if(fields.note || true) result.note = (noteEl?.value||'').trim(); // always pass note
   if(fields.color) {
     const colorOn = document.getElementById('createColorOn')?.checked;
@@ -6303,6 +6456,7 @@ document.getElementById('createLabel')?.addEventListener('keydown', (e)=>{
 let __editSnapshot = null;
 let __editorAutoId = false;   // true while current editor's ID is auto-linked to label
 let __editorAutoAbbr = false; // true while current editor's abbr is auto-linked to label
+let __editorDisplayMode = 'abbr'; // current catalog editor display mode (abbr or emoji)
 let __lastAutoId = '';        // create modal: tracks last auto-generated ID value
 let __lastAutoAbbr = '';      // create modal: tracks last auto-generated abbr value
 function beginEditSnapshot(kind, id){
@@ -6541,8 +6695,12 @@ function expandEdges(mappings){
         transform: m.transform ?? '',
         transforms: normalizeTransforms(m.transforms),
         note: m.note ?? '',
+        label: m.label ?? '',
+        labelHidden: !!m.labelHidden,
         default: m.default ?? '',
         color: m.color || '',
+        tags: Array.isArray(m.tags) ? [...m.tags] : [],
+        customAttributes: m.customAttributes ? JSON.parse(JSON.stringify(m.customAttributes)) : {},
         };
       IDX.edges.push(edge);
       IDX.mappedFields.add(from); IDX.mappedFields.add(to);
@@ -6718,7 +6876,7 @@ function buildNodePillStrip(node){
       chip.style.setProperty('--c', tagColor(td));
       chip.setAttribute('data-color','1');
       chip.title = (td.label||td.id||'') + (td.note?(' — '+td.note):'');
-      chip.textContent = tagAbbr(td);
+      chip.textContent = tagDisplayLabel(td);
       strip.appendChild(chip);
       count++;
     }
@@ -6752,7 +6910,7 @@ function buildNodePillStrip(node){
       for(const vid of sortedValIds){
         if(count >= MAX_PILLS) break;
         const vDef = valsDef.find(v=>v.id===vid);
-        const vLabel = vDef ? (vDef.abbr || vDef.label || vid) : vid;
+        const vLabel = vDef ? attrValDisplayLabel(vDef) : vid;
         // Color inheritance: value color (if enabled) → attribute color (if enabled) → none
         const vColorEnabled = vDef?.color && vDef?.colorEnabled !== false;
         const attrColorEnabled = attr.color && attr.colorEnabled !== false;
@@ -7077,6 +7235,7 @@ function renderFiltersManager(){
     }
 
     return `<div class="catCard catItem filterCard" data-fid="${escapeHtml(f.id)}" data-fidx="${idx}" data-sort-pos="${sortPos}" ${editable?'draggable="true"':''} style="margin-bottom:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel);display:flex;align-items:center;gap:10px;${editable?'cursor:pointer;':''}${hl.frame?'box-shadow:0 0 0 2px '+escapeHtml(hl.frameColor||hl.border||'#3b82f6')+';':''}" ${editable?'title="Click to edit · Drag to reorder"':''}>
+      ${editable?'<span class="catGrip"><svg width="8" height="14" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></span>':''}
       <div style="flex:1;min-width:0;">
         <div style="display:flex;align-items:center;gap:8px;">
           ${swatchHtml}
@@ -7088,8 +7247,8 @@ function renderFiltersManager(){
       </div>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
         <label class="toggle" style="font-size:11px;display:inline-flex;align-items:center;" title="Toggle this filter on/off"><input type="checkbox" class="fToggle" data-fid="${escapeHtml(f.id)}" ${isActive?'checked':''}/>Active</label>
-        ${editable?`<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-fidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-fidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>`:''}
+        ${editable?`<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-fidx="${idx}" title="Move up" ${isFirst?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-fidx="${idx}" title="Move down" ${isLast?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -7856,16 +8015,24 @@ function wireFilterEditCard(container){
     const idAutoTag = card.querySelector('[data-auto="id"]');
     if(labelInp && idInp){
       const slugify = (s)=> transliterate(s).trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
-      const initAuto = slugify(labelInp.value);
-      let lastAutoId = (filter && filter._autoId) ? initAuto : '';
-      const refreshTag = ()=>{ if(idAutoTag) idAutoTag.style.display = lastAutoId !== '' ? '' : 'none'; };
+      const initIdLocal = idInp.value.trim();
+      let lastAutoId = (filter && filter._autoId) ? initIdLocal : '';
+      const refreshTag = ()=>{
+        if(!idAutoTag) return;
+        const on = lastAutoId !== '';
+        idAutoTag.style.display = on ? '' : 'none';
+        idAutoTag.classList.toggle('clickable', on);
+      };
       refreshTag();
+      if(idAutoTag){ idAutoTag.title = 'Click to freeze ID'; idAutoTag.addEventListener('click', ()=>{
+        lastAutoId = '';
+        refreshTag();
+      }); }
       labelInp.addEventListener('input', ()=>{
         const cur = idInp.value.trim();
         if(!cur || cur === lastAutoId){
           const autoId = slugify(labelInp.value) || '';
-          idInp.value = autoId;
-          lastAutoId = autoId;
+          if(autoId){ idInp.value = autoId; lastAutoId = autoId; }
         }
         refreshTag();
       });
@@ -8688,14 +8855,44 @@ function edgeTooltip(edge){
   const tlist = (edge.transforms && edge.transforms.length) ? edge.transforms.map(formatTransformRef).join(' ➜ ') : '';
   return [
     `${edge.from} → ${edge.to}`,
+    edge.label ? `Label: ${edge.label}` : "",
     edge.cardinality ? `Cardinality: ${edge.cardinality}` : "",
     tlist ? `Transform: ${tlist}` : "",
     (edge.default !== "" && edge.default !== undefined) ? `Default: ${edge.default}` : "",
+    (edge.tags && edge.tags.length) ? `Tags: ${edge.tags.map(tid => { const td = tagById(tid); return td ? (tagDisplayLabel(td)||td.label||td.id) : tid; }).join(', ')}` : "",
     edge.note ? `Note: ${edge.note}` : "",
   ].filter(Boolean).join("\n");
 }
 
 
+function edgeTagAttrRowsHtml(rule){
+  let h = '';
+  if(rule?.tags && rule.tags.length){
+    const chips = rule.tags.map(tid=>{
+      const td = tagById(tid);
+      const lbl = td ? (tagDisplayLabel(td)||td.label||td.id) : tid;
+      const c = td ? tagColor(td) : '';
+      return `<span class="tagChip" ${c ? `style="--c:${c};" data-color="1"` : ''}>${escapeHtml(lbl)}</span>`;
+    }).join(' ');
+    h += `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Tags</span><span class="dtRowV" style="display:flex;gap:4px;flex-wrap:wrap;">${chips}</span></div>`;
+  }
+  const ca = rule?.customAttributes || {};
+  const caKeys = Object.keys(ca);
+  if(caKeys.length){
+    const chips = [];
+    caKeys.sort().forEach(aid=>{
+      const raw = ca[aid];
+      const a = customAttrById(aid) || {id:aid,label:aid,abbr:''};
+      const vals = Array.isArray(raw) ? raw : [raw];
+      vals.forEach(vid=>{
+        const v = customValueById(aid, vid) || {id:vid,label:vid};
+        chips.push(`<span class="tagChip">${escapeHtml((customAttrAbbr(a)||aid) + ': ' + (v.label||v.id))}</span>`);
+      });
+    });
+    if(chips.length) h += `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Custom</span><span class="dtRowV" style="display:flex;gap:4px;flex-wrap:wrap;">${chips.join(' ')}</span></div>`;
+  }
+  return h;
+}
 
 function badgeHtml(edge){
   const parts = [];
@@ -8705,6 +8902,14 @@ function badgeHtml(edge){
     parts.push(`<span class="tag" title="Transforms">${escapeHtml(short(tarr.map(formatTransformRef).join(' ➜ '), 34))}</span>`);
   }
   if(edge.default !== "" && edge.default !== undefined) parts.push(`<span class="tag" title="Default">${escapeHtml(short(edge.default, 16))}</span>`);
+  if(edge.tags && edge.tags.length){
+    edge.tags.forEach(tid=>{
+      const td = tagById(tid);
+      const lbl = td ? (tagDisplayLabel(td)||td.label||td.id) : tid;
+      const c = td ? tagColor(td) : '';
+      parts.push(`<span class="tag" title="Tag: ${escapeHtml(td?.label||tid)}" ${c ? `style="background:${c};color:#fff;opacity:.85;"` : ''}>${escapeHtml(lbl)}</span>`);
+    });
+  }
 return parts.join('\n');
 }
 
@@ -8745,7 +8950,7 @@ function miniNodeCard(nodeId){
   const tagIds = sortTagIdsByPriority(normalizeNodeTags(node));
   const chips = tagIds.length ? tagIds.slice(0, 5).map(tid => {
     const td = tagById(tid) || { id:tid, label:tid, abbr:tid.slice(0,1).toUpperCase(), color:'#3b82f6' };
-    return `<span class="tagChip" data-color="1" style="--c:${tagColor(td)};">${escapeHtml(tagAbbr(td)||td.id)}</span>`;
+    return `<span class="tagChip" data-color="1" style="--c:${tagColor(td)};">${escapeHtml(tagDisplayLabel(td)||td.id)}</span>`;
   }).join(' ') : '';
   
   // Custom attributes
@@ -8795,7 +9000,7 @@ function tagsHtmlForDetails(node){
   const chips = tags.map(tid => {
     const td = tagById(tid) || { id: tid, label: tid, abbr: (tid||'').slice(0,1).toUpperCase(), color: DEFAULT_TAG_COLOR };
     const title = (td.label || td.id || '') + (td.note ? (' — ' + td.note) : '');
-    const abbr  = tagAbbr(td);
+    const abbr  = tagDisplayLabel(td);
     const color = tagColor(td);
     return `<span class="tagChip" title="${escapeHtml(title)}" data-color="1" style="--c:${escapeHtml(color)}">${escapeHtml(abbr)}</span>`;
   }).join('');
@@ -9236,6 +9441,7 @@ function updateDetails(nodeId, selectedFieldsSet){
  <span class=\"itemBreak\"></span>
         <span class="txt">${escapeHtml(jumpLabel)}</span>
         ${badgeHtml(edge)}
+        ${edge.label ? `<span class="tag" title="Label" style="font-weight:600;font-size:10px;opacity:.85;">${escapeHtml(edge.label)}</span>` : ''}
         <span class="route">${escapeHtml(route)}</span>${(edge.note && String(edge.note).trim()) ? `<span class="mapNote">${escapeHtml(short(edge.note, 120))}</span>` : ``}
       </li>
     `;
@@ -9969,6 +10175,8 @@ function findChainsThoughHiddenColumns(){
 
 function drawArrows(){
   if(!state.arrowsOn) { edgesLayer.innerHTML = ""; return; }
+  // Remove all edge labels — they are recreated each pass (prevents orphaned burn-in)
+  edgesLayer.querySelectorAll('text.edgeLabel').forEach(el => el.remove());
   // Reset SVG size before measuring to prevent self-inflating scrollWidth
   svgOverlay.style.width = '0';
   svgOverlay.style.height = '0';
@@ -10584,6 +10792,30 @@ function drawArrows(){
         const existingTitle = path.__hitbox.querySelector('title');
         if(existingTitle) existingTitle.textContent = tooltipText;
       }
+      // Create label (all labels cleared at start of each pass)
+      const _showLbl = e.label && !e.labelHidden && (state.showEdgeLabels === 'always' || (state.showEdgeLabels === 'highlight' && (inHL || inActive)));
+      if(_showLbl){
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.classList.add('edgeLabel');
+        lbl.dataset.edgeId = e.id;
+        lbl.textContent = e.label;
+        lbl.classList.toggle('hl', inHL);
+        lbl.classList.toggle('active', inActive);
+        lbl.classList.toggle('dimmed', shouldDimEdges && !inHL && !inActive);
+        const hideLbl = !!(highlightFields) && (state.multiSelectArrowMode === 'selected' || state.multiSelectArrowMode === 'direct') && !state.allArrows;
+        lbl.classList.toggle('fadeOut', !inHL && !inActive && hideLbl);
+        if(edgeColor && !inHL && !inActive) lbl.style.fill = edgeColor;
+        edgesLayer.appendChild(lbl);
+        path.__label = lbl;
+        try{
+          const len = path.getTotalLength();
+          const mid = path.getPointAtLength(len * 0.5);
+          lbl.setAttribute('x', mid.x.toFixed(1));
+          lbl.setAttribute('y', (mid.y - 7).toFixed(1));
+        }catch(ex){}
+      } else {
+        path.__label = null;
+      }
   } else {
       // Create new path (fade-in)
       path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -10902,6 +11134,29 @@ function drawArrows(){
       edgesLayer.appendChild(path);
       edgesLayer.appendChild(hitbox);
       
+      // Edge label text (shown at midpoint of path)
+      const _showLbl2 = e.label && !e.labelHidden && (state.showEdgeLabels === 'always' || (state.showEdgeLabels === 'highlight' && (inHL || inActive)));
+      if(_showLbl2){
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.classList.add('edgeLabel');
+        lbl.dataset.edgeId = e.id;
+        lbl.textContent = e.label;
+        if(inHL) lbl.classList.add('hl');
+        if(inActive) lbl.classList.add('active');
+        const hideEdgeLbl = !!(highlightFields) && (state.multiSelectArrowMode === 'selected' || state.multiSelectArrowMode === 'direct') && !state.allArrows;
+        if(!inHL && !inActive && hideEdgeLbl) lbl.classList.add('fadeOut');
+        else if(shouldDimEdges && !inHL && !inActive) lbl.classList.add('dimmed');
+        if(edgeColor2 && !inHL && !inActive) lbl.style.fill = edgeColor2;
+        edgesLayer.appendChild(lbl);
+        path.__label = lbl;
+        try{
+          const len = path.getTotalLength();
+          const mid = path.getPointAtLength(len * 0.5);
+          lbl.setAttribute('x', mid.x.toFixed(1));
+          lbl.setAttribute('y', (mid.y - 7).toFixed(1));
+        }catch(ex){}
+      }
+      
       // Link hitbox to path for lifecycle management
       path.__hitbox = hitbox;
       
@@ -10937,6 +11192,8 @@ function drawArrows(){
   for(const p of hlPaths) edgesLayer.appendChild(p);
   for(const p of activePaths) edgesLayer.appendChild(p);
   for(const p of selectedPaths) edgesLayer.appendChild(p);
+  // Move all labels above all paths for readability
+  Array.from(edgesLayer.querySelectorAll('text.edgeLabel')).forEach(lbl => edgesLayer.appendChild(lbl));
 }
 
 /* =========================
@@ -12345,6 +12602,19 @@ document.getElementById('wrapToggleBtn')?.addEventListener('click', ()=>{
       renderAll();
     });
   }
+  const edgeLabelSel = document.getElementById('edgeLabelModeSelector');
+  if(edgeLabelSel){
+    edgeLabelSel.querySelectorAll('.dockOpt').forEach(b=>{
+      b.classList.toggle('active', b.dataset.elm === state.showEdgeLabels);
+    });
+    edgeLabelSel.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.dockOpt[data-elm]');
+      if(!btn) return;
+      state.showEdgeLabels = btn.dataset.elm;
+      edgeLabelSel.querySelectorAll('.dockOpt').forEach(b=> b.classList.toggle('active', b.dataset.elm === state.showEdgeLabels));
+      scheduleArrowsUpdate();
+    });
+  }
 })();
 
 // Node color mode selector
@@ -12416,7 +12686,10 @@ function captureViewState(){
     hiddenColumns: [...state.hiddenColumns],
     collapsedGroups,
     edgeColorScheme: state.edgeColorScheme,
-    nodeColorMode: state.nodeColorMode || 'all'
+    nodeColorMode: state.nodeColorMode || 'all',
+    showEdgeLabels: state.showEdgeLabels || 'always',
+    showTagPills: state.showTagPills !== false,
+    showAttrPills: state.showAttrPills !== false
   };
 }
 
@@ -12476,6 +12749,9 @@ function applyViewState(vs){
   state.selectionDim = vs.selectionDim || 'all';
   state.edgeColorScheme = vs.edgeColorScheme || '';
   state.nodeColorMode = vs.nodeColorMode || 'all';
+  state.showEdgeLabels = vs.showEdgeLabels || 'always';
+  state.showTagPills = vs.showTagPills !== false;
+  state.showAttrPills = vs.showAttrPills !== false;
   state.hiddenColumns = new Set(Array.isArray(vs.hiddenColumns) ? vs.hiddenColumns : []);
   state.lockedId = null; state.hoverId = null;
   state.selectedEdgeId = null; state.hoverEdgeId = null;
@@ -12510,6 +12786,12 @@ function applyViewState(vs){
   if(edgeColorSel) edgeColorSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.scheme === state.edgeColorScheme));
   const ncmSelector = document.getElementById('nodeColorModeSelector');
   if(ncmSelector) ncmSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.ncm === state.nodeColorMode));
+  const edgeLabelSel = document.getElementById('edgeLabelModeSelector');
+  if(edgeLabelSel) edgeLabelSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.elm === state.showEdgeLabels));
+  const tagPillsToggle = document.getElementById('showTagPillsToggle');
+  if(tagPillsToggle) tagPillsToggle.checked = state.showTagPills;
+  const attrPillsToggle = document.getElementById('showAttrPillsToggle');
+  if(attrPillsToggle) attrPillsToggle.checked = state.showAttrPills;
 
   renderAll();
   if(Array.isArray(vs.collapsedGroups)){
@@ -12728,7 +13010,7 @@ function renderViewsManager(){
           <div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Full Overview"/></div>
           <div class="k">Emoji</div>
           <div class="v" style="display:flex;align-items:center;gap:6px;">
-            <input class="inp" data-f="emoji" value="${_isNew ? '' : emoji}" placeholder="\u2014" style="width:38px;font-size:15px;text-align:center;padding:2px;" maxlength="4"/>
+            <input class="inp" data-f="emoji" value="${_isNew ? '' : emoji}" placeholder="\u2014" style="width:48px;font-size:15px;text-align:center;padding:2px;" maxlength="4"/>
             <button class="btn veEmojiToggle" style="font-size:11px;padding:2px 5px;" title="Pick emoji">\uD83D\uDE00\u25BE</button>
           </div>
           <div class="k"></div>
@@ -12763,6 +13045,7 @@ function renderViewsManager(){
     const summary = parts.join(' \u00B7 ') || 'Default settings';
 
     return `<div class="catCard catItem viewCard" data-vidx="${idx}" ${editable?'draggable="true"':''} style="margin-bottom:8px;padding:10px 14px;border-radius:10px;border:1px solid ${isActive?'rgba(59,130,246,.5)':'var(--border)'};background:${isActive?'rgba(59,130,246,.07)':'var(--panel)'};display:flex;align-items:center;gap:10px;${editable?'cursor:pointer;':''}" ${editable?'title="Click to edit \u00B7 Drag to reorder"':''}>
+      ${editable?'<span class="catGrip"><svg width="8" height="14" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></span>':''}
       <div style="flex:1;min-width:0;">
         <div style="display:flex;align-items:center;gap:8px;">
           <span style="font-size:16px;">${escapeHtml(v.emoji || '\uD83D\uDCCC')}</span>
@@ -13114,6 +13397,7 @@ function openKbdShortcuts(){
   const sections = [
     { title: 'Navigation (Viewer + Editor)', shortcuts: [
       ['\u2191 / \u2193', 'Move selection up / down in tree'],
+      ['Space', 'Collapse / expand selected group(s)'],
     ]},
     { title: 'Selection', shortcuts: [
       ['Shift+\u2191 / Shift+\u2193', 'Extend multi-selection up / down'],
@@ -13125,10 +13409,14 @@ function openKbdShortcuts(){
       [mod+'+\u2193 / '+mod+'+\u2191', 'Quick-create field below / above with inline rename'],
       [mod+'+'+alt+'+\u2193 / '+mod+'+'+alt+'+\u2191', 'Quick-create group below / above'],
       [mod+'+\u2192', 'Add child field to selected group'],
-      [alt+'+\u2191 / '+alt+'+\u2193', 'Move node up / down'],
-      ['Tab / Shift+Tab', 'Indent / outdent node'],
+      [alt+'+\u2191 / '+alt+'+\u2193', 'Move node(s) up / down'],
+      [alt+'+\u2192 / '+alt+'+\u2190', 'Indent / outdent node(s)'],
+      [mod+'+C / '+mod+'+V', 'Copy / paste node(s)'],
+      [mod+'+D', 'Duplicate node(s)'],
+      [mod+'+G', 'Group selected siblings'],
+      [mod+'+Shift+G', 'Ungroup (dissolve group)'],
       ['F2 / Enter', 'Start inline rename / focus details editor'],
-      [del, 'Delete selected node'],
+      [del, 'Delete selected node(s)'],
     ]},
     { title: 'Views', shortcuts: [
       [mod+'+'+alt+'+S', 'Save current view'],
@@ -13492,7 +13780,8 @@ function openHelp(){
   <li><b>Add nodes</b>: hover a row to reveal ↳ (add child) and ⫶ (context menu) buttons.</li>
   <li><b>Quick-create (keyboard)</b>: select a node and press <b>Ctrl+↓</b> (Cmd+↓) to insert a field below with inline rename. Type a label and press Enter, or press Ctrl+↓ again to rapid-fire more fields. <b>Ctrl+Alt+↓</b> for groups, <b>Ctrl+→</b> for child nodes.</li>
   <li><b>Navigate</b>: <b>↑/↓</b> arrows move selection between nodes. <b>Shift+↑/↓</b> extends multi-selection. <b>Enter</b> focuses the label editor.</li>
-  <li><b>Rearrange</b>: <b>Alt+↑/↓</b> moves a node up/down. <b>Tab</b> indents (into sibling group above), <b>Shift+Tab</b> outdents.</li>
+  <li><b>Rearrange</b>: <b>Alt+↑/↓</b> moves node(s) up/down. <b>Alt+→</b> indents (into sibling group above), <b>Alt+←</b> outdents. All work on multi-selections of siblings.</li>
+  <li><b>Clipboard</b>: <b>Ctrl+C/V</b> copy &amp; paste nodes (with mappings). <b>Ctrl+D</b> duplicates in-place. <b>Ctrl+G</b> wraps selection in a new group, <b>Ctrl+Shift+G</b> dissolves a group.</li>
   <li><b>Convert type</b>: right-click context menu (⫶) to convert a field to group or vice versa.</li>
   <li><b>Create mappings</b>: drag a field onto a field in another column.</li>
   <li><b>Edit properties</b>: click any field/mapping and use the Details pane on the right.</li>
@@ -13519,11 +13808,11 @@ function openHelp(){
 
 <h4 style="margin:14px 0 6px;">5. Organize with catalogs</h4>
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
-  <li><b>Tags</b> &mdash; colored labels for nodes (e.g. Active, Draft, Retired). Drag to set priority order.</li>
-  <li><b>Transforms</b> &mdash; reusable data conversion steps attached to mappings (e.g. Trim, Uppercase). Supports per-instance parameters.</li>
-  <li><b>Custom attributes</b> &mdash; domain metadata on nodes (e.g. Data Type, Sensitivity). Each attribute can have its own <b>color</b> (inherited by values without their own). Each value has a color with an <b>Apply</b> checkbox &mdash; unchecked values inherit from the attribute color. Enable "Display on node" per attribute to show value pills on tree nodes. Pill order: Tags &gt; Attribute priority &gt; Value priority.</li>
+  <li><b>Tags</b> &mdash; colored labels for nodes and edges (e.g. Active, Draft, Retired). Assign emoji and choose Abbr/Emoji display mode. Drag to set priority order.</li>
+  <li><b>Transforms</b> &mdash; reusable data conversion steps attached to mappings (e.g. Trim, Uppercase). Supports per-instance parameters and emoji display.</li>
+  <li><b>Custom attributes</b> &mdash; domain metadata on nodes and edges (e.g. Data Type, Sensitivity). Each attribute can have its own <b>color</b> (inherited by values without their own). Each value has a color with an <b>Apply</b> checkbox. Enable "Display on node" per attribute to show value pills on tree nodes. Inline value creation with drag-and-drop reordering.</li>
   <li><b>Filters</b> &mdash; rule-based visual highlights (see section 4 above). Also managed from the Catalogs toolbar menu.</li>
-  <li><b>Views</b> &mdash; saved snapshots of the viewer state (filters, selection, arrows, collapsed groups, hidden columns, display settings). Click <b>Views</b> in the toolbar to apply a saved view with one click. <b>Save current view</b> (<b>Ctrl+Alt+S</b>) bookmarks the current state. <b>,</b> / <b>.</b> navigate between views. <b>Reset view</b> (<b>Ctrl+Alt+0</b>) returns to clean defaults. A <b>view pill</b> indicator appears in the viewer header when a view is active.</li>
+  <li><b>Views</b> &mdash; saved snapshots of the viewer state (filters, selection, arrows, collapsed groups, hidden columns, edge labels, display settings). Click <b>Views</b> in the toolbar to apply a saved view with one click. <b>Save current view</b> (<b>Ctrl+Alt+S</b>) bookmarks the current state. <b>,</b> / <b>.</b> navigate between views. <b>Reset view</b> (<b>Ctrl+Alt+0</b>) returns to clean defaults. A <b>view pill</b> indicator appears in the viewer header when a view is active.</li>
   <li><b>Inline editing</b> &mdash; click <b>Add</b> to create items directly inside the catalog list. Click any existing item to edit it in place. When creating a node, selecting "+ New tag…" or "+ New attribute…" opens a nested create modal &mdash; the node form is saved and restored automatically.</li>
   <li><b>Auto-ID &amp; abbreviation</b> &mdash; ID and abbreviation auto-generate from the label as you type. A blue <b style="font-size:9px;padding:1px 4px;border-radius:4px;background:rgba(59,130,246,.15);color:rgba(130,180,255,.8);">auto</b> badge shows when a field is linked. Edit the field to override; clear it to re-link.</li>
   <li><b>Save / Cancel / Delete</b> &mdash; Save activates when you make changes. Label is required (marked with <span style="color:rgba(239,130,130,.7);font-weight:700;">*</span>) &mdash; Save stays disabled until a label is entered. New items have no Delete button.</li>
@@ -13544,6 +13833,7 @@ function openHelp(){
   <li><b>Only mapped</b> &mdash; filter to fields that have mappings.</li>
   <li><b>Arrow mode</b> &mdash; <b>Selected</b> (only hovered/selected), <b>All</b> (every arrow), or <b>Off</b>.</li>
   <li><b>Arrow scope</b> &mdash; toggle same-column and distant arrows independently.</li>
+  <li><b>Edge labels</b> &mdash; add labels to mappings that render on the arrow line. Control visibility in Graph menu: <b>Always</b>, <b>Highlight</b> (only when connected to selection), or <b>Off</b>.</li>
   <li><b>ⓘ button</b> &mdash; edit project properties (title, author, description, etc.).</li>
   <li><b>Bright mode</b> &mdash; toggle light/dark theme.</li>
   <li><b>Unsaved changes</b> &mdash; Save buttons turn <span style="color:#f59e0b;font-weight:700;">yellow</span> when there are pending changes. Navigating away from unsaved edits prompts a confirmation.</li>
@@ -13569,6 +13859,43 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.5.0',
+    date: '2026-02-25',
+    highlights: 'Edge tags & attributes, emoji display mode, edge labels, bulk editing, attribute editor UX overhaul',
+    changes: [
+      // Edge metadata
+      '<b>Edge tags</b>: mappings now support tags from the shared tag catalog — same tags used on nodes. Add, remove, and manage tags directly in the mapping editor',
+      '<b>Edge custom attributes</b>: assign custom attribute values to mappings using the shared attribute catalog. Supports single-select and multi-select attributes, plus inline creation of new attributes and values',
+      '<b>Edge labels</b>: mappings now have a <b>Label</b> field — a short freeform text rendered directly on the edge line in the viewer at the curve midpoint. Togglable via <b>Edge labels</b> selector (Always / Highlight / Off) with icon buttons in the Graph menu. Label show/hide checkbox per mapping',
+      '<b>Consolidated view</b>: tag and attribute chips displayed in consolidated and bidirectional edge cards for quick scanning. Tooltips and badge pills in node detail mapping lists',
+      // Emoji system
+      '<b>Emoji fields</b>: tags, transforms, custom attributes, and attribute values now have an optional emoji field with a curated picker palette (😀▾ button)',
+      '<b>Display mode toggle</b>: each catalog item has an explicit <b>Abbr / Emoji</b> toggle controlling which label is shown in node pills, detail panels, filter chips, and transform badges. Auto-switches when emoji is set or cleared',
+      // Bulk editing
+      '<b>Bulk move</b> (<b>Alt+↑/↓</b>): move multiple contiguous siblings up or down as a block',
+      '<b>Bulk indent/outdent</b> (<b>Alt+→/←</b>): indent or outdent multiple siblings at once',
+      '<b>Copy &amp; paste</b> (<b>Ctrl+C/V</b>): copy selected node subtrees with deep clone and mapping duplication. Cross-column paste supported',
+      '<b>Duplicate</b> (<b>Ctrl+D</b>): duplicate selected siblings in-place with full subtree and mapping clone',
+      '<b>Group selection</b> (<b>Ctrl+G</b>): wrap contiguous selected siblings into a new named group',
+      '<b>Ungroup</b> (<b>Ctrl+Shift+G</b>): dissolve groups — moves children to parent level. Now supports multi-selection (ungroups all selected groups at once)',
+      '<b>Collapse/expand toggle</b> (<b>Space</b>): toggle on selected group(s), supports multi-selection',
+      // Attribute editor UX
+      '<b>Attribute editor redesign</b>: compact merged rows (Id+Abbr, Emoji+Display), collapsible emoji grid and color swatches behind 😀▾ and 🎨▾ dropdown buttons',
+      '<b>Inline value creator</b>: replaced "Add value…" modal with inline input — type a label and press Enter. Auto-generates ID, abbreviation, and priority',
+      '<b>Drag-and-drop value reordering</b>: grab the 6-dot handle to reorder values. Full-border blue highlight on drop target. Priority-based ordering',
+      '<b>Catalog drag handles</b>: 6-dot grip icons on all catalog cards (filters, tags, attributes, views) indicating drag-to-reorder support',
+      // Multi-select fixes
+      '<b>Multi-select keyboard fix</b>: all shortcuts (duplicate, group, ungroup, move, indent, outdent, collapse) now work correctly with lasso/marquee multi-selections. Previously, lasso selection set lockedId=null which caused all shortcut guards to bail early',
+      '<b>Browser shortcut conflict fix</b>: Ctrl+D and Ctrl+G now always preventDefault when the app is focused (outside input fields), preventing browser bookmark and find-next dialogs',
+      // UX polish
+      '<b>Auto-ID freeze</b>: clicking the <span class="autoTag" style="pointer-events:none;">auto</span> badge freezes the ID — stops following label changes. Clearing re-enables auto-follow',
+      '<b>Context menu expanded</b>: Copy, Paste, Group selection, and Ungroup actions with keyboard shortcut hints',
+      '<b>View scope expanded</b>: views now capture and restore edge label display mode, tag pill visibility, and attribute pill visibility',
+      '<b>Catalog naming consistency</b>: "Tag manager" → Tags catalog, "Transformation library" → Transforms catalog',
+      '<b>Move button consistency</b>: disabled move arrows show dimmed instead of hidden across all catalogs',
+    ]
+  },
   {
     version: '1.4.1',
     date: '2026-02-24',
@@ -13602,7 +13929,7 @@ const RELEASE_NOTES = [
     date: '2026-02-24',
     highlights: 'Views catalog with inline editing, SVG icon system, context menu redesign, keyboard shortcuts, reset view, view pill indicator',
     changes: [
-      '<b>Views catalog</b>: save and restore viewer state snapshots — filters, selection, arrows, collapse state, hidden columns, edge color scheme, node color mode, and more. <b>Views</b> toolbar button for one-click apply. <b>Save current view</b> (<b>Alt+S</b>) captures current state. <b>Previous view / Next view</b> (<b>Alt+,</b> / <b>Alt+.</b>) navigate between saved views. Full catalog management with inline editing, emoji picker, drag-and-drop reordering, and update snapshot. Click an active view to deactivate (toggle off). Tooltips show view notes on hover. Four sample views in the example project',
+      '<b>Views catalog</b>: save and restore viewer state snapshots — filters, selection, arrows, collapse state, hidden columns, edge color scheme, node color mode, edge label mode, tag/attribute pill visibility, and more. <b>Views</b> toolbar button for one-click apply. <b>Save current view</b> (<b>Alt+S</b>) captures current state. <b>Previous view / Next view</b> (<b>Alt+,</b> / <b>Alt+.</b>) navigate between saved views. Full catalog management with inline editing, emoji picker, drag-and-drop reordering, and update snapshot. Click an active view to deactivate (toggle off). Tooltips show view notes on hover. Four sample views in the example project',
       '<b>View pill indicator</b>: when a view is active, a compact pill appears in the viewer header showing the emoji + label with ‹/› navigation buttons, an × to deactivate, and a dropdown overlay for quick switching',
       '<b>Reset view</b> (<b>Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode — returns to clean-slate state. Available in the Views menu, as an icon button in the viewer toolbar, and in the command palette',
       '<b>Project keyboard shortcuts</b>: <b>Ctrl+N</b> new project, <b>Ctrl+O</b> open project, <b>Ctrl+S</b> save project, <b>Ctrl+E</b> toggle editor mode. All shown in tooltips, command palette, and keyboard shortcuts modal',
@@ -14389,6 +14716,11 @@ function catalogFormIsDirty(){
         if(curId !== (ov.id||'').trim()) return true;
         if(curAbbr !== (ov.abbr||'').trim()) return true;
         if(curNote !== (ov.note||'').trim()) return true;
+        // Emoji and display mode
+        const curEmoji = (row.querySelector('[data-vf="vemoji"]')?.value||'').trim();
+        if(curEmoji !== (ov.emoji||'').trim()) return true;
+        const curDm = row.querySelector('.valDmBtn')?.dataset?.vdm || 'abbr';
+        if(curDm !== (ov.displayMode||'abbr')) return true;
         // Color change via DOM checkbox and live object
         const curColorOn = row.querySelector('[data-vf="vcolorOn"]')?.checked;
         const origColorOn = ov.color ? (ov.colorEnabled !== false) : false;
@@ -14418,6 +14750,8 @@ function catalogFormIsDirty(){
   // Auto-link state change
   if(__editorAutoId !== !!snap._autoId) return true;
   if(__editorAutoAbbr !== !!snap._autoAbbr) return true;
+  // Display mode change (emoji vs abbr)
+  if(__editorDisplayMode !== (snap.displayMode || 'abbr')) return true;
   return false;
 }
 
@@ -14582,40 +14916,47 @@ function _wireLabelToId(card, kind, dataObj){
   const idAutoTag = card.querySelector('[data-auto="id"]');
   const abbrAutoTag = card.querySelector('[data-auto="abbr"]');
 
-  // Determine initial auto state from persisted flag
-  const initLabel = labelInp.value.trim();
-  const initIdAuto = slugify(initLabel) || '';
-  let lastAutoId = (dataObj && dataObj._autoId) ? initIdAuto : '';
+  // Determine initial auto state from persisted flag — use actual ID value for backward compat
+  const initIdLocal = idInp.value.trim();
+  let lastAutoId = (dataObj && dataObj._autoId) ? initIdLocal : '';
   __editorAutoId = lastAutoId !== '';
 
   let lastAutoAbbr = '';
   if(abbrInp){
-    const initAbbrAuto = autoAbbr(initLabel);
-    lastAutoAbbr = (dataObj && dataObj._autoAbbr) ? initAbbrAuto : '';
+    const initAbbrLocal = abbrInp.value.trim();
+    lastAutoAbbr = (dataObj && dataObj._autoAbbr) ? initAbbrLocal : '';
   }
   __editorAutoAbbr = lastAutoAbbr !== '';
 
   const refreshTags = ()=>{
-    if(idAutoTag) idAutoTag.style.display = lastAutoId !== '' ? '' : 'none';
-    if(abbrAutoTag) abbrAutoTag.style.display = lastAutoAbbr !== '' ? '' : 'none';
+    if(idAutoTag){ const on = lastAutoId !== ''; idAutoTag.style.display = on ? '' : 'none'; idAutoTag.classList.toggle('clickable', on); }
+    if(abbrAutoTag){ const on = lastAutoAbbr !== ''; abbrAutoTag.style.display = on ? '' : 'none'; abbrAutoTag.classList.toggle('clickable', on); }
   };
   refreshTags();
+  if(idAutoTag){ idAutoTag.title = 'Click to freeze ID'; idAutoTag.addEventListener('click', ()=>{
+    lastAutoId = '';
+    __editorAutoId = false;
+    refreshTags();
+  }); }
+  if(abbrAutoTag){ abbrAutoTag.title = 'Click to freeze abbreviation'; abbrAutoTag.addEventListener('click', ()=>{
+    lastAutoAbbr = '';
+    __editorAutoAbbr = false;
+    refreshTags();
+  }); }
 
   labelInp.addEventListener('input', ()=>{
     const raw = labelInp.value.trim();
     const cur = idInp.value.trim();
     if(!cur || cur === lastAutoId){
       const autoId = slugify(raw) || '';
-      idInp.value = autoId;
-      lastAutoId = autoId;
+      if(autoId){ idInp.value = autoId; lastAutoId = autoId; }
     }
     __editorAutoId = lastAutoId !== '';
     if(abbrInp){
       const curAbbr = abbrInp.value.trim();
       if(!curAbbr || curAbbr === lastAutoAbbr){
         const a = autoAbbr(raw);
-        abbrInp.value = a;
-        lastAutoAbbr = a;
+        if(a){ abbrInp.value = a; lastAutoAbbr = a; }
       }
     }
     __editorAutoAbbr = lastAutoAbbr !== '';
@@ -14649,6 +14990,44 @@ function _wireLabelToId(card, kind, dataObj){
   }
 
   if(isNew) setTimeout(()=> labelInp.focus(), 50);
+}
+
+function _wireCatalogEmoji(card, dataObj){
+  const emojiInp = card.querySelector('[data-f="emoji"]');
+  const emojiGrid = card.querySelector('.catEmojiGrid');
+  const dmWrap = card.querySelector('.catDmWrap');
+  if(!emojiInp) return;
+  if(emojiGrid){
+    emojiGrid.innerHTML = CATALOG_EMOJI_PICKS.map(e=>`<button class="catEP" data-emoji="${e}" style="font-size:14px;padding:2px 4px;border:1px solid transparent;border-radius:5px;background:transparent;cursor:pointer;line-height:1;" title="${e}">${e}</button>`).join('') + '<button class="catEP" data-emoji="" style="font-size:10px;padding:2px 5px;border:1px solid var(--border);border-radius:5px;background:transparent;cursor:pointer;color:var(--muted);line-height:1;" title="Clear">✕</button>';
+  }
+  __editorDisplayMode = (dataObj && dataObj.displayMode) || 'abbr';
+  const refreshDm = ()=>{
+    if(!dmWrap) return;
+    const has = !!emojiInp.value.trim();
+    dmWrap.querySelectorAll('.catDmOpt').forEach(b=>{
+      b.style.background = b.dataset.dm === __editorDisplayMode ? 'rgba(59,130,246,.25)' : 'transparent';
+      if(b.dataset.dm === 'emoji') b.style.opacity = has ? '1' : '.4';
+    });
+  };
+  card.querySelectorAll('.catEP').forEach(btn => btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    emojiInp.value = btn.dataset.emoji;
+    if(btn.dataset.emoji && __editorDisplayMode === 'abbr') __editorDisplayMode = 'emoji';
+    if(!btn.dataset.emoji && __editorDisplayMode === 'emoji') __editorDisplayMode = 'abbr';
+    refreshDm();
+  }));
+  emojiInp.addEventListener('input', ()=>{
+    if(emojiInp.value.trim() && __editorDisplayMode === 'abbr') __editorDisplayMode = 'emoji';
+    if(!emojiInp.value.trim() && __editorDisplayMode === 'emoji') __editorDisplayMode = 'abbr';
+    refreshDm();
+  });
+  if(dmWrap) dmWrap.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.catDmOpt');
+    if(!btn) return;
+    if(btn.dataset.dm === 'emoji' && !emojiInp.value.trim()) return;
+    __editorDisplayMode = btn.dataset.dm;
+    refreshDm();
+  });
 }
 
 // --- Guard for filter edits ---
@@ -14730,6 +15109,7 @@ function renderTagsManager(){
     const id = escapeHtml(t.id||'');
     const label = escapeHtml(t.label||'');
     const abbr = escapeHtml(t.abbr||'');
+    const displayLbl = escapeHtml(tagDisplayLabel(t));
     const color = t.color || DEFAULT_TAG_COLOR;
     const note = escapeHtml(t.note||'');
     const isEditing = catalogIsEditing('tag', idx);
@@ -14739,7 +15119,8 @@ function renderTagsManager(){
     if(!isEditing){
       const editable = state.editorMode;
       return `<div class="mapCard catItem" data-tidx="${idx}" data-sort-pos="${sortPos}" ${editable?'draggable="true"':''} style="margin-bottom:10px;${editable?'cursor:pointer;':''}padding:12px 14px;display:flex;align-items:center;gap:10px;" ${editable?'title="Click to edit · Drag to reorder"':''}>
-        <span class="tagChip" style="background:${escapeHtml(color)};color:#fff;font-size:12px;pointer-events:none;flex-shrink:0;">${abbr || label.charAt(0).toUpperCase()}</span>
+        ${editable?'<span class="catGrip"><svg width="8" height="14" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></span>':''}
+        <span class="tagChip" style="background:${escapeHtml(color)};color:#fff;font-size:12px;pointer-events:none;flex-shrink:0;">${displayLbl}</span>
         <div style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:8px;">
             <strong style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${label}</strong>
@@ -14747,16 +15128,28 @@ function renderTagsManager(){
           </div>
           ${note ? `<div class="empty" style="margin-top:4px;font-size:11px;">${note}</div>` : ''}
         </div>
-        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-tidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-tidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
+        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-tidx="${idx}" title="Move up" ${isFirst?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-tidx="${idx}" title="Move down" ${isLast?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
       </div>`;
     }
     const _isNew = isEditing && __catalogEdit.isNew;
     return `<div class="mapCard catItem catEditing" data-tidx="${idx}" style="margin-bottom:12px;border-color:rgba(59,130,246,.5);padding:12px 14px;">
-      <div class="kv" style="grid-template-columns: 90px 1fr;">
+      <div class="kv" style="grid-template-columns: 70px 1fr;">
         <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Critical"/></div>
-        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
-        <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="S"/></div>
+        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div>
+        <div class="v" style="display:flex;gap:8px;align-items:center;">
+          <input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;flex:1;"/>
+          <span style="font-size:10px;opacity:.35;flex-shrink:0;">Abbr</span><span class="autoTag" data-auto="abbr">auto</span>
+          <input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="S" style="width:55px;flex:0 0 auto;text-align:center;font-size:11px;"/>
+        </div>
+        <div class="k">Emoji</div>
+        <div class="v" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <input class="inp" data-f="emoji" value="${_isNew ? '' : escapeHtml(cat[idx]?.emoji||'')}" style="width:48px;text-align:center;font-size:16px;flex:0 0 auto;" placeholder="—" maxlength="4"/>
+          <button class="btn catEmojiToggle" type="button" style="font-size:11px;padding:2px 5px;" title="Pick emoji">😀▾</button>
+          <div class="catDmWrap" style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;"><button class="catDmOpt" data-dm="abbr" style="padding:2px 10px;font-size:11px;border:none;cursor:pointer;background:${(cat[idx]?.displayMode==='emoji')?'transparent':'rgba(59,130,246,.25)'};color:var(--fg);transition:all .15s;">Abbr</button><button class="catDmOpt" data-dm="emoji" style="padding:2px 10px;font-size:11px;border:none;border-left:1px solid var(--border);cursor:pointer;background:${(cat[idx]?.displayMode==='emoji')?'rgba(59,130,246,.25)':'transparent'};color:var(--fg);opacity:${cat[idx]?.emoji?'1':'.4'};transition:all .15s;">Emoji</button></div>
+        </div>
+        <div class="k"></div>
+        <div class="v"><div class="catEmojiGrid" style="display:none;flex-wrap:wrap;gap:2px;margin-top:2px;"></div></div>
         <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${escapeHtml(color||'#3b82f6')}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${(color && cat[idx]?.colorEnabled!==false)?'':'opacity:.3;'}"/><input class="inp" data-f="color" value="${escapeHtml(color)}" placeholder="#3b82f6" style="flex:1;"/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="colorOn" ${(color && cat[idx]?.colorEnabled!==false)?'checked':''}/> Apply</label></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
       </div>
@@ -14925,6 +15318,8 @@ function renderTagsManager(){
       t.label = newLabel; t.abbr = newAbbr; t.color = newColor; t.note = newNote;
       t.colorEnabled = newColorOn !== false;
       t._autoId = __editorAutoId; t._autoAbbr = __editorAutoAbbr;
+      t.emoji = (card.querySelector('[data-f="emoji"]')?.value||'').trim() || undefined;
+      t.displayMode = __editorDisplayMode;
       if(newId !== t.id){
         const result = reIdTagInData(state.data, t.id, newId);
         if(result === t.id) setGlobalStatus('Tag ID conflict \u2014 not changed.');
@@ -14947,6 +15342,9 @@ function renderTagsManager(){
     });
     wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'tag', cat[idx]);
+    _wireCatalogEmoji(card, cat[idx]);
+    { const _tb = card.querySelector('.catEmojiToggle'); const _tg = card.querySelector('.catEmojiGrid');
+      if(_tb && _tg) _tb.addEventListener('click', e=>{ e.preventDefault(); const v = _tg.style.display!=='none'; _tg.style.display = v?'none':'flex'; _tb.textContent = v?"😀▾":"😀▴"; }); }
   });
 }
 
@@ -14975,6 +15373,7 @@ function renderTransformsManager(){
     const id = escapeHtml(t.id||'');
     const label = escapeHtml(t.label||'');
     const abbr = escapeHtml(t.abbr||'');
+    const trDispLbl = escapeHtml(transformDisplayLabel(t));
     const note = escapeHtml(t.note||'');
     const isEditing = catalogIsEditing('transform', idx);
 
@@ -14986,7 +15385,7 @@ function renderTransformsManager(){
       return `<div class="mapCard catItem" data-tidx="${idx}" style="margin-bottom:8px;${editable?'cursor:pointer;':''}" ${editable?'title="Click to edit"':''}>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           ${tColorDot}
-          ${abbr ? `<span class="tagChip" style="font-size:12px;pointer-events:none;${t.color?'background:'+escapeHtml(t.color)+';color:#fff;':''}">${abbr}</span>` : ''}
+          ${trDispLbl ? `<span class="tagChip" style="font-size:12px;pointer-events:none;${t.color?'background:'+escapeHtml(t.color)+';color:#fff;':''}">${trDispLbl}</span>` : ''}
           <strong style="flex:1;">${label}${paramInfo}</strong>
           <code style="font-size:10px;opacity:.5;">${id}</code>${isLikelyAutoId(t) ? '<span class="autoTag" style="font-size:8px;padding:0 4px;">auto</span>' : ''}
         </div>
@@ -15009,10 +15408,22 @@ function renderTransformsManager(){
     const _isNew = isEditing && __catalogEdit.isNew;
     const tColor = escapeHtml(t.color||'');
     return `<div class="mapCard catItem catEditing" data-tidx="${idx}" style="margin-bottom:10px;border-color:rgba(59,130,246,.5);">
-      <div class="kv" style="grid-template-columns: 90px 1fr;">
+      <div class="kv" style="grid-template-columns: 70px 1fr;">
         <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Trim whitespace"/></div>
-        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
-        <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TR"/></div>
+        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div>
+        <div class="v" style="display:flex;gap:8px;align-items:center;">
+          <input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;flex:1;"/>
+          <span style="font-size:10px;opacity:.35;flex-shrink:0;">Abbr</span><span class="autoTag" data-auto="abbr">auto</span>
+          <input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TR" style="width:55px;flex:0 0 auto;text-align:center;font-size:11px;"/>
+        </div>
+        <div class="k">Emoji</div>
+        <div class="v" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <input class="inp" data-f="emoji" value="${_isNew ? '' : escapeHtml(t.emoji||'')}" style="width:48px;text-align:center;font-size:16px;flex:0 0 auto;" placeholder="—" maxlength="4"/>
+          <button class="btn catEmojiToggle" type="button" style="font-size:11px;padding:2px 5px;" title="Pick emoji">😀▾</button>
+          <div class="catDmWrap" style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;"><button class="catDmOpt" data-dm="abbr" style="padding:2px 10px;font-size:11px;border:none;cursor:pointer;background:${(t.displayMode==='emoji')?'transparent':'rgba(59,130,246,.25)'};color:var(--fg);transition:all .15s;">Abbr</button><button class="catDmOpt" data-dm="emoji" style="padding:2px 10px;font-size:11px;border:none;border-left:1px solid var(--border);cursor:pointer;background:${(t.displayMode==='emoji')?'rgba(59,130,246,.25)':'transparent'};color:var(--fg);opacity:${t.emoji?'1':'.4'};transition:all .15s;">Emoji</button></div>
+        </div>
+        <div class="k"></div>
+        <div class="v"><div class="catEmojiGrid" style="display:none;flex-wrap:wrap;gap:2px;margin-top:2px;"></div></div>
         <div class="k">Color</div><div class="v"><div data-f="colorSwatches" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div><div style="display:flex;align-items:center;gap:6px;"><input type="color" data-f="colorPicker" value="${tColor||'#6b7280'}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${tColor && t.colorEnabled!==false?'':'opacity:.3;'}"/><input class="inp" data-f="color" value="${tColor}" placeholder="optional" style="flex:1;"/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="colorOn" ${(tColor && t.colorEnabled!==false)?'checked':''}/> Apply</label><span class="layoutReset trColorReset" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);">↺</span></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
         <div class="k">Params</div><div class="v">
@@ -15077,6 +15488,8 @@ function renderTransformsManager(){
       if(__catalogEdit.isNew) cat.splice(idx, 0, t);
       t.label = newLabel; t.abbr = newAbbr; t.note = newNote;
       t._autoId = __editorAutoId; t._autoAbbr = __editorAutoAbbr;
+      t.emoji = (card.querySelector('[data-f="emoji"]')?.value||'').trim() || undefined;
+      t.displayMode = __editorDisplayMode;
       const newColor = (card.querySelector('[data-f="color"]')?.value||'').trim();
       const newColorOn = card.querySelector('[data-f="colorOn"]')?.checked;
       if(newColor) t.color = newColor; else delete t.color;
@@ -15217,6 +15630,9 @@ function renderTransformsManager(){
     });
     wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'transform', cat[idx]);
+    _wireCatalogEmoji(card, cat[idx]);
+    { const _tb = card.querySelector('.catEmojiToggle'); const _tg = card.querySelector('.catEmojiGrid');
+      if(_tb && _tg) _tb.addEventListener('click', e=>{ e.preventDefault(); const v = _tg.style.display!=='none'; _tg.style.display = v?'none':'flex'; _tb.textContent = v?"😀▾":"😀▴"; }); }
   });
 }
 function openTransforms(){
@@ -15280,16 +15696,18 @@ function renderCustomAttrsManager(){
         const c = escapeHtml(vColorEnabled ? v.color : (attrColorEnabled ? a.color : ''));
         const dimmed = v.color && !vColorEnabled ? 'opacity:.4;' : '';
         const vabbr = escapeHtml(v.abbr||'');
+        const vDispLbl = escapeHtml(attrValDisplayLabel(v));
         const vlbl = escapeHtml(v.label||v.id);
-        return `<span style="display:inline-flex;align-items:center;gap:3px;white-space:nowrap;${dimmed}">${c ? `<span style="width:8px;height:8px;border-radius:3px;background:${c};display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.12);"></span>` : ''}${vabbr ? `<b style="font-size:10px;">${vabbr}</b> ` : ''}${vlbl}</span>`;
+        return `<span style="display:inline-flex;align-items:center;gap:3px;white-space:nowrap;${dimmed}">${c ? `<span style="width:8px;height:8px;border-radius:3px;background:${c};display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.12);"></span>` : ''}${vDispLbl ? `<b style="font-size:10px;">${vDispLbl}</b> ` : ''}${vlbl}</span>`;
       }).join('<span style="opacity:.3;">, </span>');
       const attrColorDot = (a.color && a.colorEnabled !== false) ? `<span style="width:10px;height:10px;border-radius:4px;background:${escapeHtml(a.color)};display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.15);"></span>` : '';
       const displayBadge = a.displayOnNode ? '<span style="font-size:9px;opacity:.4;margin-left:4px;" title="Displayed on nodes">●</span>' : '';
       return `<div class="mapCard catItem" data-aidx="${idx}" data-sort-pos="${sortPos}" ${editable?'draggable="true"':''} style="margin-bottom:10px;${editable?'cursor:pointer;':''}padding:12px 14px;display:flex;align-items:center;gap:10px;" ${editable?'title="Click to edit · Drag to reorder"':''}>
+        ${editable?'<span class="catGrip"><svg width="8" height="14" viewBox="0 0 8 14" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="6" cy="2" r="1.2"/><circle cx="2" cy="7" r="1.2"/><circle cx="6" cy="7" r="1.2"/><circle cx="2" cy="12" r="1.2"/><circle cx="6" cy="12" r="1.2"/></svg></span>':''}
         ${attrColorDot}
         <div style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            ${abbr ? `<span class="tagChip" style="font-size:12px;pointer-events:none;">${escapeHtml(abbr)}</span>` : ''}
+            ${(a.emoji||abbr) ? `<span class="tagChip" style="font-size:12px;pointer-events:none;">${escapeHtml(attrDisplayLabel(a))}</span>` : ''}
             <strong style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${label}${displayBadge}</strong>
             <span style="font-size:11px;opacity:.5;">${a.multi ? 'multi' : 'single'} \u00b7 ${vals.length} value${vals.length!==1?'s':''}</span>
             <code style="font-size:10px;opacity:.5;flex-shrink:0;">${id}</code>${isLikelyAutoId(a) ? '<span class="autoTag" style="font-size:8px;padding:0 4px;">auto</span>' : ''}
@@ -15297,8 +15715,8 @@ function renderCustomAttrsManager(){
           ${vals.length ? `<div class="empty" style="margin-top:4px;font-size:11px;display:flex;flex-wrap:wrap;gap:2px 6px;align-items:center;">${valDots}</div>` : ''}
           ${note ? `<div class="empty" style="margin-top:2px;font-size:11px;">${note}</div>` : ''}
         </div>
-        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-aidx="${idx}" title="Move up" ${isFirst?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
-        <button class="btn catMoveBtn" data-act="moveDown" data-aidx="${idx}" title="Move down" ${isLast?'style="visibility:hidden;"':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
+        ${editable ? `<div class="catActions"><button class="btn catMoveBtn" data-act="moveUp" data-aidx="${idx}" title="Move up" ${isFirst?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="3"/><polyline points="3.5,5.5 6,3 8.5,5.5"/></svg></button>
+        <button class="btn catMoveBtn" data-act="moveDown" data-aidx="${idx}" title="Move down" ${isLast?'disabled':''}><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="9"/><polyline points="3.5,6.5 6,9 8.5,6.5"/></svg></button></div>` : ''}
       </div>`;
     }
 
@@ -15317,39 +15735,63 @@ function renderCustomAttrsManager(){
       const vabbr = escapeHtml(v.abbr||'');
       const vFirst = vSortPos === 0;
       const vLast = vSortPos === sortedValIdxs.length - 1;
-      return `<div class="attrValRow" data-vi="${vi}" style="margin-top:6px;">
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-          <button class="btn catValMoveBtn" data-act="valUp" data-vi="${vi}" title="Move up" ${vFirst?'style="visibility:hidden;"':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="8" x2="5" y2="2"/><polyline points="3,4 5,2 7,4"/></svg></button>
-          <button class="btn catValMoveBtn" data-act="valDown" data-vi="${vi}" title="Move down" ${vLast?'style="visibility:hidden;"':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="2" x2="5" y2="8"/><polyline points="3,6 5,8 7,6"/></svg></button>
-          <input class="inp" data-vf="vlabel" data-vi="${vi}" value="${vlabel}" placeholder="Label" style="flex:1 1 80px;"/>
-          <input class="inp" data-vf="vid" data-vi="${vi}" data-orig-id="${vid}" value="${vid}" style="font-family:var(--mono);font-size:11px;max-width:80px;flex:0 0 auto;" title="Value ID"/><span class="autoTag" data-auto="vid" data-vi="${vi}">auto</span>
-          <input class="inp" data-vf="vabbr" data-vi="${vi}" value="${vabbr}" placeholder="Abbr" style="max-width:50px;flex:0 0 auto;font-size:11px;" title="Abbreviation (shown as pill on nodes)"/><span class="autoTag" data-auto="vabbr" data-vi="${vi}">auto</span>
-          <input type="color" data-vf="vcolor" data-vi="${vi}" value="${vcolor||'#6b7280'}" style="width:24px;height:20px;padding:0;border:1px solid var(--border);border-radius:3px;cursor:pointer;${vcolor && v.colorEnabled!==false?'':'opacity:.3;'}" title="Value color (used in edge coloring)"/>
-          <label style="font-size:10px;cursor:pointer;display:inline-flex;align-items:center;gap:2px;flex-shrink:0;"><input type="checkbox" data-vf="vcolorOn" data-vi="${vi}" ${(vcolor && v.colorEnabled!==false)?'checked':''} style="margin:0;"/> Apply</label>
-          <span class="layoutReset attrValColorReset" data-vi="${vi}" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);transition:opacity .15s;">↺</span>
-          <button class="btn attrValSwatchBtn" data-vi="${vi}" style="font-size:10px;padding:1px 5px;" title="Show color presets">🎨</button>
-          <input class="inp" data-vf="vnote" data-vi="${vi}" value="${vnote}" placeholder="Note" style="flex:1 1 80px;"/>
-          <button class="btn" data-act="delVal" data-vi="${vi}" style="border-color:rgba(255,154,168,.45);">\u00d7</button>
+      return `<div class="attrValRow" data-vi="${vi}" draggable="true" style="margin-top:4px;padding:7px 10px 7px 32px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.015);position:relative;cursor:grab;">
+        <div style="position:absolute;left:4px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:18px;padding:4px 0;">
+          <button class="btn catValMoveBtn" data-act="valUp" data-vi="${vi}" title="Move up" ${vFirst?'disabled':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="8" x2="5" y2="2"/><polyline points="3,4 5,2 7,4"/></svg></button>
+          <span class="valDragHandle" style="cursor:grab;opacity:.25;line-height:0;user-select:none;" title="Drag to reorder"><svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="2" r="1.3"/><circle cx="7" cy="2" r="1.3"/><circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="3" cy="12" r="1.3"/><circle cx="7" cy="12" r="1.3"/></svg></span>
+          <button class="btn catValMoveBtn" data-act="valDown" data-vi="${vi}" title="Move down" ${vLast?'disabled':''}><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="2" x2="5" y2="8"/><polyline points="3,6 5,8 7,6"/></svg></button>
         </div>
-        <div class="attrValSwatchPanel" data-vi="${vi}" style="display:none;margin:4px 0 2px 0;padding:4px 0;"></div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input class="inp" data-vf="vlabel" data-vi="${vi}" value="${vlabel}" placeholder="Label" style="flex:1 1 100px;"/>
+          <input class="inp" data-vf="vid" data-vi="${vi}" data-orig-id="${vid}" value="${vid}" style="font-family:var(--mono);font-size:11px;max-width:90px;flex:0 1 90px;" title="Value ID"/><span class="autoTag" data-auto="vid" data-vi="${vi}">auto</span>
+          <button class="btn" data-act="delVal" data-vi="${vi}" style="border-color:rgba(255,154,168,.45);flex-shrink:0;padding:2px 7px;font-size:11px;">\u00d7</button>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap;">
+          <input class="inp" data-vf="vabbr" data-vi="${vi}" value="${vabbr}" placeholder="Abbr" style="width:45px;flex:0 0 auto;font-size:11px;text-align:center;" title="Abbreviation"/><span class="autoTag" data-auto="vabbr" data-vi="${vi}">auto</span>
+          <input class="inp valEmojiInp" data-vf="vemoji" data-vi="${vi}" value="${escapeHtml(v.emoji||'')}" placeholder="—" style="width:48px;text-align:center;font-size:14px;flex:0 0 auto;" title="Emoji"/>
+          <button class="btn valEmojiBtn" data-vi="${vi}" style="font-size:11px;padding:2px 5px;flex-shrink:0;" title="Pick emoji">😀▾</button>
+          <button class="btn valDmBtn" data-vi="${vi}" data-vdm="${v.displayMode||'abbr'}" style="font-size:9px;padding:1px 5px;opacity:${v.emoji?'1':'.4'};flex-shrink:0;" title="Toggle display: Abbreviation or Emoji">${(v.displayMode==='emoji'&&v.emoji)?'Emoji':'Abbr'}</button>
+          <span style="width:1px;height:14px;background:var(--border);flex-shrink:0;opacity:.5;"></span>
+          <input type="color" data-vf="vcolor" data-vi="${vi}" value="${vcolor||'#6b7280'}" style="width:22px;height:18px;padding:0;border:1px solid var(--border);border-radius:3px;cursor:pointer;flex-shrink:0;${vcolor && v.colorEnabled!==false?'':'opacity:.3;'}" title="Value color"/>
+          <button class="btn attrValSwatchBtn" data-vi="${vi}" style="font-size:11px;padding:2px 5px;flex-shrink:0;" title="Color presets">🎨▾</button>
+          <label style="font-size:10px;cursor:pointer;display:inline-flex;align-items:center;gap:2px;flex-shrink:0;"><input type="checkbox" data-vf="vcolorOn" data-vi="${vi}" ${(vcolor && v.colorEnabled!==false)?'checked':''} style="margin:0;"/> Apply</label>
+          <span class="layoutReset attrValColorReset" data-vi="${vi}" title="Reset color" style="opacity:.3;cursor:pointer;font-size:11px;color:var(--muted);">↺</span>
+          <span style="width:1px;height:14px;background:var(--border);flex-shrink:0;opacity:.5;"></span>
+          <input class="inp" data-vf="vnote" data-vi="${vi}" value="${vnote}" placeholder="Note" style="flex:1 1 80px;font-size:11px;"/>
+        </div>
+        <div class="valEmojiGrid" data-vi="${vi}" style="display:none;flex-wrap:wrap;gap:2px;margin:4px 0 0 0;"></div>
+        <div class="attrValSwatchPanel" data-vi="${vi}" style="display:none;margin:4px 0 0 0;padding:4px 0;"></div>
       </div>`;
     }).join('');
 
     const _isNew = isEditing && __catalogEdit.isNew;
     return `<div class="mapCard catItem catEditing" data-aidx="${idx}" style="margin-bottom:10px;border-color:rgba(59,130,246,.5);">
-      <div class="kv" style="grid-template-columns: 90px 1fr;">
+      <div class="kv" style="grid-template-columns: 70px 1fr;">
         <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" data-f="label" value="${_isNew ? '' : label}" placeholder="e.g. Status"/></div>
-        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div><div class="v"><input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;"/></div>
-        <div class="k">Abbr <span class="autoTag" data-auto="abbr">auto</span></div><div class="v"><input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TY"/></div>
+        <div class="k">Id <span class="autoTag" data-auto="id">auto</span></div>
+        <div class="v" style="display:flex;gap:8px;align-items:center;">
+          <input class="inp" data-f="id" value="${_isNew ? '' : id}" placeholder="auto" style="font-family:var(--mono);font-size:11px;flex:1;"/>
+          <span style="font-size:10px;opacity:.35;flex-shrink:0;">Abbr</span><span class="autoTag" data-auto="abbr">auto</span>
+          <input class="inp" data-f="abbr" value="${_isNew ? '' : abbr}" placeholder="TY" style="width:55px;flex:0 0 auto;text-align:center;font-size:11px;"/>
+        </div>
+        <div class="k">Emoji</div>
+        <div class="v" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <input class="inp" data-f="emoji" value="${_isNew ? '' : escapeHtml(a.emoji||'')}" style="width:48px;text-align:center;font-size:16px;flex:0 0 auto;" placeholder="—" maxlength="4"/>
+          <button class="btn catEmojiToggle" type="button" style="font-size:11px;padding:2px 5px;" title="Pick emoji">😀▾</button>
+          <div class="catDmWrap" style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;"><button class="catDmOpt" data-dm="abbr" style="padding:2px 10px;font-size:11px;border:none;cursor:pointer;background:${(a.displayMode==='emoji')?'transparent':'rgba(59,130,246,.25)'};color:var(--fg);transition:all .15s;">Abbr</button><button class="catDmOpt" data-dm="emoji" style="padding:2px 10px;font-size:11px;border:none;border-left:1px solid var(--border);cursor:pointer;background:${(a.displayMode==='emoji')?'rgba(59,130,246,.25)':'transparent'};color:var(--fg);opacity:${a.emoji?'1':'.4'};transition:all .15s;">Emoji</button></div>
+        </div>
+        <div class="k"></div>
+        <div class="v"><div class="catEmojiGrid" style="display:none;flex-wrap:wrap;gap:2px;margin-top:2px;"></div></div>
         <div class="k">Note</div><div class="v"><input class="inp" data-f="note" value="${_isNew ? '' : note}" placeholder="optional"/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-          <div data-f="attrColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
-          <div style="display:flex;align-items:center;gap:6px;flex-basis:100%;">
+          <div style="display:flex;align-items:center;gap:6px;">
           <input type="color" data-f="attrColorPicker" value="${a.color||'#6b7280'}" style="width:28px;height:22px;padding:0;border:1px solid var(--border);border-radius:4px;cursor:pointer;${a.color && a.colorEnabled!==false?'':'opacity:.3;'}"/>
           <input class="inp" data-f="attrColorHex" value="${escapeHtml(a.color && a.colorEnabled!==false ? a.color : '')}" placeholder="optional" style="flex:1;font-family:var(--mono);font-size:11px;max-width:100px;"/>
+          <button class="btn attrSwatchToggle" type="button" style="font-size:11px;padding:2px 5px;" title="Color presets">🎨▾</button>
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-f="attrColorOn" ${(a.color && a.colorEnabled!==false)?'checked':''}/> Apply</label>
           <span class="layoutReset attrColorReset" title="Reset color" style="opacity:.3;cursor:pointer;font-size:12px;color:var(--muted);">↺</span>
           </div>
+          <div data-f="attrColorSwatches" style="display:none;gap:3px;flex-wrap:wrap;flex-basis:100%;"></div>
           <span style="font-size:10px;opacity:.4;">Inherited by values without color</span>
         </div>
         <div class="k">Options</div>
@@ -15363,11 +15805,12 @@ function renderCustomAttrsManager(){
             Display on node
           </label>
         </div>
-        <div class="k">Values</div>
-        <div class="v">
+        <div class="k" style="padding-top:10px;">Values</div>
+        <div class="v" style="padding-top:6px;">
           ${valsHtml || '<div class="empty">No values yet.</div>'}
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
-            <button class="btn" data-act="addVal">Add value\u2026</button>
+          <div class="inlineValCreator" style="margin-top:6px;display:flex;gap:6px;align-items:center;padding:5px 10px 5px 32px;border:1px dashed var(--border);border-radius:8px;opacity:.6;transition:opacity .15s;">
+            <input class="inp" data-act="inlineValLabel" placeholder="Type a value label and press Enter…" style="flex:1;font-size:12px;"/>
+            <button class="btn" data-act="addVal" style="font-size:10px;padding:2px 8px;flex-shrink:0;">+ Add</button>
           </div>
         </div>
       </div>
@@ -15534,6 +15977,12 @@ function renderCustomAttrsManager(){
         // Abbreviation
         const vabbrVal = (vabbrInp?.value||'').trim();
         if(vabbrVal) vObj.abbr = vabbrVal;
+        // Emoji and display mode
+        const vemojiInp = card.querySelector(`[data-vf="vemoji"][data-vi="${vi}"]`);
+        const vemojiVal = (vemojiInp?.value||'').trim();
+        if(vemojiVal) vObj.emoji = vemojiVal;
+        const vdmBtn = card.querySelector(`.valDmBtn[data-vi="${vi}"]`);
+        vObj.displayMode = vdmBtn?.dataset?.vdm || 'abbr';
         // Only store color if the picker was actively used (not the placeholder gray)
         const vcolorVal = vcolorInp?.value || '';
         const vcolorOnCb = card.querySelector(`[data-vf="vcolorOn"][data-vi="${vi}"]`);
@@ -15544,12 +15993,25 @@ function renderCustomAttrsManager(){
         newValues.push(vObj);
       });
 
+      // Enforce unique value IDs on save
+      {
+        const seenIds = new Set();
+        for(const vObj of newValues){
+          if(!vObj.id || seenIds.has(vObj.id)){
+            vObj.id = ensureUniqueId(vObj.id || 'val', seenIds);
+          }
+          seenIds.add(vObj.id);
+        }
+      }
+
       // For new items, remove placeholder before snapshot so undo doesn't include it
       if(__catalogEdit.isNew) cat.splice(idx, 1);
       recordChange();
       if(__catalogEdit.isNew) cat.splice(idx, 0, a);
       a.label = newLabel; a.abbr = newAbbr; a.note = newNote; a.multi = newMulti;
       a._autoId = __editorAutoId; a._autoAbbr = __editorAutoAbbr;
+      a.emoji = (card.querySelector('[data-f="emoji"]')?.value||'').trim() || undefined;
+      a.displayMode = __editorDisplayMode;
       a.displayOnNode = newDisplayOnNode;
       // Attribute-level color
       const attrColorPicker = card.querySelector('[data-f="attrColorPicker"]');
@@ -15601,28 +16063,33 @@ function renderCustomAttrsManager(){
       });
     });
 
-    // Add value
-    card.querySelector('[data-act="addVal"]')?.addEventListener('click', ()=>{
-      const taken = new Set((a.values||[]).map(v=>v && v.id).filter(Boolean));
-      openCreateModal({
-        kind:'customAttrValue',
-        title:`Add value to ${a.label||a.id}`,
-        placeholder:'Value label\u2026',
-        hint:'ID is generated from the value label.',
-        taken,
-        onCommit: ({label,id,note,color,abbr,_autoId,_autoAbbr})=>{
-          if(!Array.isArray(a.values)) a.values = [];
-          // Auto-assign next priority
-          let maxVP = 0;
-          a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
-          const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
-          if(abbr) vObj.abbr = abbr;
-          if(color) { vObj.color = color; vObj.colorEnabled = true; }
-          a.values.push(vObj);
-          renderCustomAttrsManager();
-        }
-      });
-    });
+    // Inline value creator
+    const inlineValInput = card.querySelector('[data-act="inlineValLabel"]');
+    const inlineAddBtn = card.querySelector('[data-act="addVal"]');
+    const _commitInlineVal = ()=>{
+      const lbl = (inlineValInput?.value||'').trim();
+      if(!lbl) return;
+      if(!Array.isArray(a.values)) a.values = [];
+      const taken = new Set(a.values.map(v=>v?.id).filter(Boolean));
+      const baseId = idPartFromLabel(lbl, {lower:true}) || 'val';
+      const id = ensureUniqueId(baseId, taken);
+      const baseAbbr = lbl.replace(/\s+/g,'').slice(0,3).toUpperCase();
+      let maxVP = 0;
+      a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
+      a.values.push({id, label:lbl, abbr:baseAbbr, note:'', priority:maxVP+1, _autoId:true, _autoAbbr:true});
+      if(inlineValInput) inlineValInput.value = '';
+      renderCustomAttrsManager();
+    };
+    if(inlineValInput){
+      inlineValInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); _commitInlineVal(); } });
+      // Focus on the inline input for quick entry
+      const creator = card.querySelector('.inlineValCreator');
+      if(creator){
+        inlineValInput.addEventListener('focus', ()=> creator.style.opacity='1');
+        inlineValInput.addEventListener('blur', ()=>{ if(!inlineValInput.value.trim()) creator.style.opacity='.6'; });
+      }
+    }
+    if(inlineAddBtn) inlineAddBtn.addEventListener('click', _commitInlineVal);
 
     // Value color picker
     card.querySelectorAll('[data-vf="vcolor"]').forEach(inp=>{
@@ -15702,6 +16169,54 @@ function renderCustomAttrsManager(){
       });
     });
 
+    // Value row drag-and-drop reordering
+    {
+      let __valDragVi = null;
+      card.querySelectorAll('.attrValRow').forEach(row=>{
+        const vi = Number(row.dataset.vi);
+        // Prevent drag when interacting with inputs
+        row.querySelectorAll('input, select, button').forEach(el=>{
+          el.addEventListener('mousedown', ()=>{ row.draggable = false; });
+          el.addEventListener('mouseup', ()=>{ row.draggable = true; });
+        });
+        row.addEventListener('dragstart', (e)=>{
+          __valDragVi = vi;
+          row.style.opacity = '0.4';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', '');
+        });
+        row.addEventListener('dragend', ()=>{
+          row.style.opacity = '';
+          row.draggable = true;
+          card.querySelectorAll('.attrValRow').forEach(r => r.classList.remove('valDragOver'));
+          __valDragVi = null;
+        });
+        row.addEventListener('dragover', (e)=>{
+          if(__valDragVi === null || __valDragVi === vi) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          card.querySelectorAll('.attrValRow').forEach(r => r.classList.remove('valDragOver'));
+          row.classList.add('valDragOver');
+        });
+        row.addEventListener('dragleave', ()=>{ row.classList.remove('valDragOver'); });
+        row.addEventListener('drop', (e)=>{
+          e.preventDefault();
+          card.querySelectorAll('.attrValRow').forEach(r => r.classList.remove('valDragOver'));
+          if(__valDragVi === null || __valDragVi === vi || !a.values) return;
+          // Swap priorities to reorder
+          const fromVal = a.values[__valDragVi];
+          const toVal = a.values[vi];
+          if(fromVal && toVal){
+            const tmp = fromVal.priority;
+            fromVal.priority = toVal.priority;
+            toVal.priority = tmp;
+            renderCustomAttrsManager();
+          }
+          __valDragVi = null;
+        });
+      });
+    }
+
     // Attribute-level color swatches, picker, checkbox, reset
     {
       const attrColorPicker = card.querySelector('[data-f="attrColorPicker"]');
@@ -15711,6 +16226,12 @@ function renderCustomAttrsManager(){
       const attrSwatchWrap = card.querySelector('[data-f="attrColorSwatches"]');
       if(attrSwatchWrap && attrColorPicker){
         buildColorSwatches(attrSwatchWrap, attrColorPicker, attrColorOn, _kick);
+        // 🎨 toggle button
+        const attrSwatchToggle = card.querySelector('.attrSwatchToggle');
+        if(attrSwatchToggle) attrSwatchToggle.addEventListener('click', ()=>{
+          const vis = attrSwatchWrap.style.display !== 'none';
+          attrSwatchWrap.style.display = vis ? 'none' : 'flex';
+        });
         // When picker changes, auto-check Apply
         attrColorPicker.addEventListener('input', ()=>{
           if(attrColorOn) attrColorOn.checked = true;
@@ -15756,39 +16277,56 @@ function renderCustomAttrsManager(){
       const vidAutoTag = row.querySelector('[data-auto="vid"]');
       const vabbrAutoTag = row.querySelector('[data-auto="vabbr"]');
       if(!vlabelInp || !vidInp) return;
-      const slugV = (raw)=> idPartFromLabel(raw, {lower:true});
+      const slugV = (raw)=> raw ? idPartFromLabel(raw, {lower:true}) : '';
       const autoAbbrV = (raw)=> raw ? raw.replace(/\s+/g,'').slice(0,3).toUpperCase() : '';
-      const initLabel = vlabelInp.value.trim();
-      const initIdAuto = slugV(initLabel) || '';
-      // Use persisted flag if available
+      // Collect sibling value IDs for uniqueness checking
+      const siblingValIds = ()=>{
+        const ids = new Set();
+        card.querySelectorAll('[data-vf="vid"]').forEach(el=>{
+          if(el.dataset.vi !== vi) ids.add(el.value.trim());
+        });
+        return ids;
+      };
+      // Use actual value for backward compat
+      const initIdLocal = vidInp.value.trim();
       const valObj = a.values && a.values[Number(vi)];
-      let lastAutoId = (valObj && valObj._autoId) ? initIdAuto : '';
+      let lastAutoId = (valObj && valObj._autoId) ? initIdLocal : '';
       let lastAutoAbbr = '';
       if(vabbrInp){
-        const initAbbrAuto = autoAbbrV(initLabel);
-        lastAutoAbbr = (valObj && valObj._autoAbbr) ? initAbbrAuto : '';
+        const initAbbrLocal = vabbrInp.value.trim();
+        lastAutoAbbr = (valObj && valObj._autoAbbr) ? initAbbrLocal : '';
       }
       row.dataset.autoId = lastAutoId !== '' ? '1' : '0';
       row.dataset.autoAbbr = lastAutoAbbr !== '' ? '1' : '0';
       const refreshAutoTags = ()=>{
-        if(vidAutoTag) vidAutoTag.style.display = lastAutoId !== '' ? '' : 'none';
-        if(vabbrAutoTag) vabbrAutoTag.style.display = lastAutoAbbr !== '' ? '' : 'none';
+        if(vidAutoTag){ const on = lastAutoId !== ''; vidAutoTag.style.display = on ? '' : 'none'; vidAutoTag.classList.toggle('clickable', on); }
+        if(vabbrAutoTag){ const on = lastAutoAbbr !== ''; vabbrAutoTag.style.display = on ? '' : 'none'; vabbrAutoTag.classList.toggle('clickable', on); }
       };
       refreshAutoTags();
+      if(vidAutoTag){ vidAutoTag.title = 'Click to freeze ID'; vidAutoTag.addEventListener('click', ()=>{
+        lastAutoId = '';
+        row.dataset.autoId = '0';
+        refreshAutoTags();
+      }); }
+      if(vabbrAutoTag){ vabbrAutoTag.title = 'Click to freeze abbreviation'; vabbrAutoTag.addEventListener('click', ()=>{
+        lastAutoAbbr = '';
+        row.dataset.autoAbbr = '0';
+        refreshAutoTags();
+      }); }
       vlabelInp.addEventListener('input', ()=>{
         const raw = vlabelInp.value.trim();
         const cur = vidInp.value.trim();
-        if(!cur || cur === lastAutoId){ const ai = slugV(raw)||''; vidInp.value = ai; lastAutoId = ai; }
+        if(!cur || cur === lastAutoId){ let ai = slugV(raw)||''; if(ai){ ai = ensureUniqueId(ai, siblingValIds()); vidInp.value = ai; lastAutoId = ai; } }
         if(vabbrInp){
           const ca = vabbrInp.value.trim();
-          if(!ca || ca === lastAutoAbbr){ const ab = autoAbbrV(raw); vabbrInp.value = ab; lastAutoAbbr = ab; }
+          if(!ca || ca === lastAutoAbbr){ const ab = autoAbbrV(raw); if(ab){ vabbrInp.value = ab; lastAutoAbbr = ab; } }
         }
         row.dataset.autoId = lastAutoId !== '' ? '1' : '0';
         row.dataset.autoAbbr = lastAutoAbbr !== '' ? '1' : '0';
         refreshAutoTags();
       });
       vidInp.addEventListener('input', ()=>{
-        if(!vidInp.value.trim()){ const ai = slugV(vlabelInp.value.trim())||''; vidInp.value = ai; lastAutoId = ai; }
+        if(!vidInp.value.trim()){ let ai = slugV(vlabelInp.value.trim())||''; if(ai){ ai = ensureUniqueId(ai, siblingValIds()); } vidInp.value = ai; lastAutoId = ai; }
         else lastAutoId = '';
         row.dataset.autoId = lastAutoId !== '' ? '1' : '0';
         refreshAutoTags();
@@ -15799,6 +16337,25 @@ function renderCustomAttrsManager(){
           else lastAutoAbbr = '';
           row.dataset.autoAbbr = lastAutoAbbr !== '' ? '1' : '0';
           refreshAutoTags();
+        });
+      }
+      // Value emoji + display mode toggle
+      const vemojiInp = row.querySelector('[data-vf="vemoji"]');
+      const vdmBtn = row.querySelector('.valDmBtn');
+      if(vemojiInp && vdmBtn){
+        vemojiInp.addEventListener('input', ()=>{
+          const has = !!vemojiInp.value.trim();
+          vdmBtn.style.opacity = has ? '1' : '.4';
+          if(has && vdmBtn.dataset.vdm === 'abbr'){ vdmBtn.dataset.vdm = 'emoji'; vdmBtn.textContent = 'Emoji'; }
+          if(!has && vdmBtn.dataset.vdm === 'emoji'){ vdmBtn.dataset.vdm = 'abbr'; vdmBtn.textContent = 'Abbr'; }
+        });
+        vdmBtn.addEventListener('click', (e)=>{
+          e.preventDefault();
+          if(!vemojiInp.value.trim() && vdmBtn.dataset.vdm === 'abbr') return;
+          const next = vdmBtn.dataset.vdm === 'abbr' ? 'emoji' : 'abbr';
+          if(next === 'emoji' && !vemojiInp.value.trim()) return;
+          vdmBtn.dataset.vdm = next;
+          vdmBtn.textContent = next === 'emoji' ? 'Emoji' : 'Abbr';
         });
       }
     });
@@ -15818,6 +16375,44 @@ function renderCustomAttrsManager(){
     });
     wireDirtyHighlight(card, card.querySelector('[data-act="save"]'), catalogFormIsDirty, ()=> !!(card.querySelector('[data-f="label"]')?.value||'').trim());
     _wireLabelToId(card, 'attr', a);
+    _wireCatalogEmoji(card, a);
+
+    // Emoji picker toggle button (attribute level)
+    const _emojiTogBtn = card.querySelector('.catEmojiToggle');
+    const _emojiGrid = card.querySelector('.catEmojiGrid');
+    if(_emojiTogBtn && _emojiGrid){
+      _emojiTogBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const vis = _emojiGrid.style.display !== 'none';
+        _emojiGrid.style.display = vis ? 'none' : 'flex';
+        _emojiTogBtn.textContent = vis ? '😀▾' : '😀▴';
+      });
+    }
+
+    // Value-level emoji grids (▼ button toggle)
+    card.querySelectorAll('.valEmojiBtn').forEach(btn=>{
+      const vi = btn.dataset.vi;
+      const grid = card.querySelector(`.valEmojiGrid[data-vi="${vi}"]`);
+      const inp = card.querySelector(`.valEmojiInp[data-vi="${vi}"]`);
+      if(!grid || !inp) return;
+      btn.addEventListener('click', ()=>{
+        const vis = grid.style.display !== 'none';
+        grid.style.display = vis ? 'none' : 'flex';
+        btn.textContent = vis ? '😀▾' : '😀▴';
+        if(!vis && !grid.dataset.built){
+          grid.dataset.built = '1';
+          grid.innerHTML = CATALOG_EMOJI_PICKS.map(e=>`<button class="catEP valEP" data-emoji="${e}" data-vi="${vi}" style="font-size:14px;padding:2px 4px;border:1px solid transparent;border-radius:5px;background:transparent;cursor:pointer;line-height:1;" title="${e}">${e}</button>`).join('') + '<button class="catEP valEP" data-emoji="" data-vi="${vi}" style="font-size:10px;padding:2px 5px;border:1px solid var(--border);border-radius:5px;background:transparent;cursor:pointer;color:var(--muted);line-height:1;" title="Clear">✕</button>';
+          grid.querySelectorAll('.valEP').forEach(pick=>{
+            pick.addEventListener('click', (ev)=>{
+              ev.preventDefault();
+              inp.value = pick.dataset.emoji;
+              inp.dispatchEvent(new Event('input', {bubbles:true}));
+              if(!pick.dataset.emoji){ grid.style.display = 'none'; btn.textContent = '😀▾'; }
+            });
+          });
+        }
+      });
+    });
   });
 }
 function openCustomAttrs(){
@@ -16498,6 +17093,53 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
+  // Ctrl+C: copy selected nodes (editor mode)
+  if((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.code === 'KeyC'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    e.preventDefault();
+    copyNodes();
+    return;
+  }
+
+  // Ctrl+V: paste nodes (editor mode)
+  if((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.code === 'KeyV'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    if(!state.editorMode || !__nodeClipboard) return;
+    e.preventDefault();
+    pasteNodes();
+    return;
+  }
+
+  // Ctrl+D: duplicate selected nodes (editor mode)
+  // Always prevent default to avoid browser bookmark dialog
+  if((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.code === 'KeyD'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    e.preventDefault();
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    duplicateNodes();
+    return;
+  }
+
+  // Ctrl+G: group selected siblings (editor mode)
+  // Always prevent default to avoid browser find-next dialog
+  if((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.code === 'KeyG'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    e.preventDefault();
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    groupSelection();
+    return;
+  }
+
+  // Ctrl+Shift+G: ungroup selected group (editor mode)
+  if((e.ctrlKey || e.metaKey) && !e.altKey && e.shiftKey && e.code === 'KeyG'){
+    if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    e.preventDefault();
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    ungroupNode();
+    return;
+  }
+
   // Don't intercept normal typing in inputs (except inline rename specials handled above)
   if(!_isInlineInput && e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)){
     // Still allow Escape from any input
@@ -16567,28 +17209,61 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
-  // Alt+↑/↓: move node up/down among siblings (editor mode)
-  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+  // Space: toggle collapse/expand on selected group(s)
+  if(e.key === ' ' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey){
     if(_isInlineInput) return;
-    if(!state.editorMode || !state.lockedId) return;
+    if(!state.lockedId && state.multiSelection.size === 0) return;
     e.preventDefault();
-    const nid = state.lockedId;
-    const cid = columnOf(nid);
-    if(!cid) return;
-    moveNode(nid, cid, e.key === 'ArrowDown' ? 1 : -1);
+    const ids = state.multiSelection.size > 0 ? [...state.multiSelection] : [state.lockedId];
+    let toggled = 0;
+    for(const nid of ids){
+      const node = IDX.nodeById.get(nid);
+      if(node && node.type === 'group'){
+        toggleCollapse(nid, null, true); // null = toggle, true = skipHighlight (we do it once after)
+        toggled++;
+      }
+    }
+    if(toggled){
+      applyHighlight();
+      scheduleArrowsUpdate();
+    }
     return;
   }
 
-  // Tab / Shift+Tab: indent / outdent (editor mode)
+  // Alt+↑/↓: move node(s) up/down among siblings (editor mode)
+  // Alt+→/←: indent / outdent node(s) (editor mode)
+  if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
+    if(_isInlineInput) return;
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    e.preventDefault();
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      const dir = e.key === 'ArrowDown' ? 1 : -1;
+      if(state.multiSelection.size > 0) bulkMove(dir);
+      else moveNode(state.lockedId, columnOf(state.lockedId), dir);
+    } else if(e.key === 'ArrowRight'){
+      if(state.multiSelection.size > 0) bulkIndent();
+      else inlineIndent(state.lockedId, columnOf(state.lockedId));
+    } else if(e.key === 'ArrowLeft'){
+      if(state.multiSelection.size > 0) bulkOutdent();
+      else inlineOutdent(state.lockedId, columnOf(state.lockedId));
+    }
+    return;
+  }
+
+  // Tab / Shift+Tab: also indent / outdent (legacy fallback)
   if(e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey){
     if(_isInlineInput){ e.preventDefault(); commitInlineRename(); return; }
-    if(!state.editorMode || !state.lockedId) return;
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
     e.preventDefault();
-    const nid = state.lockedId;
-    const cid = columnOf(nid);
-    if(!cid) return;
-    if(e.shiftKey) inlineOutdent(nid, cid);
-    else inlineIndent(nid, cid);
+    if(state.multiSelection.size > 0){
+      if(e.shiftKey) bulkOutdent(); else bulkIndent();
+    } else {
+      const nid = state.lockedId;
+      const cid = columnOf(nid);
+      if(!cid) return;
+      if(e.shiftKey) inlineOutdent(nid, cid);
+      else inlineIndent(nid, cid);
+    }
     return;
   }
 
@@ -16615,15 +17290,9 @@ document.addEventListener("keydown", (e) => {
   if((e.key === 'Delete' || (e.key === 'Backspace' && !_isInlineInput)) && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey){
     if(_isInlineInput) return; // let backspace work in input
     if(!state.editorMode) return;
-    if(state.multiSelection.size > 1){
-      // Bulk delete is handled elsewhere
-      return;
-    }
-    if(!state.lockedId) return;
+    if(!state.lockedId && state.multiSelection.size === 0) return;
     e.preventDefault();
-    const nid = state.lockedId;
-    const cid = columnOf(nid);
-    if(cid) deleteNodeInline(nid, cid);
+    bulkDelete();
     return;
   }
 
@@ -16927,7 +17596,7 @@ function showBulkTagModal(nodeIds){
     row.addEventListener('mouseleave', ()=>{ row.style.background=''; });
     row.innerHTML = `
       <input type="checkbox" data-tag-id="${escapeHtml(t.id)}" ${checked?'checked':''} ${indeterminate?'data-indeterminate="1"':''} style="accent-color:${color};width:16px;height:16px;flex-shrink:0;">
-      <span class="tagChip" data-color="1" style="--c:${color};flex-shrink:0;">${escapeHtml(tagAbbr(t)||t.id)}</span>
+      <span class="tagChip" data-color="1" style="--c:${color};flex-shrink:0;">${escapeHtml(tagDisplayLabel(t)||t.id)}</span>
       <span style="flex:1;font-size:12.5px;font-weight:600;">${escapeHtml(t.label||t.id)}</span>
       <span style="font-size:10px;opacity:.35;font-family:var(--mono);flex-shrink:0;">${count}/${total}</span>`;
     list.appendChild(row);
@@ -17530,7 +18199,7 @@ function showBulkMapModal(nodeIds){
           const exists = (state.data.mappings||[]).some(m=> m && m.from===fid && m.to===targetId);
           if(!exists){
             state.data.mappings = state.data.mappings || [];
-            state.data.mappings.push({ from: fid, to: targetId, cardinality:'', transforms:[], note:'', default:'' });
+            state.data.mappings.push({ from: fid, to: targetId, cardinality:'', transforms:[], label:'', note:'', default:'' });
             created++;
           }
         }
@@ -17571,7 +18240,7 @@ function ensureMapping(fromId, toId){
     if(m.from===fromId && m.to===toId) return; // Already exists, no change
   }
   recordChange(); // Save BEFORE creating mapping
-  state.data.mappings.push({ from: fromId, to: toId, cardinality:'', transforms: [], note:'', default:'' });
+  state.data.mappings.push({ from: fromId, to: toId, cardinality:'', transforms: [], label:'', note:'', default:'', tags:[], customAttributes:{} });
 }
 
 
@@ -18265,6 +18934,7 @@ function renderSelectedNodeEditor(nodeId){
  <span class=\"itemBreak\"></span>
         <span class="txt">${escapeHtml(jumpLabel)}</span>
         ${badgeHtml(edge)}
+        ${edge.label ? `<span class="tag" title="Label" style="font-weight:600;font-size:10px;opacity:.85;">${escapeHtml(edge.label)}</span>` : ''}
         <span class="route">${escapeHtml(route)}</span>${(edge.note && String(edge.note).trim()) ? `<span class="mapNote">${escapeHtml(short(edge.note, 120))}</span>` : ``}
       </li>
     `;
@@ -18598,11 +19268,13 @@ function renderMultiVals(aid){
         placeholder:'Value label…',
         hint:'ID is generated from the value label and made unique.',
         taken,
-        onCommit: ({label,id,note,color,abbr,_autoId,_autoAbbr})=>{
+        onCommit: ({label,id,note,color,abbr,emoji,displayMode,_autoId,_autoAbbr})=>{
           let maxVP = 0;
           a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
           const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
           if(abbr) vObj.abbr = abbr;
+          if(emoji) vObj.emoji = emoji;
+          if(displayMode) vObj.displayMode = displayMode;
           if(color) { vObj.color = color; vObj.colorEnabled = true; }
           a.values.push(vObj);
           node.customAttributes = node.customAttributes || {};
@@ -18640,7 +19312,7 @@ function rebuildTagOptions(){
       chip.className='tagChip';
       chip.style.setProperty('--c', tagColor(td));
       chip.setAttribute('data-color','1');
-      chip.textContent = tagAbbr(td) || tid;
+      chip.textContent = tagDisplayLabel(td) || tid;
       chip.title = (td.label||td.id) + (td.note?(' — '+td.note):'');
       const x=document.createElement('span');
       x.textContent=' ×'; x.style.cursor='pointer'; x.style.opacity='.85';
@@ -18842,11 +19514,13 @@ function rebuildTagOptions(){
         placeholder:'Value label…',
         hint:'ID is generated from the value label and made unique.',
         taken,
-        onCommit: ({label,id,note,color,abbr,_autoId,_autoAbbr})=>{
+        onCommit: ({label,id,note,color,abbr,emoji,displayMode,_autoId,_autoAbbr})=>{
           let maxVP = 0;
           a.values.forEach(v=>{ if(v && typeof v.priority==='number' && v.priority > maxVP) maxVP = v.priority; });
           const vObj = {id, label, note: (note||''), priority: maxVP + 1, _autoId, _autoAbbr};
           if(abbr) vObj.abbr = abbr;
+          if(emoji) vObj.emoji = emoji;
+          if(displayMode) vObj.displayMode = displayMode;
           if(color) { vObj.color = color; vObj.colorEnabled = true; }
           a.values.push(vObj);
           rebuildValOptions(aid);
@@ -18962,16 +19636,29 @@ function rebuildTagOptions(){
     const _ndIdInp = document.getElementById('ndId');
     const _ndIdAutoTag = document.getElementById('ndIdAuto');
     if(_ndLabelInp && _ndIdInp){
-      const _slugNd = (raw)=> idPartFromLabel(raw, {lower:false});
-      const initLabel = _ndLabelInp.value.trim();
-      const initIdAuto = _slugNd(initLabel) || '';
-      let _lastAutoId = node._autoId ? initIdAuto : '';
+      const _slugNd = (raw)=> idPartFromLabel(raw, {lower:true});
+      // Initialize auto tracker: use the actual local ID segment (handles mixed-case legacy nodes)
+      const initIdLocal = _ndIdInp.value.trim();
+      let _lastAutoId = node._autoId ? initIdLocal : '';
       __editorAutoId = _lastAutoId !== '';
-      const _refreshTag = ()=>{ if(_ndIdAutoTag) _ndIdAutoTag.style.display = _lastAutoId !== '' ? '' : 'none'; };
+      const _refreshTag = ()=>{
+        if(!_ndIdAutoTag) return;
+        const on = _lastAutoId !== '';
+        _ndIdAutoTag.style.display = on ? '' : 'none';
+        _ndIdAutoTag.classList.toggle('clickable', on);
+      };
       _refreshTag();
+      if(_ndIdAutoTag){
+        _ndIdAutoTag.title = 'Click to freeze ID';
+        _ndIdAutoTag.addEventListener('click', ()=>{
+          _lastAutoId = '';
+          __editorAutoId = false;
+          _refreshTag();
+        });
+      }
       _ndLabelInp.addEventListener('input', ()=>{
         const cur = _ndIdInp.value.trim();
-        if(!cur || cur === _lastAutoId){ const ai = _slugNd(_ndLabelInp.value.trim())||''; _ndIdInp.value = ai; _lastAutoId = ai; }
+        if(!cur || cur === _lastAutoId){ const ai = _slugNd(_ndLabelInp.value.trim())||''; if(ai){ _ndIdInp.value = ai; _lastAutoId = ai; } }
         __editorAutoId = _lastAutoId !== '';
         _refreshTag();
       });
@@ -19211,9 +19898,444 @@ async function deleteNodeInline(nodeId, colId){
   renderAll();
 }
 
+// ═══ Bulk editing helpers ═══
 
+// Returns info about selected siblings, or null if selection is not all siblings in one parent
+function getSelectedSiblingGroup(){
+  if(!state.editorMode || !state.data) return null;
+  const ids = state.multiSelection.size > 0
+    ? [...state.multiSelection]
+    : (state.lockedId ? [state.lockedId] : []);
+  if(!ids.length) return null;
+  // All must be in the same column
+  const cid = columnOf(ids[0]);
+  if(!cid) return null;
+  const col = findColumnById(cid);
+  if(!col) return null;
+  // All must share the same parent
+  const locs = ids.map(id => {
+    if(columnOf(id) !== cid) return null;
+    return locateNode(col.schema, id);
+  });
+  if(locs.some(l => !l || !l.parent || !l.siblings)) return null;
+  const parentId = locs[0].parent.id;
+  if(!locs.every(l => l.parent.id === parentId)) return null;
+  const siblings = locs[0].siblings;
+  const indices = locs.map(l => l.idx).sort((a,b) => a - b);
+  return { ids, cid, col, siblings, parent: locs[0].parent, indices, locs };
+}
 
-function addChildNode(nodeId, colId, isFieldNew, atTop=false){
+function areContiguous(sortedIndices){
+  for(let i = 1; i < sortedIndices.length; i++){
+    if(sortedIndices[i] !== sortedIndices[i-1] + 1) return false;
+  }
+  return true;
+}
+
+// Bulk move: contiguous siblings up or down
+function bulkMove(dir){
+  const sg = getSelectedSiblingGroup();
+  if(!sg) return;
+  const { indices, siblings, ids } = sg;
+  if(!areContiguous(indices)) return;
+  const first = indices[0];
+  const last = indices[indices.length - 1];
+  if(dir === -1 && first <= 0) return;
+  if(dir === 1 && last >= siblings.length - 1) return;
+  recordChange();
+  if(dir === -1){
+    // Move block up: swap first element with the one above
+    const removed = siblings.splice(first - 1, 1)[0];
+    siblings.splice(last, 0, removed);
+  } else {
+    // Move block down: swap last element with the one below
+    const removed = siblings.splice(last + 1, 1)[0];
+    siblings.splice(first, 0, removed);
+  }
+  renderAll();
+  // Keep selection
+  for(const id of ids){ state.multiSelection.add(id); }
+  if(ids.length === 1) state.lockedId = ids[0];
+  applyHighlight();
+  scrollIntoView(ids[0]);
+}
+
+// Bulk indent: move siblings into the nearest group sibling above them
+function bulkIndent(){
+  const sg = getSelectedSiblingGroup();
+  if(!sg) return;
+  const { indices, siblings, col, ids } = sg;
+  const first = indices[0];
+  if(first <= 0) return;
+  // Find nearest group above the selection
+  let targetIdx = -1;
+  for(let i = first - 1; i >= 0; i--){
+    if(siblings[i] && siblings[i].type !== 'field'){
+      targetIdx = i;
+      break;
+    }
+  }
+  if(targetIdx < 0) return;
+  const target = siblings[targetIdx];
+  ensureGroup(target);
+  if(!target.children) target.children = [];
+  recordChange();
+  // Extract nodes in order (splice from end to preserve indices)
+  const nodes = [];
+  for(let i = indices.length - 1; i >= 0; i--){
+    nodes.unshift(siblings.splice(indices[i], 1)[0]);
+  }
+  // Append to target's children
+  const taken = collectNodeIds(col);
+  const newIds = [];
+  for(const node of nodes){
+    target.children.push(node);
+    // Re-ID to reflect new parent path
+    const base = (target.id === col.id ? col.id : target.id) + '.' + localIdSegment(node.id);
+    const idMap = {};
+    const oldId = node.id;
+    const newId = ensureUniqueId(base, taken);
+    buildSubtreeIdMap(node, oldId, newId, idMap);
+    replaceIdsInMappings(state.data, idMap);
+    taken.add(newId);
+    newIds.push(node.id);
+  }
+  renderAll();
+  // Restore selection with new IDs
+  state.multiSelection.clear();
+  for(const id of newIds) state.multiSelection.add(id);
+  if(newIds.length === 1) state.lockedId = newIds[0];
+  else state.lockedId = newIds[0];
+  applyHighlight();
+  scrollIntoView(newIds[0]);
+}
+
+// Bulk outdent: move siblings up to grandparent level
+function bulkOutdent(){
+  const sg = getSelectedSiblingGroup();
+  if(!sg) return;
+  const { indices, siblings, col, parent, ids } = sg;
+  // Parent must itself have a parent (can't outdent from root-level)
+  const parentLoc = locateNode(col.schema, parent.id);
+  if(!parentLoc || !parentLoc.parent || !parentLoc.siblings || parentLoc.idx === null) return;
+  recordChange();
+  // Extract nodes in order (splice from end to preserve indices)
+  const nodes = [];
+  for(let i = indices.length - 1; i >= 0; i--){
+    nodes.unshift(siblings.splice(indices[i], 1)[0]);
+  }
+  // Insert after parent in grandparent's children
+  const insertIdx = parentLoc.idx + 1;
+  const taken = collectNodeIds(col);
+  const newIds = [];
+  for(let i = 0; i < nodes.length; i++){
+    const node = nodes[i];
+    parentLoc.siblings.splice(insertIdx + i, 0, node);
+    // Re-ID to reflect new parent path (grandparent)
+    const newPar = parentLoc.parent ? parentLoc.parent.id : col.schema.id;
+    const base = (newPar === col.id ? col.id : newPar) + '.' + localIdSegment(node.id);
+    const idMap = {};
+    const oldId = node.id;
+    const newId = ensureUniqueId(base, taken);
+    buildSubtreeIdMap(node, oldId, newId, idMap);
+    replaceIdsInMappings(state.data, idMap);
+    taken.add(newId);
+    newIds.push(node.id);
+  }
+  renderAll();
+  state.multiSelection.clear();
+  for(const id of newIds) state.multiSelection.add(id);
+  if(newIds.length === 1) state.lockedId = newIds[0];
+  else state.lockedId = newIds[0];
+  applyHighlight();
+  scrollIntoView(newIds[0]);
+}
+
+// Bulk delete: any selection, any arrangement
+async function bulkDelete(){
+  if(!state.editorMode) return;
+  const ids = state.multiSelection.size > 0
+    ? [...state.multiSelection]
+    : (state.lockedId ? [state.lockedId] : []);
+  if(!ids.length) return;
+  // Collect all field IDs (for mapping removal)
+  const allFieldIds = new Set();
+  let childFieldCount = 0, childGroupCount = 0;
+  for(const nid of ids){
+    const node = IDX.nodeById.get(nid);
+    if(node){
+      for(const f of collectFieldIdsFromNode(node)) allFieldIds.add(f);
+      if(node.type === 'group'){
+        (function walk(n){ if(!n) return; (n.children||[]).forEach(ch => { if(ch.type==='field') childFieldCount++; else if(ch.type==='group') childGroupCount++; walk(ch); }); })(node);
+      }
+    }
+  }
+  const childParts = [];
+  if(childFieldCount) childParts.push(childFieldCount + ' child field' + (childFieldCount>1?'s':''));
+  if(childGroupCount) childParts.push(childGroupCount + ' child group' + (childGroupCount>1?'s':''));
+  const childInfo = childParts.length ? `\nThis includes ${childParts.join(' and ')} inside selected groups.` : '';
+  const mapCount = (state.data.mappings||[]).filter(m => m && (allFieldIds.has(m.from) || allFieldIds.has(m.to))).length;
+  const mapInfo = mapCount > 0 ? `\n${mapCount} related mapping${mapCount>1?'s':''} will be removed.` : '';
+  const msg = ids.length === 1
+    ? `Delete "${IDX.nodeById.get(ids[0])?.label || ids[0]}"?${childInfo}${mapInfo}`
+    : `Delete ${ids.length} selected node${ids.length>1?'s':''}?${childInfo}${mapInfo}\n\nThis action can be undone with Ctrl+Z.`;
+  if(!await customConfirm(msg)) return;
+  recordChange();
+  removeMappingsReferencingInState(allFieldIds);
+  for(const nid of ids){
+    const cid = columnOf(nid);
+    if(!cid) continue;
+    const colData = findColumnById(cid);
+    if(!colData || !colData.schema) continue;
+    const loc = locateNode(colData.schema, nid);
+    if(loc && loc.siblings && loc.idx !== null) loc.siblings.splice(loc.idx, 1);
+  }
+  state.multiSelection.clear();
+  state.lockedId = null;
+  state.hoverId = null;
+  state.selectedColumnId = null;
+  state.selectedEdgeId = null;
+  renderAll();
+  setGlobalStatus(`Deleted ${ids.length} node${ids.length>1?'s':''}.`);
+}
+
+// Deep clone a node subtree (new IDs)
+function deepCloneNode(node, taken, parentId){
+  const base = parentId + '.' + localIdSegment(node.id);
+  const newId = ensureUniqueId(base, taken);
+  taken.add(newId);
+  const clone = { ...node, id: newId };
+  if(node.children){
+    clone.children = node.children.map(ch => deepCloneNode(ch, taken, newId));
+  }
+  return clone;
+}
+
+// Duplicate selection as siblings below
+function duplicateNodes(){
+  const sg = getSelectedSiblingGroup();
+  if(!sg) return;
+  const { indices, siblings, col, parent, ids } = sg;
+  recordChange();
+  const taken = collectNodeIds(col);
+  const newIds = [];
+  const lastIdx = indices[indices.length - 1];
+  const nodesToClone = indices.map(i => siblings[i]);
+  for(let i = 0; i < nodesToClone.length; i++){
+    const clone = deepCloneNode(nodesToClone[i], taken, parent.id);
+    siblings.splice(lastIdx + 1 + i, 0, clone);
+    newIds.push(clone.id);
+    // Duplicate mappings for cloned fields
+    const oldFields = new Set();
+    (function walk(n){ if(n.type==='field') oldFields.add(n.id); (n.children||[]).forEach(walk); })(nodesToClone[i]);
+    const newFields = new Map();
+    (function walk(orig, cloned){ if(orig.type==='field') newFields.set(orig.id, cloned.id); const oc = orig.children||[], cc = cloned.children||[]; for(let j=0;j<oc.length;j++) walk(oc[j],cc[j]); })(nodesToClone[i], clone);
+    const newMappings = [];
+    for(const m of (state.data.mappings||[])){
+      if(!m) continue;
+      if(newFields.has(m.from)){
+        newMappings.push({ ...m, from: newFields.get(m.from) });
+      }
+      if(newFields.has(m.to)){
+        newMappings.push({ ...m, to: newFields.get(m.to) });
+      }
+    }
+    if(newMappings.length) state.data.mappings.push(...newMappings);
+  }
+  renderAll();
+  state.multiSelection.clear();
+  for(const id of newIds) state.multiSelection.add(id);
+  state.lockedId = newIds[0];
+  applyHighlight();
+  scrollIntoView(newIds[0]);
+  setGlobalStatus(`Duplicated ${newIds.length} node${newIds.length>1?'s':''}.`);
+}
+
+// Group selection: wrap selected siblings in a new group
+async function groupSelection(){
+  const sg = getSelectedSiblingGroup();
+  if(!sg) return;
+  const { indices, siblings, col, parent } = sg;
+  if(!areContiguous(indices)){
+    customAlert('Please select contiguous siblings to group them.');
+    return;
+  }
+  const label = await customPrompt('Group name:', 'New Group');
+  if(label === null) return; // cancelled
+  const groupLabel = label || 'New Group';
+  recordChange();
+  const taken = collectNodeIds(col);
+  const groupId = ensureUniqueId(parent.id + '.' + (transliterate(groupLabel).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'') || 'group'), taken);
+  // Extract nodes
+  const nodes = siblings.splice(indices[0], indices.length);
+  const newGroup = { id: groupId, label: groupLabel, type: 'group', children: [] };
+  siblings.splice(indices[0], 0, newGroup);
+  taken.add(groupId);
+  // Re-parent nodes into the new group
+  for(const node of nodes){
+    newGroup.children.push(node);
+    const base = groupId + '.' + localIdSegment(node.id);
+    const idMap = {};
+    const oldId = node.id;
+    const newId = ensureUniqueId(base, taken);
+    buildSubtreeIdMap(node, oldId, newId, idMap);
+    replaceIdsInMappings(state.data, idMap);
+    taken.add(newId);
+  }
+  renderAll();
+  state.multiSelection.clear();
+  state.lockedId = groupId;
+  applyHighlight();
+  scrollIntoView(groupId);
+  setGlobalStatus(`Grouped ${nodes.length} node${nodes.length>1?'s':''} into "${groupLabel}".`);
+}
+
+// Ungroup: dissolve a group, moving its children to the parent level
+function ungroupNode(){
+  if(!state.editorMode) return;
+  const ids = state.multiSelection.size > 0
+    ? [...state.multiSelection]
+    : (state.lockedId ? [state.lockedId] : []);
+  if(!ids.length) return;
+  // Filter to only group nodes with children
+  const groups = ids.filter(nid => {
+    const node = IDX.nodeById.get(nid);
+    return node && node.type === 'group' && node.children && node.children.length;
+  });
+  if(!groups.length){
+    customAlert('Select a group with children to ungroup.');
+    return;
+  }
+  recordChange();
+  const allNewIds = [];
+  // Process in reverse order to preserve indices
+  for(const nid of groups.reverse()){
+    const cid = columnOf(nid);
+    if(!cid) continue;
+    const col = findColumnById(cid);
+    if(!col) continue;
+    const loc = locateNode(col.schema, nid);
+    if(!loc || !loc.parent || !loc.siblings || loc.idx === null) continue;
+    const children = [...loc.node.children];
+    const taken = collectNodeIds(col);
+    loc.siblings.splice(loc.idx, 1);
+    for(let i = 0; i < children.length; i++){
+      const node = children[i];
+      loc.siblings.splice(loc.idx + i, 0, node);
+      const newPar = loc.parent ? loc.parent.id : col.schema.id;
+      const base = (newPar === col.id ? col.id : newPar) + '.' + localIdSegment(node.id);
+      const idMap = {};
+      const oldId = node.id;
+      const newId = ensureUniqueId(base, taken);
+      buildSubtreeIdMap(node, oldId, newId, idMap);
+      replaceIdsInMappings(state.data, idMap);
+      taken.add(newId);
+      allNewIds.push(node.id);
+    }
+    removeMappingsReferencingInState(new Set([nid]));
+  }
+  renderAll();
+  state.multiSelection.clear();
+  for(const id of allNewIds) state.multiSelection.add(id);
+  state.lockedId = allNewIds[0] || null;
+  applyHighlight();
+  if(allNewIds[0]) scrollIntoView(allNewIds[0]);
+  setGlobalStatus(`Ungrouped ${groups.length} group${groups.length>1?'s':''} — ${allNewIds.length} node${allNewIds.length>1?'s':''} moved to parent.`);
+}
+
+// ═══ Clipboard (copy/paste) ═══
+let __nodeClipboard = null; // { nodes: [deep cloned subtrees], fromColId }
+
+function copyNodes(){
+  const ids = state.multiSelection.size > 0
+    ? [...state.multiSelection]
+    : (state.lockedId ? [state.lockedId] : []);
+  if(!ids.length) return;
+  // Deep clone each node subtree (preserve original IDs for mapping lookup)
+  const trees = [];
+  for(const nid of ids){
+    const cid = columnOf(nid);
+    if(!cid) continue;
+    const col = findColumnById(cid);
+    if(!col) continue;
+    const loc = locateNode(col.schema, nid);
+    if(!loc || !loc.node) continue;
+    trees.push(JSON.parse(JSON.stringify(loc.node)));
+  }
+  if(!trees.length) return;
+  __nodeClipboard = { nodes: trees, fromColId: columnOf(ids[0]) };
+  setGlobalStatus(`Copied ${trees.length} node${trees.length>1?'s':''} to clipboard.`);
+}
+
+function pasteNodes(){
+  if(!state.editorMode || !__nodeClipboard || !__nodeClipboard.nodes.length) return;
+  // Determine paste target: selected node's parent (as sibling below) or column root
+  let targetSiblings, targetParentId, col, insertIdx;
+  if(state.lockedId){
+    const cid = columnOf(state.lockedId);
+    if(!cid) return;
+    col = findColumnById(cid);
+    if(!col) return;
+    const loc = locateNode(col.schema, state.lockedId);
+    if(loc && loc.parent && loc.siblings){
+      targetSiblings = loc.siblings;
+      targetParentId = loc.parent.id;
+      insertIdx = loc.idx + 1;
+    } else {
+      targetSiblings = col.schema.children || (col.schema.children = []);
+      targetParentId = col.schema.id;
+      insertIdx = targetSiblings.length;
+    }
+  } else {
+    // No selection: paste at end of first visible column
+    const visCol = IDX.columns.find(c => !state.hiddenColumns.has(c.id));
+    if(!visCol) return;
+    col = findColumnById(visCol.id);
+    if(!col) return;
+    targetSiblings = col.schema.children || (col.schema.children = []);
+    targetParentId = col.schema.id;
+    insertIdx = targetSiblings.length;
+  }
+  recordChange();
+  const taken = collectNodeIds(col);
+  const newIds = [];
+  // Also collect mappings that reference the original clipboard nodes' fields
+  const origFieldMap = new Map(); // origFieldId -> newFieldId
+  for(let i = 0; i < __nodeClipboard.nodes.length; i++){
+    const origNode = __nodeClipboard.nodes[i];
+    const clone = deepCloneNode(origNode, taken, targetParentId);
+    targetSiblings.splice(insertIdx + i, 0, clone);
+    newIds.push(clone.id);
+    // Build mapping of original field IDs to new field IDs
+    (function buildMap(orig, cloned){
+      if(orig.type === 'field') origFieldMap.set(orig.id, cloned.id);
+      const oc = orig.children || [], cc = cloned.children || [];
+      for(let j = 0; j < oc.length; j++) buildMap(oc[j], cc[j]);
+    })(origNode, clone);
+  }
+  // Duplicate mappings from original fields
+  const newMappings = [];
+  for(const m of (state.data.mappings || [])){
+    if(!m) continue;
+    const hasFrom = origFieldMap.has(m.from);
+    const hasTo = origFieldMap.has(m.to);
+    if(hasFrom || hasTo){
+      newMappings.push({
+        ...m,
+        from: hasFrom ? origFieldMap.get(m.from) : m.from,
+        to: hasTo ? origFieldMap.get(m.to) : m.to
+      });
+    }
+  }
+  if(newMappings.length) state.data.mappings.push(...newMappings);
+  renderAll();
+  state.multiSelection.clear();
+  for(const id of newIds) state.multiSelection.add(id);
+  state.lockedId = newIds[0];
+  applyHighlight();
+  scrollIntoView(newIds[0]);
+  setGlobalStatus(`Pasted ${newIds.length} node${newIds.length>1?'s':''}${newMappings.length ? ' with ' + newMappings.length + ' mapping' + (newMappings.length>1?'s':'') : ''}.`);
+}function addChildNode(nodeId, colId, isFieldNew, atTop=false){
   if(!state.editorMode) return;
   const col = findColumnById(colId);
   if(!col) return;
@@ -19734,12 +20856,20 @@ function addRowActions(){
     menuItems.push({ label:'Move down', icon:ICONS.moveDown, disabled:!canMoveDown, onClick: ()=> moveNode(nodeId, colId, +1), kbd:'Alt+↓' });
     if(hasParent) menuItems.push({ type:'sep' });
     // Indent/Outdent
-    menuItems.push({ label:'Indent', icon:ICONS.indent, disabled:!canIndent, onClick: ()=> inlineIndent(nodeId, colId), kbd:'Tab' });
-    menuItems.push({ label:'Outdent', icon:ICONS.outdent, disabled:!canOutdent, onClick: ()=> inlineOutdent(nodeId, colId), kbd:'Shift+Tab' });
+    menuItems.push({ label:'Indent', icon:ICONS.indent, disabled:!canIndent, onClick: ()=> inlineIndent(nodeId, colId), kbd:'Alt+→' });
+    menuItems.push({ label:'Outdent', icon:ICONS.outdent, disabled:!canOutdent, onClick: ()=> inlineOutdent(nodeId, colId), kbd:'Alt+←' });
     if(hasParent) menuItems.push({ type:'sep' });
-    // Duplicate
-    menuItems.push({ label:'Duplicate', icon:ICONS.duplicate, disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, false) });
+    // Clipboard & Duplicate
+    menuItems.push({ label:'Copy', icon:ICONS.copy, onClick: ()=> copyNodes(), kbd:'Ctrl+C' });
+    menuItems.push({ label:'Paste', icon:ICONS.paste, disabled:!__nodeClipboard, onClick: ()=> pasteNodes(), kbd:'Ctrl+V' });
+    menuItems.push({ label:'Duplicate', icon:ICONS.duplicate, disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, false), kbd:'Ctrl+D' });
     menuItems.push({ label:'Duplicate+', icon:ICONS.duplicatePlus, disabled:!hasParent, onClick: ()=> duplicateNode(nodeId, colId, true) });
+    menuItems.push({ type:'sep' });
+    // Group / Ungroup
+    menuItems.push({ label:'Group selection', icon:ICONS.groupWrap, disabled:!(state.multiSelection.size > 1 || state.lockedId), onClick: ()=> groupSelection(), kbd:'Ctrl+G' });
+    if(node.type === 'group' && node.children && node.children.length > 0){
+      menuItems.push({ label:'Ungroup', icon:ICONS.ungroupDissolve, onClick: ()=> ungroupNode(), kbd:'Ctrl+Shift+G' });
+    }
     menuItems.push({ type:'sep' });
     // Convert type
     if(node.type === 'field'){
@@ -19750,7 +20880,7 @@ function addRowActions(){
     }
     menuItems.push({ type:'sep' });
     // Delete
-    menuItems.push({ label: 'Delete', icon:ICONS.trash, danger:true, disabled:!hasParent, onClick: ()=> deleteNodeInline(nodeId, colId) });
+    menuItems.push({ label: 'Delete', icon:ICONS.trash, danger:true, disabled:!hasParent, onClick: ()=> bulkDelete(), kbd:'Delete' });
 
     const btnMenu=document.createElement('button');
     btnMenu.className='miniBtn';
@@ -19971,8 +21101,10 @@ function renderSelectedEdgeEditor(){
             <div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">From</span><span class="dtRowV"><code style="font-size:11px;">${escapeHtml(edgeItem.from)}</code></span></div>
             <div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">To</span><span class="dtRowV"><code style="font-size:11px;">${escapeHtml(edgeItem.to)}</code></span></div>
             ${rule?.cardinality ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Card.</span><span class="dtRowV">${escapeHtml(rule.cardinality)}</span></div>` : ''}
+            ${rule?.label ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Label</span><span class="dtRowV" style="font-weight:600;">${escapeHtml(rule.label)}</span></div>` : ''}
             ${tLabels ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Transforms</span><span class="dtRowV" style="font-size:11.5px;">${escapeHtml(tLabels)}</span></div>` : ''}
             ${(rule?.default!=='' && rule?.default!==undefined) ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Default</span><span class="dtRowV">${escapeHtml(String(rule.default))}</span></div>` : ''}
+            ${edgeTagAttrRowsHtml(rule)}
             ${rule?.note ? `<div class="dtNote" style="font-size:11px;padding:4px 8px;">${escapeHtml(rule.note)}</div>` : ''}
           </div>
         `;
@@ -20045,6 +21177,7 @@ function renderSelectedEdgeEditor(){
             ${rule?.cardinality ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Card.</span><span class="dtRowV">${escapeHtml(rule.cardinality)}</span></div>` : ''}
             ${tLabels ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Transforms</span><span class="dtRowV" style="font-size:11.5px;">${escapeHtml(tLabels)}</span></div>` : ''}
             ${(rule?.default!=='' && rule?.default!==undefined) ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Default</span><span class="dtRowV">${escapeHtml(String(rule.default))}</span></div>` : ''}
+            ${edgeTagAttrRowsHtml(rule)}
             ${rule?.note ? `<div class="dtNote" style="font-size:11px;padding:4px 8px;">${escapeHtml(rule.note)}</div>` : ''}
           </div>
         `;
@@ -20095,7 +21228,11 @@ function renderSelectedEdgeEditor(){
     if(snap.cardinality === undefined) snap.cardinality = '';
     if(snap.default === undefined) snap.default = '';
     if(snap.note === undefined) snap.note = '';
+    if(snap.label === undefined) snap.label = '';
+    if(snap.labelHidden === undefined) snap.labelHidden = false;
     if(!Array.isArray(snap.transforms)) snap.transforms = normalizeTransforms(snap.transforms);
+    if(!Array.isArray(snap.tags)) snap.tags = [];
+    if(!snap.customAttributes || typeof snap.customAttributes !== 'object') snap.customAttributes = {};
     if(!snap.color) delete snap.color;
     __edgeEditSession = { edgeId: state.selectedEdgeId, from: edge.from, to: edge.to, ruleRef: snap, draft: deepClone(snap) };
   }
@@ -20107,6 +21244,7 @@ function renderSelectedEdgeEditor(){
   const card = (draft.cardinality||'');
   const defv = (draft.default!==undefined && draft.default!==null) ? String(draft.default) : '';
   const note = (draft.note||'');
+  const edgeLabel = (draft.label||'');
 
   detailsMeta.textContent = isHoverOnly ? 'mapping (hover)' : 'mapping';
   detailsBody.innerHTML = `
@@ -20118,6 +21256,7 @@ function renderSelectedEdgeEditor(){
       <div class="kv" style="grid-template-columns: 80px 1fr;">
         <div class="k">From</div><div class="v"><code>${escapeHtml(edge.from)}</code></div>
         <div class="k">To</div><div class="v"><code>${escapeHtml(edge.to)}</code></div>
+        <div class="k">Label</div><div class="v" style="display:flex;align-items:center;gap:6px;"><input class="inp" id="edLabel" value="${escapeHtml(edgeLabel)}" placeholder="shown on edge line" style="flex:1;" ${isHoverOnly ? 'disabled' : ''}/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap;" title="Show label on edge line"><input type="checkbox" id="edLabelShow" ${!(draft.labelHidden) ? 'checked' : ''} ${isHoverOnly ? 'disabled' : ''}/> Show</label></div>
         <div class="k">Card.</div><div class="v" style="display:flex;align-items:center;gap:0;"><input class="inp" id="edCardL" value="${escapeHtml((card.split(':')[0]||'').trim())}" placeholder="1" style="width:44px;text-align:center;border-radius:8px 0 0 8px;border-right:none;" ${isHoverOnly ? 'disabled' : ''}/><span style="font-size:13px;font-weight:700;opacity:.45;padding:0 1px;user-select:none;flex-shrink:0;">:</span><input class="inp" id="edCardR" value="${escapeHtml((card.split(':')[1]||'').trim())}" placeholder="1" style="width:44px;text-align:center;border-radius:0 8px 8px 0;border-left:none;" ${isHoverOnly ? 'disabled' : ''}/><span style="font-size:10px;opacity:.3;margin-left:8px;white-space:nowrap;">source : target</span></div>
         <div class="k">Default</div><div class="v"><input class="inp" id="edDef" value="${escapeHtml(defv)}" placeholder="optional" ${isHoverOnly ? 'disabled' : ''}/></div>
         <div class="k">Transforms</div>
@@ -20140,6 +21279,24 @@ function renderSelectedEdgeEditor(){
           <label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="edColorOn" ${(draft||rule).color?'checked':''} ${isHoverOnly ? 'disabled' : ''}/> Apply</label>
           </div>
         </div>
+        <div class="k">Tags</div>
+        <div class="v">
+          <div id="edTagChips" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"></div>
+          ${!isHoverOnly ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <select class="inp" id="edTagSel" style="max-width:280px;flex:0 0 auto;"><option value="">Add tag…</option></select>
+            <button class="btn" id="edTagMgr" type="button">Tags…</button>
+          </div>` : ''}
+        </div>
+        <div class="k">Custom</div>
+        <div class="v">
+          <div id="edAttrChips" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"></div>
+          ${!isHoverOnly ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <select class="inp" id="edAttrSel" style="max-width:240px;flex:0 0 auto;"><option value="">Attribute…</option></select>
+            <select class="inp" id="edAttrValSel" style="max-width:240px;flex:0 0 auto;"><option value="">Value…</option></select>
+            <button class="btn" id="edAttrCatalog" type="button">Attributes…</button>
+          </div>
+          <div class="dtHint" style="padding:4px 0;">Choose an attribute and a value. Use "Attributes…" to manage attributes/values.</div>` : ''}
+        </div>
       </div>
       ${!isHoverOnly ? `<div class="dtActions">
         <button class="btn" id="edDel" style="border-color: rgba(255,154,168,.45);">Delete</button>
@@ -20154,9 +21311,17 @@ function renderSelectedEdgeEditor(){
   const edCardR = document.getElementById('edCardR');
   const edDef  = document.getElementById('edDef');
   const edNote = document.getElementById('edNote');
+  const edLabel = document.getElementById('edLabel');
   const edTrChips = document.getElementById('edTrChips');
   const edTrSel = document.getElementById('edTrSel');
   const edTrNew = document.getElementById('edTrNew');
+  const edTagChips = document.getElementById('edTagChips');
+  const edTagSel = document.getElementById('edTagSel');
+  const edTagMgr = document.getElementById('edTagMgr');
+  const edAttrChips = document.getElementById('edAttrChips');
+  const edAttrSel = document.getElementById('edAttrSel');
+  const edAttrValSel = document.getElementById('edAttrValSel');
+  const edAttrCatalog = document.getElementById('edAttrCatalog');
 
   function syncDraftFromInputs(){
     const cl = (edCardL?.value||'').trim();
@@ -20164,6 +21329,8 @@ function renderSelectedEdgeEditor(){
     draft.cardinality = (cl || cr) ? (cl + ':' + cr) : '';
     draft.default = edDef?.value;
     draft.note = (edNote?.value||'').trim();
+    draft.label = (edLabel?.value||'').trim();
+    draft.labelHidden = !(document.getElementById('edLabelShow')?.checked);
     const colorOn = document.getElementById('edColorOn')?.checked;
     if(colorOn) draft.color = document.getElementById('edColor')?.value || '';
     else delete draft.color;
@@ -20441,6 +21608,216 @@ function renderSelectedEdgeEditor(){
       }
     }
 
+    // Label show/hide toggle
+    {
+      const edLabelShow = document.getElementById('edLabelShow');
+      if(edLabelShow && !isHoverOnly){
+        edLabelShow.addEventListener('change', ()=>{ syncDraftFromInputs(); triggerEdgeDirty(); });
+      }
+    }
+
+    // ── Edge Tags ──
+    function rebuildEdgeTagOptions(){
+      const cat = ensureTagCatalog();
+      const sorted = [...cat].sort((a,b)=>{
+        const pa = typeof a.priority==='number' ? a.priority : 9999;
+        const pb = typeof b.priority==='number' ? b.priority : 9999;
+        return pa - pb;
+      });
+      if(!edTagSel) return;
+      edTagSel.innerHTML = '<option value="">Add tag…</option>' + sorted.map(t=>{
+        const lbl = (t.abbr ? (t.abbr+' — ') : '') + (t.label||t.id);
+        return `<option value="${escapeHtml(t.id)}">${escapeHtml(lbl)}</option>`;
+      }).join('\n') + '<option value="__new__">+ New tag…</option>';
+    }
+    function renderEdgeTagChips(){
+      if(!edTagChips) return;
+      edTagChips.innerHTML='';
+      const arr = sortTagIdsByPriority(Array.isArray(draft.tags) ? draft.tags : []);
+      if(!arr.length){ edTagChips.innerHTML='<span class="empty">No tags.</span>'; return; }
+      arr.forEach(tid=>{
+        const td = tagById(tid) || {id:tid,label:tid,abbr:''};
+        const chip=document.createElement('span');
+        chip.className='tagChip';
+        chip.style.setProperty('--c', tagColor(td));
+        chip.setAttribute('data-color','1');
+        chip.textContent = tagDisplayLabel(td) || tid;
+        chip.title = (td.label||td.id) + (td.note?(' — '+td.note):'');
+        if(!isHoverOnly){
+          const x=document.createElement('span');
+          x.textContent=' ×'; x.style.cursor='pointer'; x.style.opacity='.85';
+          x.addEventListener('click',(e)=>{ e.stopPropagation(); draft.tags = (draft.tags||[]).filter(v=>v!==tid); renderEdgeTagChips(); triggerEdgeDirty(); });
+          chip.appendChild(x);
+        }
+        edTagChips.appendChild(chip);
+      });
+    }
+    if(edTagSel && !isHoverOnly){
+      edTagSel.addEventListener('change', ()=>{
+        const v=(edTagSel.value||'').trim();
+        if(!v) return;
+        if(v==='__new__'){
+          edTagSel.value='';
+          openTagCreateModal({afterCreate: ()=>{ rebuildEdgeTagOptions(); }});
+          return;
+        }
+        draft.tags = draft.tags || [];
+        if(!draft.tags.includes(v)) draft.tags.push(v);
+        edTagSel.value='';
+        renderEdgeTagChips();
+        triggerEdgeDirty();
+      });
+    }
+    if(edTagMgr) edTagMgr.addEventListener('click', ()=> openTags());
+    rebuildEdgeTagOptions();
+    renderEdgeTagChips();
+
+    // ── Edge Custom Attributes ──
+    function rebuildEdgeAttrOptions(){
+      const cat = ensureCustomAttributeCatalog();
+      if(!edAttrSel) return;
+      edAttrSel.innerHTML = '<option value="">Attribute…</option>' + cat.map(a=>{
+        const lbl = (a.abbr ? (a.abbr+' — ') : '') + (a.label||a.id);
+        return `<option value="${escapeHtml(a.id)}">${escapeHtml(lbl)}</option>`;
+      }).join('') + '<option value="__new__">+ New attribute…</option>';
+    }
+    function rebuildEdgeValOptions(aid){
+      if(!edAttrValSel) return;
+      if(!aid){ edAttrValSel.innerHTML = '<option value="">Value…</option>'; return; }
+      const a = customAttrById(aid);
+      const vals = (a && Array.isArray(a.values)) ? a.values : [];
+      edAttrValSel.innerHTML = '<option value="">Value…</option>' + vals.map(v=>{
+        return `<option value="${escapeHtml(v.id)}">${escapeHtml(v.label||v.id)}</option>`;
+      }).join('\n') + '<option value="__new__">+ New value…</option>';
+    }
+    function renderEdgeAttrChips(){
+      if(!edAttrChips) return;
+      edAttrChips.innerHTML='';
+      const ca = draft.customAttributes || {};
+      const keys = Object.keys(ca);
+      if(!keys.length){ edAttrChips.innerHTML='<span class="empty">No custom attributes.</span>'; return; }
+      keys.sort().forEach(aid=>{
+        const raw = ca[aid];
+        const a = customAttrById(aid) || {id:aid,label:aid,abbr:''};
+        const vals = Array.isArray(raw) ? raw : [raw];
+        vals.forEach(vid=>{
+          const v = customValueById(aid, vid) || {id:vid,label:vid};
+          const chip=document.createElement('span');
+          chip.className='tagChip';
+          chip.textContent = (customAttrAbbr(a)||aid) + ': ' + (v.label||v.id);
+          chip.title = (a.label||a.id) + ' = ' + (v.label||v.id);
+          if(!isHoverOnly){
+            const x=document.createElement('span');
+            x.textContent=' ×'; x.style.cursor='pointer'; x.style.opacity='.85';
+            x.addEventListener('click',(e)=>{
+              e.stopPropagation();
+              const cur = draft.customAttributes[aid];
+              if(Array.isArray(cur)){
+                const next = cur.filter(z=>String(z) !== String(vid));
+                if(next.length===0) delete draft.customAttributes[aid];
+                else if(next.length===1) draft.customAttributes[aid] = next[0];
+                else draft.customAttributes[aid] = next;
+              } else {
+                delete draft.customAttributes[aid];
+              }
+              renderEdgeAttrChips();
+              triggerEdgeDirty();
+            });
+            chip.appendChild(x);
+          }
+          edAttrChips.appendChild(chip);
+        });
+      });
+    }
+    if(edAttrSel && !isHoverOnly){
+      edAttrSel.addEventListener('change', ()=>{
+        const aid = (edAttrSel.value||'').trim();
+        if(!aid) return;
+        if(aid==='__new__'){
+          const cat = ensureCustomAttributeCatalog();
+          normalizeCatalogMultiFlag();
+          const taken = new Set((cat||[]).map(a=>a && a.id).filter(Boolean));
+          edAttrSel.value='';
+          openCreateModal({
+            kind:'customAttr',
+            title:'Add custom attribute',
+            placeholder:'Attribute label…',
+            hint:'ID is generated from the attribute label and made unique.',
+            taken,
+            onCommit: ({label,id,abbr,note,color,multi,_autoId,_autoAbbr})=>{
+              const entry = { id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), multi:!!multi, values:[], _autoId, _autoAbbr};
+              if(color) { entry.color = color; entry.colorEnabled = true; }
+              cat.push(entry);
+              rebuildEdgeAttrOptions();
+              edAttrSel.value = id;
+              rebuildEdgeValOptions(id);
+            }
+          });
+          return;
+        }
+        rebuildEdgeValOptions(aid);
+      });
+    }
+    if(edAttrValSel && !isHoverOnly){
+      edAttrValSel.addEventListener('change', ()=>{
+        const aid = (edAttrSel?.value||'').trim();
+        const vid = (edAttrValSel.value||'').trim();
+        if(!aid || !vid) return;
+        if(vid==='__new__'){
+          const a = customAttrById(aid);
+          const vals = (a && Array.isArray(a.values)) ? a.values : [];
+          const taken = new Set(vals.map(v=>v.id));
+          edAttrValSel.value='';
+          openCreateModal({
+            kind:'customAttrVal',
+            title:'Add value for ' + (a?.label||aid),
+            placeholder:'Value label…',
+            hint:'ID is generated from the value label.',
+            taken,
+            onCommit: ({label,id,abbr,note,color,_autoId,_autoAbbr})=>{
+              const entry = { id, label, abbr: (abbr||'').trim() || (label||'').replace(/\s+/g,'').slice(0,2).toUpperCase(), note: (note||''), _autoId, _autoAbbr};
+              if(color) { entry.color = color; entry.colorEnabled = true; }
+              if(!a.values) a.values = [];
+              a.values.push(entry);
+              rebuildEdgeValOptions(aid);
+              edAttrValSel.value = id;
+              // auto-assign the new value
+              draft.customAttributes = draft.customAttributes || {};
+              const isMulti = customAttrIsMulti(aid);
+              if(isMulti){
+                const cur = draft.customAttributes[aid];
+                const arr = Array.isArray(cur) ? [...cur] : (cur ? [cur] : []);
+                if(!arr.map(String).includes(String(id))) arr.push(id);
+                draft.customAttributes[aid] = arr;
+              } else {
+                draft.customAttributes[aid] = id;
+              }
+              edAttrValSel.value='';
+              renderEdgeAttrChips();
+              triggerEdgeDirty();
+            }
+          });
+          return;
+        }
+        draft.customAttributes = draft.customAttributes || {};
+        const isMulti = customAttrIsMulti(aid);
+        if(isMulti){
+          const cur = draft.customAttributes[aid];
+          const arr = Array.isArray(cur) ? [...cur] : (cur ? [cur] : []);
+          if(!arr.map(String).includes(String(vid))) arr.push(vid);
+          draft.customAttributes[aid] = arr;
+        } else {
+          draft.customAttributes[aid] = vid;
+        }
+        edAttrValSel.value='';
+        renderEdgeAttrChips();
+        triggerEdgeDirty();
+      });
+    }
+    if(edAttrCatalog) edAttrCatalog.addEventListener('click', openCustomAttrs);
+    rebuildEdgeAttrOptions();
+    renderEdgeAttrChips();
+
     const saveBtn = document.getElementById('edSave');
     const cancelBtn = document.getElementById('edCancel');
     const delBtn = document.getElementById('edDel');
@@ -20451,7 +21828,11 @@ function renderSelectedEdgeEditor(){
     rule.cardinality = (draft.cardinality||'').trim();
     rule.default = (draft.default!==undefined && draft.default!==null) ? draft.default : '';
     rule.note = (draft.note||'').trim();
+    rule.label = (draft.label||'').trim();
+    rule.labelHidden = !!draft.labelHidden;
     rule.transforms = Array.isArray(draft.transforms) ? draft.transforms.map(t => typeof t === 'object' ? {...t, params: t.params ? {...t.params} : undefined} : t) : [];
+    rule.tags = Array.isArray(draft.tags) ? [...draft.tags] : [];
+    rule.customAttributes = draft.customAttributes ? JSON.parse(JSON.stringify(draft.customAttributes)) : {};
     // Save color — always remember the picker value
     const __saveColorOn = document.getElementById('edColorOn')?.checked;
     const __savePickerVal = document.getElementById('edColor')?.value || '';
@@ -20509,6 +21890,7 @@ function renderSelectedEdgeEditor(){
     __edgeEditSession.draft.cardinality = (_cl || _cr) ? (_cl + ':' + _cr) : '';
     __edgeEditSession.draft.default = edDef?.value;
     __edgeEditSession.draft.note = (edNote?.value||'').trim();
+    __edgeEditSession.draft.label = (edLabel?.value||'').trim();
     const __edColorOn = document.getElementById('edColorOn')?.checked;
     if(__edColorOn) __edgeEditSession.draft.color = document.getElementById('edColor')?.value || '';
     else delete __edgeEditSession.draft.color;
@@ -20979,7 +22361,7 @@ function renderSelectedEdgeViewer(edgeId){
     if(!ids.length) return '';
     const chips = ids.slice(0,5).map(tid=>{
       const td = tagById(tid)||{id:tid,label:tid,abbr:tid.slice(0,1).toUpperCase(),color:'#3b82f6'};
-      return `<span class="tagChip" data-color="1" style="--c:${tagColor(td)};">${escapeHtml(tagAbbr(td)||td.id)}</span>`;
+      return `<span class="tagChip" data-color="1" style="--c:${tagColor(td)};">${escapeHtml(tagDisplayLabel(td)||td.id)}</span>`;
     }).join(' ');
     return chips;
   }
@@ -21187,7 +22569,7 @@ function buildDocs(){
 <ul>
   <li><b>No selection</b>: project metadata summary (title, author, description, etc.).</li>
   <li><b>Field/group selected</b>: node label, ID, tags, custom attributes, note, and inbound/outbound mapping lists. Groups additionally show a <b>Children</b> section with rich detail cards (type, summary, tags, attributes) for each child node.</li>
-  <li><b>Edge selected</b>: mapping details including from/to, cardinality, transforms, default, and note.</li>
+  <li><b>Edge selected</b>: mapping details including from/to, label (shown on edge line), cardinality, transforms, default, tags, custom attributes, and note.</li>
   <li><b>Column selected</b>: column header properties.</li>
   <li>Inbound, Outbound, and Children sections are <b>collapsible</b> (click the ▾ caret). Groups default to collapsed sections; fields default to expanded.</li>
 </ul>
@@ -21225,8 +22607,8 @@ function buildDocs(){
 
 <h3>Nodes (fields &amp; groups)</h3>
 <ul>
-  <li><b>Add nodes</b>: hover a row to reveal action buttons &mdash; &#x21B3; (add child inside group), &#x2AFA; (context menu with insert, move, indent, duplicate/duplicate+, delete).</li>
-  <li><b>Context menu</b>: click the ⫶ button on any node for insert above/below, move, indent/outdent, duplicate (without mappings), duplicate+ (with mappings), convert type (field ↔ group), and delete.</li>
+  <li><b>Add nodes</b>: hover a row to reveal action buttons &mdash; &#x21B3; (add child inside group), &#x2AFA; (context menu with insert, move, indent, copy/paste, duplicate, group/ungroup, delete).</li>
+  <li><b>Context menu</b>: click the ⫶ button on any node for insert above/below, move, indent/outdent, copy/paste, duplicate (without mappings), duplicate+ (with mappings), group selection, ungroup, convert type (field ↔ group), and delete.</li>
   <li><b>Convert to field/group</b>: available in the context menu. Fields can be converted to empty groups. Groups can be converted to fields only when they have no children.</li>
   <li><b>Edit node properties</b>: click a field to select it, then edit label, ID, note, color, tags, custom attributes, and mappings in the details pane.</li>
   <li><b>Drag-and-drop nodes</b>: drag a field or group to reorder, move between groups, or move to another column. Hold modifier keys during drag for different operations:
@@ -21311,18 +22693,18 @@ function buildDocs(){
 </ul>
 
 <h3>Tags</h3>
-<p>Tags are colored labels attached to nodes (fields and groups). They appear as small pills in the viewer and indicate status, ownership, or workflow stage.</p>
+<p>Tags are colored labels attached to nodes (fields and groups) and edges (mappings). They appear as small pills in the viewer and indicate status, ownership, or workflow stage.</p>
 <ul>
-  <li>Each tag has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>color</b> (with preset swatches, color picker, and hex input), <b>Apply</b> checkbox, <b>note</b>, and <b>priority</b>.</li>
+  <li>Each tag has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>emoji</b> (optional, with picker palette), <b>display mode</b> (Abbr or Emoji — controls what appears in pills), <b>color</b> (with preset swatches, color picker, and hex input), <b>Apply</b> checkbox, <b>note</b>, and <b>priority</b>.</li>
   <li><b>Priority</b> determines display order everywhere. Drag tags in the manager to reorder, or use the arrow buttons.</li>
-  <li>Tags are assigned to nodes in the node editor (details pane).</li>
+  <li>Tags are assigned to nodes in the node editor (details pane) and to edges in the mapping editor.</li>
   <li>Up to 3 tags are shown per field in the viewer; the rest are visible on hover or in the details pane.</li>
 </ul>
 
 <h3>Transforms</h3>
 <p>Transforms describe data conversion operations applied to mappings (e.g. trim, uppercase, type cast). They are an ordered sequence per mapping.</p>
 <ul>
-  <li>Each transform has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>note</b>, optional <b>color</b> (with hex input and Apply checkbox), and optional <b>params</b> (parameter schema).</li>
+  <li>Each transform has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>emoji</b> (optional), <b>display mode</b> (Abbr/Emoji), <b>note</b>, optional <b>color</b> (with hex input and Apply checkbox), and optional <b>params</b> (parameter schema).</li>
   <li>Params define per-instance configuration: each param has an <b>id</b>, <b>label</b>, <b>type</b> (text or number), and optional <b>default</b>. Param IDs also auto-generate from the label.</li>
   <li>The same transform can be added <b>multiple times</b> to a mapping&rsquo;s chain &mdash; each instance can have different parameter values (e.g. two REPLACE transforms with different substitutions).</li>
   <li>Transforms are assigned to mappings in the mapping editor. Their <b>order matters</b> &mdash; drag to reorder. Click a parameterized chip to edit its parameters.</li>
@@ -21332,7 +22714,7 @@ function buildDocs(){
 <h3>Custom attributes</h3>
 <p>Custom attributes add domain-specific metadata to nodes (e.g. data type, sensitivity classification).</p>
 <ul>
-  <li>Each attribute has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>note</b>, a list of <b>values</b>, a <b>multi</b> flag, and an optional <b>color</b> with Apply checkbox. Each value can have an optional <b>color</b> (hex) with its own <b>Apply</b> checkbox.</li>
+  <li>Each attribute has: <b>id</b>, <b>label</b>, <b>abbreviation</b>, <b>emoji</b> (optional), <b>display mode</b> (Abbr/Emoji), <b>note</b>, a list of <b>values</b>, a <b>multi</b> flag, and an optional <b>color</b> with Apply checkbox. Each value has its own <b>abbreviation</b>, <b>emoji</b>, <b>display mode</b>, and optional <b>color</b> with Apply checkbox.</li>
   <li>If <b>multi</b> is true, fields can have multiple values for that attribute (checkboxes). Otherwise, single-select (radio).</li>
   <li>Attribute values can have their own notes.</li>
   <li><b>Attribute-level color</b>: the attribute itself can have a color with an Apply checkbox. When enabled, values that don&rsquo;t have their own color applied will inherit the attribute&rsquo;s color for node pills.</li>
@@ -21354,7 +22736,7 @@ function buildDocs(){
   <li><b>Previous / Next view</b> (<b>,</b> / <b>.</b>): navigate between saved views. The current state is auto-saved before applying, so you can toggle back and forth.</li>
   <li><b>Reset view</b> (<b>Ctrl+Alt+0</b>): clears all filters, search, selection, hidden columns, collapsed groups, arrows, edge colors, node colors, and dim mode. Returns to a clean-slate default state.</li>
   <li><b>Catalog management</b>: open the Views catalog from Catalogs &rarr; Views or via <b>Manage views&hellip;</b> in the dropdown. Inline editing: click any view to edit its label, emoji, note; drag to reorder; update snapshot to capture current state; delete.</li>
-  <li><b>State captured</b>: active filters, filter mode/logic, &ldquo;only mapped&rdquo;, search text, node selection, highlight mode (chain/direct/selected), arrow mode (selected/all/off), arrow scope (same-column/distant), selection dim mode, hidden columns, collapsed groups, edge color scheme, and node color mode (background tint inheritance).</li>
+  <li><b>State captured</b>: active filters, filter mode/logic, &ldquo;only mapped&rdquo;, search text, node selection, highlight mode (chain/direct/selected), arrow mode (selected/all/off), arrow scope (same-column/distant), selection dim mode, hidden columns, collapsed groups, edge color scheme, node color mode, edge label display mode, tag pill visibility, and attribute pill visibility.</li>
   <li><b>State not captured</b>: panel position/size, editor mode, scroll position, pan mode &mdash; these are device- or workflow-specific.</li>
   <li><b>Command palette</b>: type a view name to apply it directly. Also includes &ldquo;Save current view&rdquo;, &ldquo;Reset view&rdquo;, and per-view entries.</li>
   <li>Each view has an <b>emoji</b> for quick visual identification in the dropdown, pill indicator, and catalog.</li>
@@ -21405,7 +22787,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.4.1", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.5.0", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {
@@ -21532,6 +22914,7 @@ function buildDocs(){
 <ul>
   <li><b>↑ / ↓</b> &mdash; Move selection to previous/next visible node</li>
   <li><b>Shift+↑ / Shift+↓</b> &mdash; Extend multi-selection up/down</li>
+  <li><b>Space</b> &mdash; Toggle collapse/expand on selected group(s)</li>
   <li><b>Enter</b> &mdash; Focus the label field in the details editor (opens panel if hidden)</li>
   <li><b>Esc</b> &mdash; Clear selection and search / cancel edit / close modal</li>
 </ul>
@@ -21542,9 +22925,13 @@ function buildDocs(){
   <li><b>Ctrl+Alt+↓</b> / <b>Ctrl+Alt+↑</b> &mdash; Insert new group below/above</li>
   <li><b>Ctrl+→</b> (Cmd+→ on Mac) &mdash; Add child field inside selected group</li>
   <li><b>Ctrl+Alt+→</b> &mdash; Add child group inside selected group</li>
-  <li><b>Alt+↑ / Alt+↓</b> &mdash; Move node up/down among siblings</li>
-  <li><b>Tab</b> &mdash; Indent: make child of sibling group above</li>
-  <li><b>Shift+Tab</b> &mdash; Outdent: move up to parent&rsquo;s level</li>
+  <li><b>Alt+↑ / Alt+↓</b> &mdash; Move node(s) up/down among siblings</li>
+  <li><b>Alt+→ / Alt+←</b> &mdash; Indent / outdent node(s)</li>
+  <li><b>Ctrl+C</b> (Cmd+C) &mdash; Copy selected node(s) to clipboard</li>
+  <li><b>Ctrl+V</b> (Cmd+V) &mdash; Paste node(s) from clipboard (as siblings below selection)</li>
+  <li><b>Ctrl+D</b> (Cmd+D) &mdash; Duplicate selected node(s) with mappings</li>
+  <li><b>Ctrl+G</b> (Cmd+G) &mdash; Wrap selected siblings in a new group</li>
+  <li><b>Ctrl+Shift+G</b> (Cmd+Shift+G) &mdash; Ungroup: dissolve group, move children to parent level</li>
   <li><b>Delete</b> &mdash; Delete selected node(s) with confirmation</li>
 </ul>
 <p><b>Inline rename</b>: when creating via keyboard, an inline input appears. Type a label and press <b>Enter</b> to commit (or <b>Escape</b> to cancel and remove). Press another create shortcut (Ctrl+↓) to commit the current name and immediately create the next node — empty labels default to "New Field" / "New Group".</p>
@@ -21587,9 +22974,9 @@ function buildDocs(){
   <li><b>Field</b> &mdash; a leaf node in a schema tree. Mappings connect fields.</li>
   <li><b>Group</b> &mdash; a container node with children (can be nested).</li>
   <li><b>Edge / Mapping</b> &mdash; a connection from one field to another, with optional metadata (cardinality, transforms, default, note).</li>
-  <li><b>Tag</b> &mdash; a colored label attached to nodes for categorization.</li>
+  <li><b>Tag</b> &mdash; a colored label attached to nodes and edges for categorization.</li>
   <li><b>Transform</b> &mdash; a data conversion step attached to a mapping.</li>
-  <li><b>Custom attribute</b> &mdash; domain-specific metadata attached to nodes (fields and groups).</li>
+  <li><b>Custom attribute</b> &mdash; domain-specific metadata attached to nodes (fields and groups) and edges (mappings).</li>
   <li><b>Filter</b> &mdash; a rule-based condition set that visually highlights matching nodes with colors, borders, bold text, and emojis. Managed via the filter catalog.</li>
   <li><b>Bidirectional mapping</b> &mdash; when two mappings exist between the same pair in both directions, shown as a single arrow with a direction indicator.</li>
   <li><b>Non-adjacent mapping</b> &mdash; a mapping that skips one or more columns (shown as a long bezier curve).</li>
@@ -22487,7 +23874,7 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
           const exists = (state.data.mappings||[]).some(m=> m && m.from===fid && m.to===intent.targetId);
           if(!exists){
             state.data.mappings = state.data.mappings || [];
-            state.data.mappings.push({ from: fid, to: intent.targetId, cardinality:'', transforms:[], note:'', default:'' });
+            state.data.mappings.push({ from: fid, to: intent.targetId, cardinality:'', transforms:[], label:'', note:'', default:'' });
             created++;
           }
         }
@@ -23136,8 +24523,8 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'Project', icon:'📦', label:'Load example project',   action:()=> document.getElementById('loadExampleBtn')?.click() },
 
     // Catalogs
-    { cat:'Catalogs', icon:'🏷', label:'Tag manager',           action:()=> openTags() },
-    { cat:'Catalogs', icon:'⚙', label:'Transform library',     action:()=> openTransforms() },
+    { cat:'Catalogs', icon:'🏷', label:'Tags catalog',           action:()=> openTags() },
+    { cat:'Catalogs', icon:'⚙', label:'Transforms catalog',     action:()=> openTransforms() },
     { cat:'Catalogs', icon:'⬡', label:'Attributes catalog',    action:()=> openCustomAttrs() },
     { cat:'Catalogs', icon:'▤', label:'Filters',               action:()=> openFilters() },
     { cat:'Catalogs', icon:'⊡', label:'Views catalog',          action:()=> openViews() },
@@ -23150,6 +24537,7 @@ function duplicateEdgesForSubtree(idMap, data) {
     // View
     { cat:'View', icon:'📐', label:'Expand all groups',      action:()=> setAllGroupsCollapsed(false) },
     { cat:'View', icon:'📏', label:'Collapse all groups',    action:()=> setAllGroupsCollapsed(true) },
+    { cat:'View', icon:'📂', label:'Toggle collapse/expand',  action:()=>{ const ids = state.multiSelection.size>0 ? [...state.multiSelection] : (state.lockedId?[state.lockedId]:[]); for(const nid of ids){ const n=IDX.nodeById.get(nid); if(n&&n.type==='group') toggleCollapse(nid,null,true); } applyHighlight(); scheduleArrowsUpdate(); }, kbd:'Space' },
     { cat:'View', icon:'☀', label:'Toggle bright/dark mode', action:()=> document.getElementById('brightModeBtn')?.click() },
     { cat:'View', icon:'⊞', label:'Toggle pan mode',         action:()=> document.getElementById('panToggleBtn')?.click(), kbd:'P' },
     { cat:'View', icon:'⊘', label:'Clear selection',           action:()=> document.getElementById('clearSelBtn')?.click(), kbd:'Esc' },
@@ -23173,8 +24561,14 @@ function duplicateEdgesForSubtree(idMap, data) {
     { cat:'Edit', icon:'□↑', label:'Insert group above',     action:()=> quickCreateNode('above','group'), kbd:mod+'+Alt+↑' },
     { cat:'Edit', icon:'▫→', label:'Add child field',        action:()=> quickCreateNode('child','field'), kbd:mod+'+→' },
     { cat:'Edit', icon:'□→', label:'Add child group',        action:()=> quickCreateNode('child','group'), kbd:mod+'+Alt+→' },
-    { cat:'Edit', icon:'→', label:'Indent',                  action:()=>{ if(state.lockedId) inlineIndent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Tab' },
-    { cat:'Edit', icon:'←', label:'Outdent',                 action:()=>{ if(state.lockedId) inlineOutdent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Shift+Tab' },
+    { cat:'Edit', icon:'→', label:'Indent node(s)',           action:()=>{ if(state.multiSelection.size>1) bulkIndent(); else if(state.lockedId) inlineIndent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Alt+→' },
+    { cat:'Edit', icon:'←', label:'Outdent node(s)',          action:()=>{ if(state.multiSelection.size>1) bulkOutdent(); else if(state.lockedId) inlineOutdent(state.lockedId, columnOf(state.lockedId)); }, kbd:'Alt+←' },
+    { cat:'Edit', icon:'📋', label:'Copy node(s)',            action:()=> copyNodes(), kbd:mod+'+C' },
+    { cat:'Edit', icon:'📌', label:'Paste node(s)',           action:()=> pasteNodes(), kbd:mod+'+V' },
+    { cat:'Edit', icon:'⧉', label:'Duplicate node(s)',       action:()=> duplicateNodes(), kbd:mod+'+D' },
+    { cat:'Edit', icon:'⊞', label:'Group selection',         action:()=> groupSelection(), kbd:mod+'+G' },
+    { cat:'Edit', icon:'⊟', label:'Ungroup',                 action:()=> ungroupNode(), kbd:mod+'+Shift+G' },
+    { cat:'Edit', icon:'🗑', label:'Delete node(s)',          action:()=> bulkDelete(), kbd:'Delete' },
     { cat:'Edit', icon:'□', label:'Convert to group',        action:()=>{ if(state.lockedId){ const c=columnOf(state.lockedId); if(c) convertNodeType(state.lockedId,c); } } },
     { cat:'Edit', icon:'▫', label:'Convert to field',        action:()=>{ if(state.lockedId){ const c=columnOf(state.lockedId); if(c) convertNodeType(state.lockedId,c); } } },
 

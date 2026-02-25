@@ -4,28 +4,59 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.5.0] – 2026-02-25
+**Highlights:** Edge tags & attributes, emoji display mode, edge labels, bulk editing, attribute editor UX overhaul
+
+### Edge metadata
+- **Edge tags**: mappings now support tags from the shared tag catalog — same tags used on nodes. Add, remove, and manage tags directly in the mapping editor
+- **Edge custom attributes**: assign custom attribute values to mappings using the shared attribute catalog. Supports single-select and multi-select attributes, plus inline creation of new attributes and values
+- **Edge labels**: mappings now have a **Label** field — a short freeform text rendered directly on the edge line in the viewer at the curve midpoint. Togglable via **Edge labels** selector (Always / Highlight / Off) with icon buttons in the Graph menu. Label show/hide checkbox per mapping
+- **Consolidated view**: tag and attribute chips displayed in consolidated and bidirectional edge cards for quick scanning. Tooltips and badge pills in node detail mapping lists
+
+### Emoji system
+- **Emoji fields**: tags, transforms, custom attributes, and attribute values now have an optional emoji field with a curated picker palette (😀▾ button)
+- **Display mode toggle**: each catalog item has an explicit **Abbr / Emoji** toggle controlling which label is shown in node pills, detail panels, filter chips, and transform badges. Auto-switches when emoji is set or cleared
+
+### Bulk editing
+- **Bulk move** (**Alt+↑/↓**): move multiple contiguous siblings up or down as a block
+- **Bulk indent/outdent** (**Alt+→/←**): indent or outdent multiple siblings at once
+- **Copy & paste** (**Ctrl+C/V**): copy selected node subtrees with deep clone and mapping duplication. Cross-column paste supported
+- **Duplicate** (**Ctrl+D**): duplicate selected siblings in-place with full subtree and mapping clone
+- **Group selection** (**Ctrl+G**): wrap contiguous selected siblings into a new named group
+- **Ungroup** (**Ctrl+Shift+G**): dissolve groups — moves children to parent level. Supports multi-selection (ungroups all selected groups at once)
+- **Collapse/expand toggle** (**Space**): toggle on selected group(s), supports multi-selection
+
+### Attribute editor UX
+- **Attribute editor redesign**: compact merged rows (Id+Abbr, Emoji+Display), collapsible emoji grid and color swatches behind 😀▾ and 🎨▾ dropdown buttons
+- **Inline value creator**: replaced "Add value…" modal with inline input — type a label and press Enter. Auto-generates ID, abbreviation, and priority
+- **Drag-and-drop value reordering**: grab the 6-dot handle to reorder values. Full-border blue highlight on drop target. Priority-based ordering
+- **Catalog drag handles**: 6-dot grip icons on all catalog cards (filters, tags, attributes, views) indicating drag-to-reorder support
+
+### Bug fixes & polish
+- **Multi-select keyboard fix**: all shortcuts (duplicate, group, ungroup, move, indent, outdent, collapse) now work correctly with lasso/marquee multi-selections
+- **Browser shortcut conflict fix**: Ctrl+D and Ctrl+G now always preventDefault when the app is focused, preventing browser bookmark and find-next dialogs
+- **Auto-ID freeze**: clicking the `auto` badge freezes the ID — stops following label changes. Clearing re-enables auto-follow
+- **Context menu expanded**: Copy, Paste, Group selection, and Ungroup actions with keyboard shortcut hints
+- **View scope expanded**: views now capture and restore edge label display mode, tag pill visibility, and attribute pill visibility
+- **Catalog naming consistency**: "Tag manager" → Tags catalog, "Transformation library" → Transforms catalog
+- **Move button consistency**: disabled move arrows show dimmed instead of hidden across all catalogs
+
+---
+
 ## [1.4.1] – 2026-02-24
 **Highlights:** Top bar icon revamp, columns popover redesign, keyboard shortcut reorganization, platform-aware shortcut display, catalog SVG icon buttons, view auto-deactivation
 
-- **Top bar icons**: New, Open, and Save buttons now show SVG icons (document, folder, download arrow) with shortened labels. Bright/dark mode toggle uses proper sun/moon SVG icons. All icons match the app's consistent 1.2 stroke weight
-- **Editor mode button**: replaced the checkbox+label toggle with a clean button that lights up with golden glow when active — no more checkbox. Pencil icon matches the edit icon from the SVG icon system
-- **Columns popover redesign**: checkboxes replaced with eye/eye-off SVG toggle buttons, hidden columns shown at reduced opacity. Color dots show each column's assigned color. Move arrows and delete button use SVG icon buttons with dedicated styling. Footer buttons have icons. All elements have proper dark/bright mode support
-- **Command palette icon**: restored the ⌘ looped-square icon as an SVG — four corner circles connected by a center square, matching the classic Mac command key symbol
-- **Keyboard shortcuts reorganized**: all project shortcuts now use the **Alt+** prefix (**Alt+N** new, **Alt+O** open, **Alt+S** save, **Alt+E** editor mode). View shortcuts: **Ctrl+Alt+S** save view, **,** / **.** previous/next view, **Ctrl+Alt+0** reset view. All tooltips, documentation, command palette, and keyboard shortcuts modal updated
-- **Navigation shortcuts corrected**: removed unimplemented ←/→ collapse/expand and Home/End shortcuts from the modal. Tab/Shift+Tab correctly documented as indent/outdent under "Editing (Editor mode only)" instead of column switching under Navigation
-- **Columns button icon**: the Columns… button above the viewer now shows the same two-column layout icon used by the Layout toolbar menu
-- **Highlight colors icon**: replaced the abstract Venn diagram with a paint palette SVG icon for clearer meaning
-- **Layout menu**: Wrap columns button moved below the Width/Gap/Zoom sliders with a separator line, keeping the slider controls grouped as the primary adjustment area. Balanced spacing above and below the button
-- **ICONS object expanded**: added `newDoc`, `openDoc`, `saveDoc`, `sun`, `moon`, `cmdPalette`, and `columns` icons for reuse across the app
-- **Views catalog**: the Apply button now shows a ✓ checkmark icon; when a view is active, the button changes to **Deactivate** with an × icon, matching the pill deactivate behavior. Clicking it toggles the view off while keeping the current state
-- **Catalog move buttons**: all ↑↓ text arrow buttons across Tags, Attributes, Filters, and filter condition rows are now SVG icon buttons with consistent sizing, styling, and hover states — matching the Columns popover design. Filter rule ↑↓→← and × buttons use the same icon system
-- **Transforms sorted alphabetically**: the Transforms catalog now displays entries sorted by label when opened, making it easier to find transforms in larger libraries
-- **Browser tab title**: changed from "Project — Dunnode" to "Dunnode — Project" so the brand is always visible in narrow browser tabs
-- **Mac keyboard fix**: Alt+letter project shortcuts (N/O/S/E) now use `e.code` instead of `e.key` — fixes Option+letter producing special characters (ß, ø, ´) on Mac keyboards
-- **Platform-aware shortcut display**: keyboard shortcuts modal, command palette hints, context menu hints, and tooltips now show Mac symbols (⌘⌥⇧⌫) on Mac and Ctrl/Alt/Shift/Delete on Windows/Linux. Global `platformKbd()` utility and one-time tooltip patching at init
-- **View navigation shortcuts**: previous/next view changed to plain **,** and **.** keys (no modifiers) — simple single-key shortcuts matching **?** for help, **P** for pan, **D** for details. Guarded against input fields
-- **View nav edge behavior**: prev/next buttons are now greyed out (disabled, 30% opacity) instead of hidden when at the first or last view — no more visual gap in the Views menu. Keyboard shortcuts are no-ops at edges
-- **View auto-deactivation**: changing any viewer state (selection, filters, search, arrows, collapse/expand, column visibility, color modes) now automatically deactivates the active view. Debounced 80ms drift check compares current state against the saved snapshot. Guard flag prevents false triggers during view application
+- **Top bar icons**: New, Open, and Save buttons now show SVG icons with shortened labels. Bright/dark mode toggle uses proper sun/moon SVG icons
+- **Editor mode button**: replaced the checkbox+label toggle with a clean button that lights up with golden glow when active
+- **Columns popover redesign**: checkboxes replaced with eye/eye-off SVG toggle buttons, hidden columns shown at reduced opacity. Color dots, move arrows, and delete button use SVG icon buttons
+- **Keyboard shortcuts reorganized**: all project shortcuts now use the **Alt+** prefix (**Alt+N** new, **Alt+O** open, **Alt+S** save, **Alt+E** editor mode). View shortcuts: **Ctrl+Alt+S** save view, **,** / **.** previous/next view, **Ctrl+Alt+0** reset view. Platform-aware display: Mac shows ⌘⌥⇧ symbols
+- **Catalog move buttons**: all ↑↓ text arrow buttons are now SVG icon buttons with consistent sizing and hover states
+- **View auto-deactivation**: changing any viewer state automatically deactivates the active view. Debounced 80ms drift check
+- **Mac keyboard fix**: Alt+letter project shortcuts now use `e.code` instead of `e.key` — fixes Option+letter producing special characters on Mac
+- **Platform-aware shortcut display**: keyboard shortcuts modal, command palette, context menu, and tooltips show Mac symbols on Mac and Ctrl/Alt/Shift on Windows/Linux
+- **Transforms sorted alphabetically**: the Transforms catalog now displays entries sorted by label
+- **Browser tab title**: changed from "Project — Dunnode" to "Dunnode — Project"
+- **View nav edge behavior**: prev/next buttons greyed out instead of hidden at edges
 
 ---
 
