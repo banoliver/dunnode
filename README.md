@@ -10,8 +10,8 @@ Client-side by design. No data leaves your browser.
 
 ## ✨ Features
 
-- **Multi-column schema viewer** with nested groups, collapsible trees, and bezier curve arrows
-- **Drag-and-drop mapping editor** with cardinality, defaults, labels, notes, and ordered transforms
+- **Multi-column schema viewer** with nested groups, collapsible trees, bezier curve arrows, and scroll-clamped endpoints
+- **Drag-and-drop mapping editor** with cardinality, defaults, labels, notes, ordered transforms, and edge direction (forward / bidirectional / directionless)
 - **Import system** — SQL DDL parser, CSV/TSV file import with column mapping, mapping import with field resolution, catalog import with match & merge, and domain preset bundles
 - **Tags & custom attributes** on both nodes and edges — with emoji display mode, color coding, and priority ordering
 - **Edge labels** rendered on arrow lines with Always / Highlight / Off visibility modes

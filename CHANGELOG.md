@@ -4,6 +4,47 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.7.0] – 2026-02-27
+**Highlights:** Scroll-clamped arrows, edge direction system (forward / bidirectional / directionless), center-opposing arrows, drag modifier creation, perspective-aware detail panels
+
+### Scroll-clamped arrows
+- **Clamped endpoints**: when a mapped node scrolls out of view within its column, the arrow line clamps to the column header edge (scrolled above) or footer edge (scrolled below) with a directional triangle indicator (▲/▼) showing which direction the node is off-screen
+- **Vertical approach curves**: clamped endpoints approach vertically for a clean visual instead of the usual horizontal bezier
+- **Live updates**: clamped state recalculated during scroll events so arrows track correctly as the user scrolls
+- **Z-ordering**: highlighted, active, and selected edges are drawn on top of other edges for better visibility
+
+### Edge direction system
+- **Direction property**: mappings now have a `direction` field — `forward` (→, default), `both` (↔ bidirectional), or `none` (··· directionless). Each has a distinct visual silhouette on the canvas
+- **Bidirectional mappings (↔)**: a single edge representing a symmetric relationship. Arrow markers at both endpoints. One set of transforms, tags, and notes applies both ways. Use for schema equivalence, API field mappings, data dictionary cross-references
+- **Directionless links (···)**: associations without implied flow. Dot markers at both endpoints. Use for related fields, cross-references, see-also links
+- **Consolidated two-forwards (→←)**: when two separate forward mappings exist between the same pair (A→B and B→A), they draw as a single line with full-size opposing arrowhead tips meeting at the center — visually distinct from a true bidirectional edge
+- **Direction toggle**: 3-way button group (→ / ↔ / ···) in the mapping editor between the From and To rows
+- **Custom color support**: all direction types (dot markers, start/end arrows, center-opposing arrows) properly render with custom edge colors, filter colors, and scheme colors
+
+### Drag creation & ghost
+- **Modifier key creation**: **Alt+Shift+Drag** creates a bidirectional mapping. **Alt+Shift+Ctrl/Cmd+Drag** creates a directionless link. Normal **Alt+Drag** creates a forward mapping as before
+- **Drag ghost badges**: ghost chip shows **MAP ↔** in purple for bidirectional and **MAP ···** in slate for directionless, alongside existing MAP (amber) / COPY (green) / COPY+ (lime) color scheme
+- **Multi-select drag**: modifier keys apply to all selected fields during bulk map operations
+
+### Detail panels
+- **Bidirectional in both sections**: bidirectional edges appear in both Inbound and Outbound mapping lists (single-select and multi-select views) with an ↔ badge
+- **Linked (directionless) section**: new collapsible section in all detail panel views for directionless edges, with ··· badge and dedicated stat card in multi-select
+- **Perspective-aware display**: in mapping lists, the selected node always appears on the contextually correct side — left for outbound, right for inbound — even for bidirectional and directionless edges
+- **Direction in viewer panel**: edge viewer shows direction row for non-forward mappings (↔ Bidirectional or ··· Linked)
+- **Direction in tooltips**: edge tooltips display direction label for bidirectional and directionless mappings
+
+### Export, import & data
+- **CSV export/import**: `direction` column added to CSV edge export. Import recognizes `forward`, `both`, and `none` values
+- **JSON persistence**: direction stored in mapping rules, copied to edge index during build. Defaults to `forward` when absent for backward compatibility
+
+### Documentation & sample project
+- **Sample project**: four new example mappings — two bidirectional (crew sync between Mission Control and Archive) and two directionless (cross-references between Lab and Observatory/Archive)
+- **Keyboard shortcuts**: shortcuts reference, quick-start guide, help documentation, and status bar all include Alt+Shift and Alt+Shift+Ctrl/Cmd drag modifiers
+- **Documentation**: Mappings section rewritten to cover direction types, creation modifiers, and the visual distinction between consolidated two-forwards and true bidirectional
+- **JSON schema reference**: `direction` field documented in mapping object specification
+
+---
+
 ## [1.6.0] – 2026-02-26
 **Highlights:** Import system (SQL DDL, CSV/TSV files, mappings, catalog items, preset bundles), meta-only category tags, comprehensive shortcuts reference, mapping terminology
 

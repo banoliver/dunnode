@@ -408,6 +408,7 @@
     }
     .btn:hover{ background: rgba(255,255,255,.10); }
     .btn:active{ transform: translateY(1px); }
+    .edDirBtn.active{ background: rgba(59,130,246,.25); border-color: rgba(59,130,246,.5); color: #7cb3f4; }
     .btn.btnSave{ opacity: .35; pointer-events: none; font-weight: 600; }
     .btn.btnDirty{ border-color: rgba(255,208,92,.55); background: rgba(255,208,92,.16); color: var(--text); font-weight: 700; opacity: 1; pointer-events: auto; }
     .btn.btnDirty:hover{ background: rgba(255,208,92,.26); }
@@ -1791,6 +1792,8 @@ body.brightMode .box.clickable:hover{background: rgba(0,0,0,.05);}
 #dragGhost .chip.copy { border-color:#22c55e; background:rgba(34,197,94,.18); color:#fff; }
 #dragGhost .chip.copyPlus { border-color:#84cc16; background:rgba(132,204,22,.20); color:#fff; }
 #dragGhost .chip.map  { border-color:#f59e0b; background:rgba(245,158,11,.18); color:#fff; }
+#dragGhost .chip.mapBidi { border-color:#a78bfa; background:rgba(167,139,250,.20); color:#e0d4ff; }
+#dragGhost .chip.mapNone { border-color:#94a3b8; background:rgba(148,163,184,.18); color:#cbd5e1; }
 #dragGhost .label { font-weight:900; letter-spacing:.2px; }
 #dragGhost .body  { opacity:.92; }
 #dragGhost .multiBadge {
@@ -2137,8 +2140,36 @@ body.brightMode .cmdPaletteFooter kbd{ background:rgba(0,0,0,.06);border-color:r
 </div>
 <div class="layoutSection">
 <div class="layoutSectionTitle">Node labels</div>
-<label class="toggle" title="Show tag pills on nodes"><input id="showTagPillsToggle" type="checkbox" checked/>Display tags</label>
-<label class="toggle" title="Show custom attribute value pills on nodes"><input id="showAttrPillsToggle" type="checkbox" checked/>Display attributes</label>
+<div style="font-size:10px;opacity:.5;margin-bottom:4px;">Tag pills</div>
+<div class="dockSelector" id="tagPillsModeSelector">
+<button class="dockOpt active" data-tpm="left" title="Tags left of label">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><rect x="2" y="4" width="3" height="4" rx="1" fill="currentColor" opacity=".7"/><line x1="7" y1="6" x2="13" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>
+<span>Left</span>
+</button>
+<button class="dockOpt" data-tpm="right" title="Tags right of label">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><line x1="2" y1="6" x2="8" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/><rect x="10" y="4" width="3" height="4" rx="1" fill="currentColor" opacity=".7"/></svg>
+<span>Right</span>
+</button>
+<button class="dockOpt" data-tpm="off" title="Hide tag pills">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><line x1="4" y1="4" x2="12" y2="8" stroke="currentColor" stroke-width="1" opacity=".4"/><line x1="12" y1="4" x2="4" y2="8" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+<span>Off</span>
+</button>
+</div>
+<div style="font-size:10px;opacity:.5;margin-bottom:4px;margin-top:6px;">Attribute pills</div>
+<div class="dockSelector" id="attrPillsModeSelector">
+<button class="dockOpt active" data-apm="left" title="Attributes left of label">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><rect x="2" y="4" width="3" height="4" rx="1" fill="currentColor" opacity=".7"/><line x1="7" y1="6" x2="13" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>
+<span>Left</span>
+</button>
+<button class="dockOpt" data-apm="right" title="Attributes right of label">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><line x1="2" y1="6" x2="8" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4"/><rect x="10" y="4" width="3" height="4" rx="1" fill="currentColor" opacity=".7"/></svg>
+<span>Right</span>
+</button>
+<button class="dockOpt" data-apm="off" title="Hide attribute pills">
+<svg width="16" height="12" viewBox="0 0 16 12"><rect x=".5" y=".5" width="15" height="11" rx="2" fill="none" stroke="currentColor" stroke-width=".8"/><line x1="4" y1="4" x2="12" y2="8" stroke="currentColor" stroke-width="1" opacity=".4"/><line x1="12" y1="4" x2="4" y2="8" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+<span>Off</span>
+</button>
+</div>
 </div>
 <div class="layoutSection">
 <div class="layoutSectionTitle">Node colors</div>
@@ -2243,17 +2274,8 @@ Invert selection
 <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="4" x2="10" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="10" y1="4" x2="4" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
 Clear selection
 </button>
-<div style="border-top:1px solid var(--border);margin:4px 0;"></div>
-<button class="btn selActionBtn" id="expandAllBtn" title="Expand all groups">
-<svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="4" x2="7" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="4" y1="7" x2="10" y2="7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-Expand all
-</button>
-<button class="btn selActionBtn" id="collapseAllBtn" title="Collapse all groups">
-<svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="7" x2="10" y2="7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-Collapse all
-</button>
 </div>
-<div style="border-top:1px solid var(--border);margin:6px 0;"></div>
+<div style="border-top:1px solid var(--border);margin:4px 0;"></div>
 <button class="btn selActionBtn" id="hlColorsBtn" title="Customize highlight colors">
 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1A6 6 0 0 0 7 13c1 0 1.5-.5 1.5-1.2 0-.4-.2-.7-.4-1-.2-.3-.4-.6-.4-1 0-.8.7-1.3 1.5-1.3H11a3 3 0 0 0 3-3C14 3 10.9 1 7 1Z"/><circle cx="5" cy="4.5" r="1" fill="currentColor" opacity=".7"/><circle cx="8" cy="3.5" r="1" fill="currentColor" opacity=".5"/><circle cx="3.5" cy="7" r="1" fill="currentColor" opacity=".6"/></svg>
 Highlight colors…
@@ -2488,6 +2510,8 @@ About
 <div class="vcGroup">
 <button class="vcBtn" id="panToggleBtn" title="Toggle pan mode (P)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/><polyline points="5.5,3.5 8,1 10.5,3.5"/><polyline points="5.5,12.5 8,15 10.5,12.5"/><polyline points="3.5,5.5 1,8 3.5,10.5"/><polyline points="12.5,5.5 15,8 12.5,10.5"/></svg></button>
 <button class="vcBtn" id="clearSelBtn" title="Clear selection (Esc)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><line x1="4" y1="4" x2="10" y2="10"/></svg></button>
+<button class="vcBtn" id="expandAllBtn" title="Expand all groups"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,4 7,1.5 10,4"/><polyline points="4,10 7,12.5 10,10"/><line x1="7" y1="5" x2="7" y2="9" opacity=".3"/></svg></button>
+<button class="vcBtn" id="collapseAllBtn" title="Collapse all groups"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,2 7,4.5 10,2"/><polyline points="4,12 7,9.5 10,12"/><line x1="7" y1="5.5" x2="7" y2="8.5" opacity=".3"/></svg></button>
 <button class="vcBtn" id="resetViewBtn" title="Reset view to defaults (Ctrl+Alt+0)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2.5 2.5v3.5h3.5"/><path d="M2.5 6A5 5 0 1 1 3.5 9.5"/></svg></button>
 </div>
 <!-- Editor: history group -->
@@ -2521,6 +2545,16 @@ About
 </marker>
 <marker id="arrowStartActive" markerheight="14" markerunits="userSpaceOnUse" markerwidth="14" orient="auto-start-reverse" refx="0" refy="7" viewbox="0 0 14 14">
 <path class="edgeMarker active" d="M0,2.6 L0,11.4 L13,7 z"></path>
+</marker>
+<!-- Dot markers for directionless edges -->
+<marker id="dotDefault" markerHeight="8" markerUnits="userSpaceOnUse" markerWidth="8" refX="4" refY="4" viewBox="0 0 8 8">
+<circle class="edgeMarker" cx="4" cy="4" r="3"></circle>
+</marker>
+<marker id="dotHL" markerHeight="8" markerUnits="userSpaceOnUse" markerWidth="8" refX="4" refY="4" viewBox="0 0 8 8">
+<circle class="edgeMarker hl" cx="4" cy="4" r="3"></circle>
+</marker>
+<marker id="dotActive" markerHeight="8" markerUnits="userSpaceOnUse" markerWidth="8" refX="4" refY="4" viewBox="0 0 8 8">
+<circle class="edgeMarker active" cx="4" cy="4" r="3"></circle>
 </marker>
 </defs>
 <g id="edgesLayer"></g>
@@ -2585,7 +2619,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.6.0</span>
+<span id="appVersionLabel">v1.7.0</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -3031,7 +3065,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.5.1';
+const APP_VERSION = '1.7.0';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -3043,7 +3077,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.6.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.0", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -4347,6 +4381,40 @@ const EXAMPLE_JSON = {
         {"ref": "lookup", "params": {"table": "personnel_roster", "key": "experiment_id"}}
       ],
       "note": "Same-column: experiment reference resolves to the lead researcher."
+    },
+    {
+      "from": "mc.crew.crewId",
+      "to": "arch.dim_crew.crew_id",
+      "cardinality": "1:1",
+      "direction": "both",
+      "transforms": [
+        {"ref": "trim"}
+      ],
+      "tags": ["active"],
+      "note": "Bidirectional sync: crew IDs reconciled between Mission Control and Archive."
+    },
+    {
+      "from": "mc.crew.commanderName",
+      "to": "arch.dim_crew.crew_name",
+      "cardinality": "1:1",
+      "direction": "both",
+      "transforms": [
+        {"ref": "trim"},
+        {"ref": "norm_ws"}
+      ],
+      "note": "Bidirectional: commander name kept in sync across both systems."
+    },
+    {
+      "from": "lab.experiment.sample_analysis.composition",
+      "to": "obs.validation.anomalyCodes",
+      "direction": "none",
+      "note": "Linked: sample composition cross-referenced with anomaly codes for review."
+    },
+    {
+      "from": "lab.experiment.fuel_reserve",
+      "to": "arch.dim_mission.fuel_kg",
+      "direction": "none",
+      "note": "Linked: fuel reserve associated with archive fuel records for audit trail."
     }
   ],
   "filterCatalog": [
@@ -4497,13 +4565,13 @@ const state = {
   selectionDim: 'all',  // 'all' | 'keepParents' | 'off'
   panMode: false,
   multiSelection: new Set(),       // multi-select: set of node IDs
-  _multiCollapsed: { nodes: true, mappings: false, mapInternal: false, mapOutbound: false, mapInbound: false }, // collapse state for multi-select panel sections
+  _multiCollapsed: { nodes: true, mappings: false, mapInternal: false, mapOutbound: false, mapInbound: false, mapLinked: false }, // collapse state for multi-select panel sections
   multiSelectArrowMode: 'chain',   // 'chain' | 'direct' | 'selected' — highlight mode for selections
   edgeColorScheme: '',  // '' | 'cardinality' | 'transform' | 'srcTag' | 'tgtTag' | 'srcAttr:id' | 'tgtAttr:id'
   hiddenColumns: new Set(),
   wrapColumns: false,
-  showTagPills: true,      // display tag pills on nodes
-  showAttrPills: true,     // display custom attribute pills on nodes
+  tagPillsMode: 'left',    // tag pill placement: 'off', 'left', 'right'
+  attrPillsMode: 'left',   // custom attribute pill placement: 'off', 'left', 'right'
   showEdgeLabels: 'always', // edge label display: 'off', 'always', 'highlight'
   nodeColorMode: 'all',    // 'all' | 'groups' | 'column' | 'off'
   
@@ -5328,6 +5396,15 @@ function _buildTagSelectOptions(excludeIds, opts){
 // Build <option>/<optgroup> HTML for attribute selectors on nodes/mappings.
 // Groups attributes by meta-only tags they are tagged with.
 // opts: { includeNew: true to append "+ New attribute…" option }
+// Build display label for catalog items (attributes, values) in dropdowns.
+// Prefers emoji over abbreviation when both are set.
+function _catalogItemLabel(item){
+  const name = item.label || item.id;
+  if(item.emoji) return item.emoji + ' ' + name;
+  if(item.abbr) return item.abbr + ' \u2014 ' + name;
+  return name;
+}
+
 function _buildAttrSelectOptions(opts){
   const o = opts || {};
   const cat = ensureCustomAttributeCatalog();
@@ -5336,7 +5413,7 @@ function _buildAttrSelectOptions(opts){
 
   if(!metaTags.length){
     let html = cat.map(a => {
-      const lbl = (a.abbr ? (a.abbr+' — ') : '') + (a.label||a.id);
+      const lbl = _catalogItemLabel(a);
       return `<option value="${escapeHtml(a.id)}">${escapeHtml(lbl)}</option>`;
     }).join('');
     if(o.includeNew) html += '<option value="__new__">+ New attribute…</option>';
@@ -5362,7 +5439,7 @@ function _buildAttrSelectOptions(opts){
     const grpLabel = (mt.emoji ? mt.emoji + ' ' : '') + mt.label;
     html += `<optgroup label="${escapeHtml(grpLabel)}">`;
     html += items.map(a => {
-      const lbl = (a.abbr ? (a.abbr+' — ') : '') + (a.label||a.id);
+      const lbl = _catalogItemLabel(a);
       return `<option value="${escapeHtml(a.id)}">${escapeHtml(lbl)}</option>`;
     }).join('');
     html += '</optgroup>';
@@ -5370,7 +5447,7 @@ function _buildAttrSelectOptions(opts){
   if(ungrouped.length){
     if(html) html += `<optgroup label="Other">`;
     html += ungrouped.map(a => {
-      const lbl = (a.abbr ? (a.abbr+' — ') : '') + (a.label||a.id);
+      const lbl = _catalogItemLabel(a);
       return `<option value="${escapeHtml(a.id)}">${escapeHtml(lbl)}</option>`;
     }).join('');
     if(html.includes('<optgroup label="Other">')) html += '</optgroup>';
@@ -6210,7 +6287,7 @@ function _populateCreateAttrSel(){
     const a = cat.find(x=>x.id===aid);
     const vals = a?.values || [];
     valSel.innerHTML = '<option value="">Value…</option>' + vals.map(v=>
-      `<option value="${escapeHtml(v.id)}">${escapeHtml(v.label||v.id)}</option>`
+      `<option value="${escapeHtml(v.id)}">${escapeHtml(_catalogItemLabel(v))}</option>`
     ).join('') + (aid ? '<option value="__new__">+ New value…</option>' : '');
   };
   valSel.onchange = ()=>{
@@ -7163,6 +7240,7 @@ function expandEdges(mappings){
         color: m.color || '',
         tags: Array.isArray(m.tags) ? [...m.tags] : [],
         customAttributes: m.customAttributes ? JSON.parse(JSON.stringify(m.customAttributes)) : {},
+        direction: m.direction || 'forward',
         };
       IDX.edges.push(edge);
       IDX.mappedFields.add(from); IDX.mappedFields.add(to);
@@ -7318,17 +7396,18 @@ scheduleArrowsUpdate();
 
 /* DOM node creation */
 
-// Build a unified pill strip for a node: Tags (sorted by priority) then Attribute values
-// (sorted by attribute priority, then value priority within attribute).
-// Respects state.showTagPills, state.showAttrPills, and per-attribute displayOnNode flag.
-function buildNodePillStrip(node){
-  const strip = document.createElement('div');
-  strip.className = 'tagStrip';
+// Build pill strips for a node, split by placement (left/right of label).
+// Returns { left: Element|null, right: Element|null }
+// Respects state.tagPillsMode, state.attrPillsMode, and per-attribute displayOnNode flag.
+function buildNodePillStrips(node){
+  const tagMode = state.tagPillsMode || 'left';
+  const attrMode = state.attrPillsMode || 'left';
+  const MAX_PILLS = 5;
   let count = 0;
-  const MAX_PILLS = 5; // cap to avoid row overflow
 
-  // 1) Tag pills
-  if(state.showTagPills){
+  // Collect tag chips
+  const tagChips = [];
+  if(tagMode !== 'off'){
     const tags = sortTagIdsByPriority(normalizeNodeTags(node));
     for(let i = 0; i < tags.length && count < MAX_PILLS; i++){
       const tid = tags[i];
@@ -7339,15 +7418,15 @@ function buildNodePillStrip(node){
       chip.setAttribute('data-color','1');
       chip.title = (td.label||td.id||'') + (td.note?(' — '+td.note):'');
       chip.textContent = tagDisplayLabel(td);
-      strip.appendChild(chip);
+      tagChips.push(chip);
       count++;
     }
   }
 
-  // 2) Custom attribute value pills
-  if(state.showAttrPills){
+  // Collect attr chips
+  const attrChips = [];
+  if(attrMode !== 'off'){
     const ca = normalizeCustomAttributes(node);
-    // Get attributes sorted by priority, filtered to displayOnNode
     const attrCat = ensureCustomAttributeCatalog()
       .filter(a => a && a.displayOnNode)
       .sort((a,b) => {
@@ -7360,7 +7439,6 @@ function buildNodePillStrip(node){
       const raw = ca[attr.id];
       if(!raw) continue;
       const valIds = Array.isArray(raw) ? raw : [raw];
-      // Sort value IDs by their priority in the attribute's values array
       const valsDef = Array.isArray(attr.values) ? attr.values : [];
       const sortedValIds = [...valIds].sort((a,b) => {
         const va = valsDef.find(v=>v.id===a);
@@ -7373,7 +7451,6 @@ function buildNodePillStrip(node){
         if(count >= MAX_PILLS) break;
         const vDef = valsDef.find(v=>v.id===vid);
         const vLabel = vDef ? attrValDisplayLabel(vDef) : vid;
-        // Color inheritance: value color (if enabled) → attribute color (if enabled) → none
         const vColorEnabled = vDef?.color && vDef?.colorEnabled !== false;
         const attrColorEnabled = attr.color && attr.colorEnabled !== false;
         const vColor = vColorEnabled ? vDef.color : (attrColorEnabled ? attr.color : '');
@@ -7385,13 +7462,29 @@ function buildNodePillStrip(node){
         }
         chip.title = (attr.label||attr.id) + ': ' + (vDef?.label||vid) + (vDef?.note ? (' — '+vDef.note) : '');
         chip.textContent = vLabel;
-        strip.appendChild(chip);
+        attrChips.push(chip);
         count++;
       }
     }
   }
 
-  return count > 0 ? strip : null;
+  // Build left and right strips
+  function makeStrip(chips){
+    if(!chips.length) return null;
+    const s = document.createElement('div');
+    s.className = 'tagStrip';
+    chips.forEach(c => s.appendChild(c));
+    return s;
+  }
+
+  const leftChips = [];
+  const rightChips = [];
+  if(tagMode === 'left') leftChips.push(...tagChips);
+  else if(tagMode === 'right') rightChips.push(...tagChips);
+  if(attrMode === 'left') leftChips.push(...attrChips);
+  else if(attrMode === 'right') rightChips.push(...attrChips);
+
+  return { left: makeStrip(leftChips), right: makeStrip(rightChips) };
 }
 
 function createNodeElement(node, columnId){
@@ -7419,16 +7512,15 @@ function createNodeElement(node, columnId){
     caret.className = "caret";
     caret.dataset.caretFor = node.id;
     row.appendChild(caret);
-  const pillStrip = buildNodePillStrip(node);
-  if(pillStrip) row.appendChild(pillStrip);
   } else {
     const spacer = document.createElement("div");
     spacer.style.width = "21px";
     spacer.style.flex = "0 0 auto";
     row.appendChild(spacer);
-  const pillStrip = buildNodePillStrip(node);
-  if(pillStrip) row.appendChild(pillStrip);
   }
+
+  const pills = buildNodePillStrips(node);
+  if(pills.left) row.appendChild(pills.left);
 
   const label = document.createElement("div");
   label.className = "label";
@@ -7439,6 +7531,8 @@ function createNodeElement(node, columnId){
   // ID is intentionally hidden in the tree row to save horizontal space.
   // Full ID is still available in Details and status/breadcrumbs.
   row.appendChild(label);
+
+  if(pills.right) row.appendChild(pills.right);
   container.appendChild(row);
 
   if(node.type === "group"){
@@ -7962,7 +8056,7 @@ function renderRuleValueInput(fd, rule, path){
     const a = attrCat.find(x=>x.id===fd.attrId);
     const vals = a?.values || [];
     return `<select class="inp ruleVal" data-path="${path}" style="flex:1;font-size:11px;"><option value="">—</option>
-      ${vals.map(v=>`<option value="${escapeHtml(v.id)}" ${v.id===rule.value?'selected':''}>${escapeHtml(v.label||v.id)}</option>`).join('')}</select>`;
+      ${vals.map(v=>`<option value="${escapeHtml(v.id)}" ${v.id===rule.value?'selected':''}>${escapeHtml(_catalogItemLabel(v))}</option>`).join('')}</select>`;
   }
   return `<input class="inp ruleVal" data-path="${path}" value="${escapeHtml(rule.value||'')}" placeholder="Value…" style="flex:1;font-size:11px;"/>`;
 }
@@ -8621,6 +8715,33 @@ function getOrCreateFilterMarker(color, isStart){
   path.setAttribute('d', 'M0,2.6 L0,11.4 L13,7 z');
   path.setAttribute('fill', color);
   marker.appendChild(path);
+  defs.appendChild(marker);
+  const url = `url(#${id})`;
+  __filterMarkerCache.set(key, url);
+  return url;
+}
+
+function getOrCreateFilterDotMarker(color){
+  const key = 'd:' + color;
+  if(__filterMarkerCache.has(key)) return __filterMarkerCache.get(key);
+  const svg = document.getElementById('svgOverlay');
+  const defs = svg?.querySelector('defs');
+  if(!defs) return '';
+  const id = 'filterDot_' + color.replace('#','');
+  const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+  marker.setAttribute('id', id);
+  marker.setAttribute('markerWidth', '8');
+  marker.setAttribute('markerHeight', '8');
+  marker.setAttribute('markerUnits', 'userSpaceOnUse');
+  marker.setAttribute('refX', '4');
+  marker.setAttribute('refY', '4');
+  marker.setAttribute('viewBox', '0 0 8 8');
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', '4');
+  circle.setAttribute('cy', '4');
+  circle.setAttribute('r', '3');
+  circle.setAttribute('fill', color);
+  marker.appendChild(circle);
   defs.appendChild(marker);
   const url = `url(#${id})`;
   __filterMarkerCache.set(key, url);
@@ -9315,8 +9436,12 @@ if(!edgeFocusId){
 ========================= */
 function edgeTooltip(edge){
   const tlist = (edge.transforms && edge.transforms.length) ? edge.transforms.map(formatTransformRef).join(' ➜ ') : '';
+  const eDir = edge.direction || 'forward';
+  const arrow = eDir === 'none' ? '···' : eDir === 'both' ? '↔' : '→';
+  const dirLabel = eDir === 'both' ? 'Direction: Bidirectional' : eDir === 'none' ? 'Direction: Linked (directionless)' : '';
   return [
-    `${edge.from} → ${edge.to}`,
+    `${edge.from} ${arrow} ${edge.to}`,
+    dirLabel,
     edge.label ? `Label: ${edge.label}` : "",
     edge.cardinality ? `Cardinality: ${edge.cardinality}` : "",
     tlist ? `Transform: ${tlist}` : "",
@@ -9426,7 +9551,7 @@ function miniNodeCard(nodeId){
         const vals = Array.isArray(raw) ? raw : [raw];
         const valueTags = vals.map(vid => {
           const v = customValueById(aid, vid) || { id:vid, label:vid };
-          return `<span class="dtAttrVal">${escapeHtml(v.label||v.id)}</span>`;
+          return `<span class="dtAttrVal">${escapeHtml(_catalogItemLabel(v))}</span>`;
         }).join('');
         return `<div class="dtAttrGroup"><span class="dtAttrLabel">${escapeHtml(a.label||a.id)}</span>${valueTags}</div>`;
       }).join('');
@@ -9490,7 +9615,7 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
     const descendants = IDX.nodeFieldDescendants.get(nid) || [];
     for(const f of descendants) allFields.add(f);
   }
-  let inCount = 0, outCount = 0, internalCount = 0;
+  let inCount = 0, outCount = 0, internalCount = 0, linkedCount = 0;
   const seenEdges = new Set();
   for(const e of IDX.edges){
     if(seenEdges.has(e.id)) continue;
@@ -9498,7 +9623,10 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
     const toIn = allFields.has(e.to);
     if(!fromIn && !toIn) continue;
     seenEdges.add(e.id);
-    if(fromIn && toIn) internalCount++;
+    const dir = e.direction || 'forward';
+    if(dir === 'none'){ linkedCount++; }
+    else if(fromIn && toIn) internalCount++;
+    else if(dir === 'both'){ outCount++; inCount++; }
     else if(fromIn) outCount++;
     else inCount++;
   }
@@ -9522,16 +9650,26 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
   }
 
   // Collect edges involving selected fields for the edge section
-  const internalEdges = [], inboundEdges = [], outboundEdges = [];
+  const internalEdges = [], inboundEdges = [], outboundEdges = [], linkedEdges = [];
   for(const e of IDX.edges){
     const fromIn = allFields.has(e.from);
     const toIn = allFields.has(e.to);
     if(!fromIn && !toIn) continue;
-    if(fromIn && toIn) internalEdges.push(e);
+    const dir = e.direction || 'forward';
+    if(dir === 'none'){
+      if(fromIn || toIn) linkedEdges.push(e);
+    } else if(fromIn && toIn) internalEdges.push(e);
+    else if(dir === 'both'){
+      // Bidirectional: appears in both inbound and outbound
+      outboundEdges.push(e);
+      inboundEdges.push(e);
+    }
     else if(fromIn) outboundEdges.push(e);
     else inboundEdges.push(e);
   }
-  const allRelatedEdges = [...internalEdges, ...outboundEdges, ...inboundEdges];
+  // Deduplicate for counts (bidirectional edges may appear in both in/out)
+  const _allEdgeSet = new Set([...internalEdges, ...outboundEdges, ...inboundEdges, ...linkedEdges]);
+  const allRelatedEdges = [..._allEdgeSet];
 
   // === ACTIONS SECTION (top) ===
   let actionsHtml = '';
@@ -9575,15 +9713,17 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
   const inTransformCount = countTransforms(inboundEdges);
   const outTransformCount = countTransforms(outboundEdges);
   const intTransformCount = countTransforms(internalEdges);
+  const lnkTransformCount = countTransforms(linkedEdges);
   const fmtT = (count) => count > 0 ? `${count} transform${count===1?'':'s'}` : '';
 
   // === STATISTICS ===
-  const totalMappings = inCount + outCount + internalCount;
-  const totalTransforms = inTransformCount + outTransformCount + intTransformCount;
+  const totalMappings = inCount + outCount + internalCount + linkedCount;
+  const totalTransforms = inTransformCount + outTransformCount + intTransformCount + lnkTransformCount;
   let edgeStatCards = '';
   if(inCount) edgeStatCards += `<div class="msStat"><div class="msStatLabel">Inbound</div><div class="msStatVal">${inCount}</div>${inTransformCount ? `<div class="msStatSub">${fmtT(inTransformCount)}</div>` : ''}</div>`;
   if(outCount) edgeStatCards += `<div class="msStat"><div class="msStatLabel">Outbound</div><div class="msStatVal">${outCount}</div>${outTransformCount ? `<div class="msStatSub">${fmtT(outTransformCount)}</div>` : ''}</div>`;
   if(internalCount) edgeStatCards += `<div class="msStat"><div class="msStatLabel">Internal</div><div class="msStatVal">${internalCount}</div>${intTransformCount ? `<div class="msStatSub">${fmtT(intTransformCount)}</div>` : ''}</div>`;
+  if(linkedCount) edgeStatCards += `<div class="msStat"><div class="msStatLabel">Linked</div><div class="msStatVal">${linkedCount}</div>${lnkTransformCount ? `<div class="msStatSub">${fmtT(lnkTransformCount)}</div>` : ''}</div>`;
 
   const statsHtml = `
     <div class="msStatGrid">
@@ -9624,7 +9764,8 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
     const secDefs = [
       { label: 'Internal', key: 'mapInternal', edges: internalEdges, color: 'rgba(168,85,247,.5)' },
       { label: 'Outbound', key: 'mapOutbound', edges: outboundEdges, color: 'rgba(59,130,246,.5)' },
-      { label: 'Inbound', key: 'mapInbound', edges: inboundEdges, color: 'rgba(34,197,94,.5)' }
+      { label: 'Inbound', key: 'mapInbound', edges: inboundEdges, color: 'rgba(34,197,94,.5)' },
+      { label: 'Linked', key: 'mapLinked', edges: linkedEdges, color: 'rgba(148,163,184,.5)' }
     ];
     let edgeListHtml = '';
     for(const sec of secDefs){
@@ -9637,17 +9778,36 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
         </div>
         <div data-collapse-body="${sec.key}" style="${subCollapsed?'display:none;':''}">`;
       for(const edge of sec.edges){
-        const fromNode = IDX.nodeById.get(edge.from);
-        const toNode = IDX.nodeById.get(edge.to);
-        const fromLabel = fromNode ? (fromNode.label || edge.from) : edge.from;
-        const toLabel = toNode ? (toNode.label || edge.to) : edge.to;
+        const eDir = edge.direction || 'forward';
+        // Determine display order based on section perspective
+        let displayFrom = edge.from, displayTo = edge.to;
+        if(eDir === 'both'){
+          // Outbound: selected node on left; Inbound: selected node on right
+          if(sec.key === 'mapOutbound' && !allFields.has(edge.from) && allFields.has(edge.to)){
+            displayFrom = edge.to; displayTo = edge.from;
+          } else if(sec.key === 'mapInbound' && allFields.has(edge.from) && !allFields.has(edge.to)){
+            displayFrom = edge.to; displayTo = edge.from;
+          }
+        } else if(eDir === 'none'){
+          // Linked: selected node on left
+          if(!allFields.has(edge.from) && allFields.has(edge.to)){
+            displayFrom = edge.to; displayTo = edge.from;
+          }
+        }
+        const fromNode = IDX.nodeById.get(displayFrom);
+        const toNode = IDX.nodeById.get(displayTo);
+        const fromLabel = fromNode ? (fromNode.label || displayFrom) : displayFrom;
+        const toLabel = toNode ? (toNode.label || displayTo) : displayTo;
         const transformCount = (edge.transforms||[]).length;
         const transformBadge = transformCount > 0 ? `<span style="font-size:9px;opacity:.4;padding:1px 4px;border:1px solid var(--border);border-radius:4px;">${transformCount}T</span>` : '';
+        const arrowSym = eDir === 'none' ? '···' : eDir === 'both' ? '↔' : '→';
+        const dirBadge = eDir === 'both' ? '<span style="font-size:8px;opacity:.35;padding:0 2px;" title="Bidirectional">↔</span>' : eDir === 'none' ? '<span style="font-size:8px;opacity:.35;padding:0 2px;" title="Linked">···</span>' : '';
         edgeListHtml += `<div class="miniCard" style="cursor:pointer;padding:4px 6px;border-radius:4px;margin:1px 0;font-size:11px;display:flex;align-items:center;gap:5px;" data-edge-select="${escapeHtml(edge.id)}">
           <span style="width:4px;height:4px;border-radius:50%;background:${sec.color};flex-shrink:0;"></span>
           <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40%;">${escapeHtml(fromLabel)}</span>
-          <span style="opacity:.3;font-size:9px;">→</span>
+          <span style="opacity:.3;font-size:9px;">${arrowSym}</span>
           <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(toLabel)}</span>
+          ${dirBadge}
           ${transformBadge}
         </div>`;
       }
@@ -9794,6 +9954,7 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
       if(internalEdges.length) opts.push({ id:'internal', label:'Internal', count:internalEdges.length, edges:internalEdges });
       if(inboundEdges.length) opts.push({ id:'inbound', label:'Inbound', count:inboundEdges.length, edges:inboundEdges });
       if(outboundEdges.length) opts.push({ id:'outbound', label:'Outbound', count:outboundEdges.length, edges:outboundEdges });
+      if(linkedEdges.length) opts.push({ id:'linked', label:'Linked', count:linkedEdges.length, edges:linkedEdges });
       if(opts.length > 1) opts.push({ id:'all', label:'All', count:allRelatedEdges.length, edges:allRelatedEdges });
       if(opts.length === 1){ opts[0].label = 'All'; }
       toggleScopeMenu('bulkDeleteWrap', delEdgesBtn, opts, async (opt)=>{
@@ -9809,7 +9970,7 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
 
     const addTransformBtn = document.getElementById('bulkAddTransform');
     if(addTransformBtn) addTransformBtn.addEventListener('click', ()=>{
-      showBulkTransformModal({ internal: internalEdges, inbound: inboundEdges, outbound: outboundEdges });
+      showBulkTransformModal({ internal: internalEdges, inbound: inboundEdges, outbound: outboundEdges, linked: linkedEdges });
     });
 
     // --- Clear transforms dropdown ---
@@ -9821,6 +9982,7 @@ function updateDetailsMulti(selectedIds, selectedFieldsSet){
       if(withT(internalEdges).length) opts.push({ id:'internal', label:'Internal', count:withT(internalEdges).length, badge:`${withT(internalEdges).length} · ${tCount(internalEdges)}T`, tCount:tCount(internalEdges), edges:withT(internalEdges) });
       if(withT(inboundEdges).length) opts.push({ id:'inbound', label:'Inbound', count:withT(inboundEdges).length, badge:`${withT(inboundEdges).length} · ${tCount(inboundEdges)}T`, tCount:tCount(inboundEdges), edges:withT(inboundEdges) });
       if(withT(outboundEdges).length) opts.push({ id:'outbound', label:'Outbound', count:withT(outboundEdges).length, badge:`${withT(outboundEdges).length} · ${tCount(outboundEdges)}T`, tCount:tCount(outboundEdges), edges:withT(outboundEdges) });
+      if(withT(linkedEdges).length) opts.push({ id:'linked', label:'Linked', count:withT(linkedEdges).length, badge:`${withT(linkedEdges).length} · ${tCount(linkedEdges)}T`, tCount:tCount(linkedEdges), edges:withT(linkedEdges) });
       const allWith = withT(allRelatedEdges);
       if(opts.length > 1 && allWith.length) opts.push({ id:'all', label:'All', count:allWith.length, badge:`${allWith.length} · ${tCount(allRelatedEdges)}T`, tCount:tCount(allRelatedEdges), edges:allWith });
       if(opts.length === 1){ opts[0].label = 'All'; }
@@ -9866,6 +10028,7 @@ function updateDetails(nodeId, selectedFieldsSet){
 
   const inbound = [];
   const outbound = [];
+  const linked = [];
   const seen = new Set();
   const candidates = isFieldNode ? (IDX.edgesByField.get(nodeId) || []) : IDX.edges;
 
@@ -9875,16 +10038,34 @@ function updateDetails(nodeId, selectedFieldsSet){
       if(!(selectedFields.has(e.from) || selectedFields.has(e.to))) continue;
     }
     seen.add(e.id);
-    if(selectedFields.has(e.from) && !selectedFields.has(e.to)) outbound.push(e);
-    if(selectedFields.has(e.to) && !selectedFields.has(e.from)) inbound.push(e);
+    const dir = e.direction || 'forward';
+    if(dir === 'none'){
+      // Directionless: always linked
+      if(selectedFields.has(e.from) || selectedFields.has(e.to)) linked.push(e);
+    } else if(dir === 'both'){
+      // Bidirectional: show in both inbound and outbound
+      if(selectedFields.has(e.from) && !selectedFields.has(e.to)){ outbound.push(e); inbound.push(e); }
+      else if(selectedFields.has(e.to) && !selectedFields.has(e.from)){ inbound.push(e); outbound.push(e); }
+    } else {
+      // Forward: normal classification
+      if(selectedFields.has(e.from) && !selectedFields.has(e.to)) outbound.push(e);
+      if(selectedFields.has(e.to) && !selectedFields.has(e.from)) inbound.push(e);
+    }
   }
 
   inbound.sort(compareEdgesSimple);
   outbound.sort(compareEdgesSimple);
+  linked.sort(compareEdgesSimple);
 
-  const summary = `Inbound: ${inbound.length} • Outbound: ${outbound.length}`;
+  const summaryParts = [`Inbound: ${inbound.length}`, `Outbound: ${outbound.length}`];
+  if(linked.length) summaryParts.push(`Linked: ${linked.length}`);
+  const summary = summaryParts.join(' • ');
 
   function otherEnd(edge, dir){
+    if(dir === 'linked'){
+      // For linked edges, show the other end relative to the current node
+      return selectedFields.has(edge.from) ? edge.to : edge.from;
+    }
     return dir==='out' ? edge.to : edge.from;
   }
 
@@ -9894,12 +10075,23 @@ function updateDetails(nodeId, selectedFieldsSet){
     const jumpLabel = jumpNode?.label ?? jump;
     const side = columnOf(jump) ?? "node";
     const title = escapeHtml(edgeTooltip(edge));
-    const route = `${edge.from} → ${edge.to}`;
-    const prefix = (dir==='out') ? 'out' : 'in';
+    const eDir = edge.direction || 'forward';
+    // Perspective-aware route: selected node on left for outbound, right for inbound
+    let dFrom = edge.from, dTo = edge.to;
+    if(eDir === 'both' || eDir === 'none'){
+      if(dir === 'out' && !selectedFields.has(edge.from) && selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+      else if(dir === 'in' && selectedFields.has(edge.from) && !selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+      else if(dir === 'linked' && !selectedFields.has(edge.from) && selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+    }
+    const arrowSym = eDir === 'none' ? '···' : eDir === 'both' ? '↔' : '→';
+    const route = `${dFrom} ${arrowSym} ${dTo}`;
+    const prefix = dir === 'linked' ? '···' : dir === 'out' ? 'out' : 'in';
+    const dirBadge = eDir === 'both' ? '<span class="pill" style="opacity:.6;" title="Bidirectional">↔</span>' : eDir === 'none' ? '<span class="pill" style="opacity:.6;" title="Linked">···</span>' : '';
     return `
       <li class="item" data-jump-id="${escapeHtml(jump)}" data-edge-id="${escapeHtml(edge.id)}" title="${title}">
         <span class="pill">${escapeHtml(side)}</span>
         <span class="pill">${escapeHtml(prefix)}</span>
+        ${dirBadge}
  <span class=\"itemBreak\"></span>
         <span class="txt">${escapeHtml(jumpLabel)}</span>
         ${badgeHtml(edge)}
@@ -9970,7 +10162,7 @@ ${(node && node.customAttributes && Object.keys(node.customAttributes||{}).lengt
       const vals = Array.isArray(raw) ? raw : [raw];
       const valueTags = vals.map(vid=>{
         const v = customValueById(aid, vid)||{id:vid,label:vid};
-        return `<span class="dtAttrVal">${escapeHtml(v.label||v.id)}</span>`;
+        return `<span class="dtAttrVal">${escapeHtml(_catalogItemLabel(v))}</span>`;
       }).join('');
       return `<div class="dtAttrGroup"><span class="dtAttrLabel">${escapeHtml(a.label||a.id)}</span>${valueTags}</div>`;
     }).join('')}</div>` : ''}
@@ -9978,6 +10170,7 @@ ${(node && node.customAttributes && Object.keys(node.customAttributes||{}).lengt
     ${childrenHtml}
     ${section('Inbound mappings', inbound, 'in', defaultCollapsed)}
     ${section('Outbound mappings', outbound, 'out', defaultCollapsed)}
+    ${linked.length ? section('Linked (directionless)', linked, 'linked', defaultCollapsed) : ''}
   `;
 
   // Wire collapsible section toggles
@@ -10380,6 +10573,28 @@ function attachTreeInteractions(treeEl){
     lockSelection(id, e);
   });
 
+  // Right-click: open node context menu at cursor position (Editor mode)
+  treeEl.addEventListener("contextmenu", (e) => {
+    const row = e.target.closest(".row");
+    if(!row) return;
+    if(!state.editorMode) return;
+    // Find the ⫶ menu button inside this row's .rowActions
+    const menuBtn = row.querySelector('.rowActions .miniBtn[title="Actions"]');
+    if(!menuBtn || !menuBtn.__menuItems) return;
+    e.preventDefault();
+    // Select the node if not already selected
+    const id = row.dataset.nodeId;
+    if(id && state.lockedId !== id){
+      state.selectedColumnId = null;
+      state.selectedEdgeId = null;
+      state.lockedId = id;
+      state.hoverId = null;
+      applyHighlight();
+    }
+    // Open menu at cursor position
+    openCtxMenu(menuBtn.__menuItems, menuBtn, { x: e.clientX, y: e.clientY });
+  });
+
   // arrows update on scroll
   treeEl.addEventListener("scroll", () => scheduleArrowsUpdate(), { passive: true });
 }
@@ -10429,7 +10644,7 @@ columnsScroller.addEventListener("click", (e) => {
       state.hoverId = null;
       state.multiSelection.clear();
       state.__hoverCooldownUntil = Date.now() + 300;
-      renderAll();
+      applyHighlight();
     } else {
       state.lockedId = null;
       state.hoverId = null;
@@ -10438,9 +10653,28 @@ columnsScroller.addEventListener("click", (e) => {
       state.selectedColumnId = null;
       state.multiSelection.clear();
       state.__hoverCooldownUntil = Date.now() + 300;
-      renderAll();
+      applyHighlight();
     }
   }
+});
+
+// Right-click on column header: open column context menu at cursor position (Editor mode)
+columnsScroller.addEventListener("contextmenu", (e) => {
+  const header = e.target.closest(".panelHeader");
+  if(!header) return;
+  if(!state.editorMode) return;
+  const panel = header.closest(".panel");
+  if(!panel) return;
+  const colId = panel.dataset.columnId;
+  if(!colId) return;
+  e.preventDefault();
+  // Select the column
+  if(state.selectedColumnId !== colId || state.lockedId !== colId){
+    selectColumn(colId);
+  }
+  // Open column menu at cursor position
+  const menuBtn = header.querySelector('.colActions .miniBtn[title="Column actions"]');
+  openColumnMenu(menuBtn || header, colId, { x: e.clientX, y: e.clientY });
 });
 
 function isVisibleNodeId(id){
@@ -10456,23 +10690,58 @@ function isVisibleNodeId(id){
   return true;
 }
 
+// Pre-computed map of columnId → { top, bottom } in SVG coords for clamping.
+// Set at the start of drawArrows(), cleared after.
+let __treeClipBounds = null;
+
 function anchorPoint(nodeId, svgRect, zoomFactor){
   const row = IDX.rowById.get(nodeId);
   if(!row) return null;
   const r = row.getBoundingClientRect();
   const z = zoomFactor || 1;
-  const left = { x: (r.left - svgRect.left) / z, y: ((r.top + r.height/2) - svgRect.top) / z };
-  const right = { x: (r.right - svgRect.left) / z, y: ((r.top + r.height/2) - svgRect.top) / z };
-  return { left, right };
+  const rawY = ((r.top + r.height/2) - svgRect.top) / z;
+  const left = { x: (r.left - svgRect.left) / z, y: rawY };
+  const right = { x: (r.right - svgRect.left) / z, y: rawY };
+
+  // Clamp to column tree visible area when row is scrolled out of view
+  let clamped = null; // 'above' | 'below' | null
+  if(__treeClipBounds){
+    const colId = columnOf(nodeId);
+    const bounds = colId && __treeClipBounds.get(colId);
+    if(bounds){
+      if(rawY < bounds.top){
+        left.y = bounds.top;
+        right.y = bounds.top;
+        clamped = 'above';
+      } else if(rawY > bounds.bottom){
+        left.y = bounds.bottom;
+        right.y = bounds.bottom;
+        clamped = 'below';
+      }
+    }
+  }
+  return { left, right, clamped };
 }
 
 
-function bezier(p1, p2){
+function bezier(p1, p2, fromClamped, toClamped){
   const dist = Math.abs(p2.x - p1.x);
   const dx = Math.max(40, dist * 0.35);
-  const c1x = p1.x + (p2.x > p1.x ? dx : -dx);
-  const c2x = p2.x - (p2.x > p1.x ? dx : -dx);
-  return `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} C ${c1x.toFixed(1)} ${p1.y.toFixed(1)}, ${c2x.toFixed(1)} ${p2.y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+  // Default horizontal control points
+  let c1x = p1.x + (p2.x > p1.x ? dx : -dx);
+  let c1y = p1.y;
+  let c2x = p2.x - (p2.x > p1.x ? dx : -dx);
+  let c2y = p2.y;
+  // Clamped: control point approaches vertically (toward the other endpoint)
+  if(fromClamped){
+    c1x = p1.x;
+    c1y = p1.y + (p2.y > p1.y ? dx : -dx);
+  }
+  if(toClamped){
+    c2x = p2.x;
+    c2y = p2.y + (p1.y > p2.y ? dx : -dx);
+  }
+  return `M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
 }
 
 function orthoPath(p1, p2, midX){
@@ -10483,6 +10752,102 @@ function orthoPath(p1, p2, midX){
 
 // Arrowhead geometry tuning (must match marker path tip X: 12.5)
 const ARROW_TIP_LEN = 13; // px in userSpaceOnUse
+// Adjust a clamped endpoint: snap x to column edge, back off y for triangle base
+// side: 'left' or 'right' — which side of the column this endpoint connects from
+const CLAMP_TRI_SZ = 5;
+function _adjustClampedEndpoint(p, nodeId, clampDir, side){
+  if(!clampDir || !__treeClipBounds) return p;
+  const colId = columnOf(nodeId);
+  const bounds = colId && __treeClipBounds.get(colId);
+  if(!bounds) return p;
+  // Snap X to column edge; Y stays at clamped position from anchorPoint
+  const nx = side === 'left' ? bounds.left : bounds.right;
+  return { x: nx, y: p.y };
+}
+
+// Draw a small directional indicator (▲/▼) at a clamped arrow endpoint
+function _drawClampIndicator(parent, x, y, direction, color){
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.classList.add('clampIndicator');
+  const sz = 5;
+  let points;
+  if(direction === 'above'){
+    // Triangle pointing UP ▲ — base at y, tip at y - 2*sz
+    points = `${x},${y - sz*2} ${x - sz},${y} ${x + sz},${y}`;
+  } else {
+    // Triangle pointing DOWN ▼ — base at y, tip at y + 2*sz
+    points = `${x - sz},${y} ${x + sz},${y} ${x},${y + sz*2}`;
+  }
+  const tri = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  tri.setAttribute('points', points);
+  tri.setAttribute('fill', color || 'rgba(255,255,255,.25)');
+  tri.setAttribute('stroke', 'none');
+  g.appendChild(tri);
+  parent.appendChild(g);
+  return g;
+}
+
+// Remove any existing clamp indicators for a path
+function _clearClampIndicators(path){
+  if(path.__clampFrom){ try{ path.__clampFrom.remove(); }catch{} path.__clampFrom = null; }
+  if(path.__clampTo){ try{ path.__clampTo.remove(); }catch{} path.__clampTo = null; }
+}
+
+// Draw center-opposing arrows (→←) at midpoint of path for consolidated two-forwards
+function _drawMidOpposingArrows(parent, pathEl, color){
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.classList.add('midArrows');
+  try {
+    const len = pathEl.getTotalLength();
+    const mid = pathEl.getPointAtLength(len * 0.5);
+    // Get tangent by sampling nearby points
+    const dt = Math.min(2, len * 0.01);
+    const pBefore = pathEl.getPointAtLength(len * 0.5 - dt);
+    const pAfter = pathEl.getPointAtLength(len * 0.5 + dt);
+    const angle = Math.atan2(pAfter.y - pBefore.y, pAfter.x - pBefore.x);
+    
+    // Match SVG marker exactly: 13px long, 8.8px wide (M0,2.6 L0,11.4 L13,7 z)
+    const arrowLen = 13;
+    const baseHalf = 4.4; // half of 8.8
+    const tipGap = 1; // tiny gap between the two tips at center
+    
+    // Forward arrow (→) — tip points INWARD toward center
+    // Tip is near center, base extends outward (toward target)
+    const fTipX = mid.x + Math.cos(angle) * tipGap;
+    const fTipY = mid.y + Math.sin(angle) * tipGap;
+    const fBaseCX = mid.x + Math.cos(angle) * (tipGap + arrowLen);
+    const fBaseCY = mid.y + Math.sin(angle) * (tipGap + arrowLen);
+    const fBL = { x: fBaseCX + Math.cos(angle + Math.PI/2) * baseHalf, y: fBaseCY + Math.sin(angle + Math.PI/2) * baseHalf };
+    const fBR = { x: fBaseCX + Math.cos(angle - Math.PI/2) * baseHalf, y: fBaseCY + Math.sin(angle - Math.PI/2) * baseHalf };
+    
+    const tri1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    tri1.setAttribute('points', `${fTipX},${fTipY} ${fBL.x},${fBL.y} ${fBR.x},${fBR.y}`);
+    tri1.setAttribute('fill', color);
+    tri1.setAttribute('stroke', 'none');
+    g.appendChild(tri1);
+    
+    // Reverse arrow (←) — tip points INWARD toward center
+    const rTipX = mid.x - Math.cos(angle) * tipGap;
+    const rTipY = mid.y - Math.sin(angle) * tipGap;
+    const rBaseCX = mid.x - Math.cos(angle) * (tipGap + arrowLen);
+    const rBaseCY = mid.y - Math.sin(angle) * (tipGap + arrowLen);
+    const rBL = { x: rBaseCX + Math.cos(angle + Math.PI/2) * baseHalf, y: rBaseCY + Math.sin(angle + Math.PI/2) * baseHalf };
+    const rBR = { x: rBaseCX + Math.cos(angle - Math.PI/2) * baseHalf, y: rBaseCY + Math.sin(angle - Math.PI/2) * baseHalf };
+    
+    const tri2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    tri2.setAttribute('points', `${rTipX},${rTipY} ${rBL.x},${rBL.y} ${rBR.x},${rBR.y}`);
+    tri2.setAttribute('fill', color);
+    tri2.setAttribute('stroke', 'none');
+    g.appendChild(tri2);
+  } catch(ex) {}
+  parent.appendChild(g);
+  return g;
+}
+
+function _clearMidArrows(path){
+  if(path.__midArrows){ try{ path.__midArrows.remove(); }catch{} path.__midArrows = null; }
+}
+
 function adjustEndForArrow(p1, p2, len=ARROW_TIP_LEN){
   // Keep the arrow tip vertically centered on the target row.
   // We only shift along X so the marker tip lands on the element edge,
@@ -10636,9 +11001,36 @@ function findChainsThoughHiddenColumns(){
 
 
 function drawArrows(){
-  if(!state.arrowsOn) { edgesLayer.innerHTML = ""; return; }
-  // Remove all mapping labels — they are recreated each pass (prevents orphaned burn-in)
+  if(!state.arrowsOn) { 
+    edgesLayer.querySelectorAll('.clampIndicator').forEach(el => el.remove());
+    edgesLayer.querySelectorAll('.midArrows').forEach(el => el.remove());
+    edgesLayer.innerHTML = ""; 
+    __treeClipBounds = null; 
+    return; 
+  }
+
+  // Pre-compute visible tree bounds for each column (for scroll clamping)
+  __treeClipBounds = new Map();
+  for(const col of IDX.columns){
+    if(state.hiddenColumns.has(col.id)) continue;
+    const panel = IDX.panelByColumnId.get(col.id);
+    if(!panel) continue;
+    const tree = panel.querySelector('.tree');
+    if(!tree) continue;
+    const tr = tree.getBoundingClientRect();
+    const pr = panel.getBoundingClientRect();
+    // Add a small inset so clamped arrows don't land exactly on the edge
+    const inset = 6;
+    // Store screen coords; converted to SVG coords after svgRect is available
+    __treeClipBounds.set(col.id, { 
+      screenTop: tr.top + inset, screenBottom: tr.bottom - inset,
+      screenLeft: pr.left, screenRight: pr.right
+    });
+  }
+  // Remove all mapping labels and clamp indicators — they are recreated each pass
   edgesLayer.querySelectorAll('text.edgeLabel').forEach(el => el.remove());
+  edgesLayer.querySelectorAll('.clampIndicator').forEach(el => el.remove());
+  edgesLayer.querySelectorAll('.midArrows').forEach(el => el.remove());
   // Reset SVG size before measuring to prevent self-inflating scrollWidth
   svgOverlay.style.width = '0';
   svgOverlay.style.height = '0';
@@ -10652,6 +11044,14 @@ function drawArrows(){
   svgOverlay.style.width = fullW + "px";
   svgOverlay.style.height = fullH + "px";
   const svgRect = svgOverlay.getBoundingClientRect();
+
+  // Convert tree clip bounds from screen coords to SVG coords
+  for(const [colId, bounds] of __treeClipBounds){
+    bounds.top = (bounds.screenTop - svgRect.top) / zoomFactor;
+    bounds.bottom = (bounds.screenBottom - svgRect.top) / zoomFactor;
+    bounds.left = (bounds.screenLeft - svgRect.left) / zoomFactor;
+    bounds.right = (bounds.screenRight - svgRect.left) / zoomFactor;
+  }
 
   const effectiveNode = currentEffectiveId();
   const hasMulti = state.multiSelection.size > 0;
@@ -10777,6 +11177,8 @@ function drawArrows(){
     Array.from(edgesLayer.querySelectorAll('path.edge')).forEach(path=>{
       path.classList.add('fadeOut');
       if(path.__hitbox) path.__hitbox.style.pointerEvents = 'none';
+      _clearClampIndicators(path);
+      _clearMidArrows(path);
       setTimeout(()=>{ 
         if(path.__hitbox) path.__hitbox.remove();
         path.remove(); 
@@ -10885,15 +11287,26 @@ function drawArrows(){
     const fi = visualColumnIndex(fCol);
     const ti = visualColumnIndex(tCol);
     if(fi < 0 || ti < 0) continue;
-    let p1, p2;
-    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; }
-    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; }
-    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; }
+    let p1, p2, fromSide, toSide;
+    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; fromSide='right'; toSide='left'; }
+    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; fromSide='left'; toSide='right'; }
+    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; fromSide = __isRM?'left':'right'; toSide = fromSide; }
+    // Snap clamped endpoints to column edge
+    if(aFrom.clamped) p1 = _adjustClampedEndpoint(p1, fromId, aFrom.clamped, fromSide);
+    if(aTo.clamped) p2 = _adjustClampedEndpoint(p2, toId, aTo.clamped, toSide);
     // Back off the path end so the marker tip lands exactly on the element edge
-    p2 = adjustEndForArrow(p1, p2);
+    const _eDir = e.direction || 'forward';
+    if(_eDir === 'none'){
+      // Dot markers are centered — no back-off needed
+    } else {
+      if(!aTo.clamped) p2 = adjustEndForArrow(p1, p2);
+      if(_eDir === 'both' && !aFrom.clamped) p1 = adjustEndForArrow(p2, p1);
+    }
     const span = Math.abs(fi - ti);
     const key = `${Math.min(fi,ti)}-${Math.max(fi,ti)}-${span}`;
-    candidates.push({ e, p1, p2, fi, ti, span, key, isDotted, fromId, toId, edgeCount: 1 });
+    // Skip if both endpoints are scrolled out of view — no useful info
+    if(aFrom.clamped && aTo.clamped) continue;
+    candidates.push({ e, p1, p2, fi, ti, span, key, isDotted, fromId, toId, edgeCount: 1, fromClamped: aFrom.clamped, toClamped: aTo.clamped });
   }
   
   // Process collapsed group pairs - create one representative arrow per pair
@@ -10942,23 +11355,29 @@ function drawArrows(){
     const aFrom = anchorPoint(fromId, svgRect, zoomFactor);
     const aTo = anchorPoint(toId, svgRect, zoomFactor);
     if(!aFrom || !aTo) continue;
+    if(aFrom.clamped && aTo.clamped) continue;
     const fCol = columnOf(fromId);
     const tCol = columnOf(toId);
     const fi = visualColumnIndex(fCol);
     const ti = visualColumnIndex(tCol);
     if(fi < 0 || ti < 0) continue;
-    let p1, p2;
-    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; }
-    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; }
-    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; }
-    p2 = adjustEndForArrow(p1, p2);
+    let p1, p2, fromSide, toSide;
+    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; fromSide='right'; toSide='left'; }
+    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; fromSide='left'; toSide='right'; }
+    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; fromSide = __isRM?'left':'right'; toSide = fromSide; }
+    if(aFrom.clamped) p1 = _adjustClampedEndpoint(p1, fromId, aFrom.clamped, fromSide);
+    if(aTo.clamped) p2 = _adjustClampedEndpoint(p2, toId, aTo.clamped, toSide);
     
-    // For bidirectional arrows, also adjust p1 so the line starts at the arrow base
-    if(isBidirectional){
-      const dx = p2.x - p1.x;
-      const dir = dx === 0 ? 0 : Math.sign(dx);
-      const oldP1 = {...p1};
-      p1 = { x: p1.x + dir * ARROW_TIP_LEN, y: p1.y }; // Push p1 forward
+    const _eDirB2 = e.direction || 'forward';
+    const _isConsBidi2 = isBidirectional && _eDirB2 !== 'both';
+    // Don't back off endpoints for consolidated two-forwards (no endpoint markers)
+    if(!_isConsBidi2 && _eDirB2 !== 'none'){
+      if(!aTo.clamped) p2 = adjustEndForArrow(p1, p2);
+    }
+    
+    // For true bidirectional (direction: 'both'), adjust p1 for marker-start
+    if(_eDirB2 === 'both' && !aFrom.clamped){
+      p1 = adjustEndForArrow(p2, p1);
     }
     
     const span = Math.abs(fi - ti);
@@ -10985,7 +11404,8 @@ function drawArrows(){
       fromId, toId, 
       edgeCount: allEdges.length,
       consolidatedEdges: allEdges,
-      isBidirectional // Store for marker selection
+      isBidirectional, // Store for marker selection
+      fromClamped: aFrom.clamped, toClamped: aTo.clamped
     });
   }
   
@@ -11025,26 +11445,34 @@ function drawArrows(){
     const aFrom = anchorPoint(fromId, svgRect, zoomFactor);
     const aTo = anchorPoint(toId, svgRect, zoomFactor);
     if(!aFrom || !aTo) continue;
+    if(aFrom.clamped && aTo.clamped) continue;
     const fCol = columnOf(fromId);
     const tCol = columnOf(toId);
     const fi = visualColumnIndex(fCol);
     const ti = visualColumnIndex(tCol);
     if(fi < 0 || ti < 0) continue;
-    let p1, p2;
-    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; }
-    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; }
-    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; }
-    p2 = adjustEndForArrow(p1, p2);
+    let p1, p2, fromSide, toSide;
+    if(fi < ti){ p1 = aFrom.right; p2 = aTo.left; fromSide='right'; toSide='left'; }
+    else if(fi > ti){ p1 = aFrom.left; p2 = aTo.right; fromSide='left'; toSide='right'; }
+    else { const __isRM = fCol === __rightmostColId; p1 = __isRM ? aFrom.left : aFrom.right; p2 = __isRM ? aTo.left : aTo.right; fromSide = __isRM?'left':'right'; toSide = fromSide; }
+    if(aFrom.clamped) p1 = _adjustClampedEndpoint(p1, fromId, aFrom.clamped, fromSide);
+    if(aTo.clamped) p2 = _adjustClampedEndpoint(p2, toId, aTo.clamped, toSide);
+    
+    const _eDirB3 = e.direction || 'forward';
+    const _isConsBidi = isBidirectional && _eDirB3 !== 'both';
+    // Don't back off endpoints for consolidated two-forwards (no endpoint markers)
+    if(!_isConsBidi && _eDirB3 !== 'none'){
+      if(!aTo.clamped) p2 = adjustEndForArrow(p1, p2);
+    }
     
     const span = Math.abs(fi - ti);
     const key = `${Math.min(fi,ti)}-${Math.max(fi,ti)}-${span}`;
     
-    // For bidirectional arrows, also adjust p1
-    if(isBidirectional){
-      const dx = p2.x - p1.x;
-      const dir = dx === 0 ? 0 : Math.sign(dx);
-      p1 = { x: p1.x + dir * ARROW_TIP_LEN, y: p1.y };
+    // For true bidirectional (direction: 'both'), adjust p1 for marker-start
+    if(_eDirB3 === 'both' && !aFrom.clamped){
+      p1 = adjustEndForArrow(p2, p1);
     }
+    // For consolidated two-forwards, no p1 offset — center opposing arrows handle visual
     
     // Combine edges from both directions
     let allEdges = [...edges];
@@ -11063,7 +11491,8 @@ function drawArrows(){
       fromId, toId,
       edgeCount: allEdges.length,
       consolidatedEdges: allEdges,
-      isBidirectional
+      isBidirectional,
+      fromClamped: aFrom.clamped, toClamped: aTo.clamped
     });
   }
   
@@ -11082,7 +11511,8 @@ function drawArrows(){
   }
 
   for(const c of candidates){
-    const { e, p1, p2, span, isDotted: collapsedDotted, fromId, toId, edgeCount, consolidatedEdges, isBidirectional } = c;
+    const { e, p1, p2, span, isDotted: collapsedDotted, fromId, toId, edgeCount, consolidatedEdges, isBidirectional, fromClamped, toClamped } = c;
+    const isClamped = !!(fromClamped || toClamped);
     
     if(consolidatedEdges && consolidatedEdges.length > 1){
     }
@@ -11143,19 +11573,28 @@ function drawArrows(){
       const baseBulge = Math.min(60, Math.max(30, yDist * 0.35));
       
       if(isRightSide){
-        const p2Adj = { x: p2.x + ARROW_TIP_LEN, y: p2.y };
-        const p1Adj = isBidirectional ? { x: p1.x + ARROW_TIP_LEN, y: p1.y } : p1;
+        const p2Adj = toClamped ? p2 : { x: p2.x + ARROW_TIP_LEN, y: p2.y };
+        const p1Adj = isBidirectional ? (fromClamped ? p1 : { x: p1.x + ARROW_TIP_LEN, y: p1.y }) : p1;
         const bulge = Math.max(p1Adj.x, p2Adj.x) + baseBulge + fan;
-        d = `M ${p1Adj.x.toFixed(1)} ${p1Adj.y.toFixed(1)} C ${bulge.toFixed(1)} ${p1Adj.y.toFixed(1)}, ${bulge.toFixed(1)} ${p2Adj.y.toFixed(1)}, ${p2Adj.x.toFixed(1)} ${p2Adj.y.toFixed(1)}`;
+        // Control points: vertical approach for clamped ends
+        const c1x = fromClamped ? p1Adj.x : bulge;
+        const c1y = fromClamped ? p1Adj.y + (p2Adj.y > p1Adj.y ? baseBulge : -baseBulge) : p1Adj.y;
+        const c2x = toClamped ? p2Adj.x : bulge;
+        const c2y = toClamped ? p2Adj.y + (p1Adj.y > p2Adj.y ? baseBulge : -baseBulge) : p2Adj.y;
+        d = `M ${p1Adj.x.toFixed(1)} ${p1Adj.y.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2Adj.x.toFixed(1)} ${p2Adj.y.toFixed(1)}`;
       } else {
-        const p2Adj = { x: p2.x - ARROW_TIP_LEN, y: p2.y };
-        const p1Adj = isBidirectional ? { x: p1.x - ARROW_TIP_LEN, y: p1.y } : p1;
+        const p2Adj = toClamped ? p2 : { x: p2.x - ARROW_TIP_LEN, y: p2.y };
+        const p1Adj = isBidirectional ? (fromClamped ? p1 : { x: p1.x - ARROW_TIP_LEN, y: p1.y }) : p1;
         const bulge = Math.min(p1Adj.x, p2Adj.x) - baseBulge - fan;
-        d = `M ${p1Adj.x.toFixed(1)} ${p1Adj.y.toFixed(1)} C ${bulge.toFixed(1)} ${p1Adj.y.toFixed(1)}, ${bulge.toFixed(1)} ${p2Adj.y.toFixed(1)}, ${p2Adj.x.toFixed(1)} ${p2Adj.y.toFixed(1)}`;
+        const c1x = fromClamped ? p1Adj.x : bulge;
+        const c1y = fromClamped ? p1Adj.y + (p2Adj.y > p1Adj.y ? baseBulge : -baseBulge) : p1Adj.y;
+        const c2x = toClamped ? p2Adj.x : bulge;
+        const c2y = toClamped ? p2Adj.y + (p1Adj.y > p2Adj.y ? baseBulge : -baseBulge) : p2Adj.y;
+        d = `M ${p1Adj.x.toFixed(1)} ${p1Adj.y.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2Adj.x.toFixed(1)} ${p2Adj.y.toFixed(1)}`;
       }
     } else {
       // All cross-column mappings (adjacent, distant, collapsed): smooth bezier
-      d = bezier(p1, p2);
+      d = bezier(p1, p2, fromClamped, toClamped);
     }
 
     // Compute tooltip text (used for both new and existing paths)
@@ -11208,19 +11647,38 @@ function drawArrows(){
       let marker = inActive ? 'url(#arrowActive)' : (inHL ? 'url(#arrowHL)' : 'url(#arrowDefault)');
       if(state.editorMode && state.selectedEdgeId===e.id){ marker = 'url(#arrowActive)'; }
       
-      // Use bidirectional markers if this is a bidirectional consolidated arrow
-      if(isBidirectional){
+      const edgeDir = e.direction || 'forward';
+      const isConsolidatedBidi = isBidirectional && edgeDir !== 'both'; // two separate forwards
+      
+      // Determine markers based on direction
+      if(edgeDir === 'none'){
+        // Directionless: dot markers at both ends
+        const dotEnd = inActive ? 'url(#dotActive)' : (inHL ? 'url(#dotHL)' : 'url(#dotDefault)');
+        if(state.editorMode && state.selectedEdgeId===e.id){
+          path.setAttribute('marker-start', 'url(#dotActive)');
+          path.setAttribute('marker-end', 'url(#dotActive)');
+        } else {
+          path.setAttribute('marker-start', dotEnd);
+          path.setAttribute('marker-end', dotEnd);
+        }
+      } else if(edgeDir === 'both'){
+        // True bidirectional: arrow markers at both ends
         const startMarker = inActive ? 'url(#arrowStartActive)' : (inHL ? 'url(#arrowStartHL)' : 'url(#arrowStartDefault)');
         if(state.editorMode && state.selectedEdgeId===e.id){ 
           path.setAttribute('marker-start', 'url(#arrowStartActive)');
         } else {
           path.setAttribute('marker-start', startMarker);
         }
+        path.setAttribute('marker-end', marker);
+      } else if(isConsolidatedBidi){
+        // Consolidated two-forwards: NO endpoint arrows, center arrows drawn separately
+        path.removeAttribute('marker-start');
+        path.removeAttribute('marker-end');
       } else {
-        path.removeAttribute('marker-start'); // Remove start marker if not bidirectional
+        // Forward: arrow at end only
+        path.removeAttribute('marker-start');
+        path.setAttribute('marker-end', marker);
       }
-      
-      path.setAttribute('marker-end', marker);
       path.classList.toggle('selected', !!(state.editorMode && state.selectedEdgeId===e.id));
       
       // Edge coloring priority: filter > scheme > per-edge custom
@@ -11230,10 +11688,46 @@ function drawArrows(){
       const edgeColor = fEdgeColor || schemeEdgeColor || customEdgeColor;
       if(edgeColor && !inHL && !inActive){
         path.style.stroke = edgeColor;
-        path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor, false));
-        if(isBidirectional) path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor, true));
+        if(isConsolidatedBidi){
+          // No endpoint markers for consolidated — center arrows handle it
+        } else if(edgeDir === 'none'){
+          const dotM = getOrCreateFilterDotMarker(edgeColor);
+          path.setAttribute('marker-start', dotM);
+          path.setAttribute('marker-end', dotM);
+        } else {
+          path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor, false));
+          if(edgeDir === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor, true));
+        }
       } else { path.style.removeProperty('stroke'); }
-      path.style.removeProperty('opacity');
+      if(isClamped && !inHL && !inActive){
+        path.style.opacity = '0.25';
+      } else {
+        path.style.removeProperty('opacity');
+      }
+      
+      // Clamped endpoint indicators: replace arrowhead with ▲/▼ chevron at column edge
+      _clearClampIndicators(path);
+      if(toClamped){
+        path.removeAttribute('marker-end');
+        const clrT = (!inHL && !inActive && edgeColor) ? edgeColor : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
+        path.__clampTo = _drawClampIndicator(edgesLayer, p2.x, p2.y, toClamped, clrT);
+        if(isClamped && !inHL && !inActive) path.__clampTo.style.opacity = '0.4';
+      }
+      if(fromClamped){
+        path.removeAttribute('marker-start');
+        const clrF = (!inHL && !inActive && edgeColor) ? edgeColor : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
+        path.__clampFrom = _drawClampIndicator(edgesLayer, p1.x, p1.y, fromClamped, clrF);
+        if(isClamped && !inHL && !inActive) path.__clampFrom.style.opacity = '0.4';
+      }
+      
+      // Center-opposing arrows for consolidated two-forwards (→←)
+      _clearMidArrows(path);
+      if(isConsolidatedBidi){
+        const isSelected = !!(state.editorMode && state.selectedEdgeId===e.id);
+        const midClr = (edgeColor && !inHL && !inActive && !isSelected) ? edgeColor : (inActive || isSelected) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
+        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midClr);
+        if(isClamped && !inHL && !inActive) path.__midArrows.style.opacity = '0.4';
+      }
       
       // Update tooltip on path
       const pathTitle = path.querySelector('title');
@@ -11310,17 +11804,32 @@ function drawArrows(){
       let marker = inActive ? 'url(#arrowActive)' : (inHL ? 'url(#arrowHL)' : 'url(#arrowDefault)');
       if(state.editorMode && state.selectedEdgeId===e.id){ marker = 'url(#arrowActive)'; }
       
-      // Use bidirectional markers if this is a bidirectional consolidated arrow
-      if(isBidirectional){
+      const edgeDir2 = e.direction || 'forward';
+      const isConsolidatedBidi2 = isBidirectional && edgeDir2 !== 'both';
+      
+      if(edgeDir2 === 'none'){
+        const dotEnd = inActive ? 'url(#dotActive)' : (inHL ? 'url(#dotHL)' : 'url(#dotDefault)');
+        if(state.editorMode && state.selectedEdgeId===e.id){
+          path.setAttribute('marker-start', 'url(#dotActive)');
+          path.setAttribute('marker-end', 'url(#dotActive)');
+        } else {
+          path.setAttribute('marker-start', dotEnd);
+          path.setAttribute('marker-end', dotEnd);
+        }
+      } else if(edgeDir2 === 'both'){
         const startMarker = inActive ? 'url(#arrowStartActive)' : (inHL ? 'url(#arrowStartHL)' : 'url(#arrowStartDefault)');
         if(state.editorMode && state.selectedEdgeId===e.id){ 
           path.setAttribute('marker-start', 'url(#arrowStartActive)');
         } else {
           path.setAttribute('marker-start', startMarker);
         }
+        path.setAttribute('marker-end', marker);
+      } else if(isConsolidatedBidi2){
+        path.removeAttribute('marker-start');
+        path.removeAttribute('marker-end');
+      } else {
+        path.setAttribute('marker-end', marker);
       }
-      
-      path.setAttribute('marker-end', marker);
       
       // Edge coloring priority: filter > scheme > per-edge custom
       const fEdgeColor2 = getFilterEdgeColor(fromId, toId, consolidatedEdges);
@@ -11329,8 +11838,41 @@ function drawArrows(){
       const edgeColor2 = fEdgeColor2 || schemeEdgeColor2 || customEdgeColor2;
       if(edgeColor2 && !inHL && !inActive){
         path.style.stroke = edgeColor2;
-        path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor2, false));
-        if(isBidirectional) path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor2, true));
+        if(isConsolidatedBidi2){
+          // No endpoint markers for consolidated
+        } else if(edgeDir2 === 'none'){
+          const dotM2 = getOrCreateFilterDotMarker(edgeColor2);
+          path.setAttribute('marker-start', dotM2);
+          path.setAttribute('marker-end', dotM2);
+        } else {
+          path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor2, false));
+          if(edgeDir2 === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor2, true));
+        }
+      }
+      if(isClamped && !inHL && !inActive){
+        path.style.opacity = '0.25';
+      }
+      
+      // Clamped endpoint indicators: replace arrowhead with ▲/▼ chevron at column edge
+      if(toClamped){
+        path.removeAttribute('marker-end');
+        const clrT2 = (!inHL && !inActive && edgeColor2) ? edgeColor2 : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
+        path.__clampTo = _drawClampIndicator(edgesLayer, p2.x, p2.y, toClamped, clrT2);
+        if(isClamped && !inHL && !inActive) path.__clampTo.style.opacity = '0.4';
+      }
+      if(fromClamped){
+        path.removeAttribute('marker-start');
+        const clrF2 = (!inHL && !inActive && edgeColor2) ? edgeColor2 : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
+        path.__clampFrom = _drawClampIndicator(edgesLayer, p1.x, p1.y, fromClamped, clrF2);
+        if(isClamped && !inHL && !inActive) path.__clampFrom.style.opacity = '0.4';
+      }
+
+      // Center-opposing arrows for consolidated two-forwards (→←)
+      if(isConsolidatedBidi2){
+        const isSelected2 = !!(state.editorMode && state.selectedEdgeId===e.id);
+        const midClr2 = (edgeColor2 && !inHL && !inActive && !isSelected2) ? edgeColor2 : (inActive || isSelected2) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
+        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midClr2);
+        if(isClamped && !inHL && !inActive) path.__midArrows.style.opacity = '0.4';
       }
 
       const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
@@ -11635,6 +12177,8 @@ function drawArrows(){
     if(path.__alive) return;
     deadPaths.push(path.dataset.edgeId);
     // Remove immediately instead of fading - the fade causes the overlap issue
+    _clearClampIndicators(path);
+    _clearMidArrows(path);
     if(path.__hitbox) path.__hitbox.remove();
     path.remove();
   });
@@ -11651,9 +12195,9 @@ function drawArrows(){
     else if(p.classList.contains('active')) activePaths.push(p);
     else if(p.classList.contains('hl')) hlPaths.push(p);
   });
-  for(const p of hlPaths) edgesLayer.appendChild(p);
-  for(const p of activePaths) edgesLayer.appendChild(p);
-  for(const p of selectedPaths) edgesLayer.appendChild(p);
+  for(const p of hlPaths) { edgesLayer.appendChild(p); if(p.__clampTo) edgesLayer.appendChild(p.__clampTo); if(p.__clampFrom) edgesLayer.appendChild(p.__clampFrom); if(p.__midArrows) edgesLayer.appendChild(p.__midArrows); }
+  for(const p of activePaths) { edgesLayer.appendChild(p); if(p.__clampTo) edgesLayer.appendChild(p.__clampTo); if(p.__clampFrom) edgesLayer.appendChild(p.__clampFrom); if(p.__midArrows) edgesLayer.appendChild(p.__midArrows); }
+  for(const p of selectedPaths) { edgesLayer.appendChild(p); if(p.__clampTo) edgesLayer.appendChild(p.__clampTo); if(p.__clampFrom) edgesLayer.appendChild(p.__clampFrom); if(p.__midArrows) edgesLayer.appendChild(p.__midArrows); }
   // Move all labels above all paths for readability
   Array.from(edgesLayer.querySelectorAll('text.edgeLabel')).forEach(lbl => edgesLayer.appendChild(lbl));
 }
@@ -13046,22 +13590,30 @@ document.getElementById('wrapToggleBtn')?.addEventListener('click', ()=>{
   if(wrapToggle){ wrapToggle.checked = !wrapToggle.checked; wrapToggle.dispatchEvent(new Event('change')); }
 });
 
-// Node label display toggles
+// Node label display mode selectors
 (function(){
-  const tagPillsToggle = document.getElementById('showTagPillsToggle');
-  const attrPillsToggle = document.getElementById('showAttrPillsToggle');
-  if(tagPillsToggle){
-    tagPillsToggle.checked = state.showTagPills;
-    tagPillsToggle.addEventListener('change', ()=>{
-      state.showTagPills = !!tagPillsToggle.checked;
-      renderAll();
+  const tagSel = document.getElementById('tagPillsModeSelector');
+  const attrSel = document.getElementById('attrPillsModeSelector');
+  if(tagSel){
+    tagSel.querySelectorAll('.dockOpt').forEach(b => {
+      b.classList.toggle('active', b.dataset.tpm === (state.tagPillsMode || 'left'));
+      b.addEventListener('click', ()=>{
+        tagSel.querySelectorAll('.dockOpt').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        state.tagPillsMode = b.dataset.tpm;
+        renderAll();
+      });
     });
   }
-  if(attrPillsToggle){
-    attrPillsToggle.checked = state.showAttrPills;
-    attrPillsToggle.addEventListener('change', ()=>{
-      state.showAttrPills = !!attrPillsToggle.checked;
-      renderAll();
+  if(attrSel){
+    attrSel.querySelectorAll('.dockOpt').forEach(b => {
+      b.classList.toggle('active', b.dataset.apm === (state.attrPillsMode || 'left'));
+      b.addEventListener('click', ()=>{
+        attrSel.querySelectorAll('.dockOpt').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        state.attrPillsMode = b.dataset.apm;
+        renderAll();
+      });
     });
   }
   const edgeLabelSel = document.getElementById('edgeLabelModeSelector');
@@ -13150,8 +13702,8 @@ function captureViewState(){
     edgeColorScheme: state.edgeColorScheme,
     nodeColorMode: state.nodeColorMode || 'all',
     showEdgeLabels: state.showEdgeLabels || 'always',
-    showTagPills: state.showTagPills !== false,
-    showAttrPills: state.showAttrPills !== false
+    tagPillsMode: state.tagPillsMode || 'left',
+    attrPillsMode: state.attrPillsMode || 'left'
   };
 }
 
@@ -13212,8 +13764,11 @@ function applyViewState(vs){
   state.edgeColorScheme = vs.edgeColorScheme || '';
   state.nodeColorMode = vs.nodeColorMode || 'all';
   state.showEdgeLabels = vs.showEdgeLabels || 'always';
-  state.showTagPills = vs.showTagPills !== false;
-  state.showAttrPills = vs.showAttrPills !== false;
+  // Backward compat: boolean showTagPills/showAttrPills → mode strings
+  if(vs.tagPillsMode) state.tagPillsMode = vs.tagPillsMode;
+  else state.tagPillsMode = vs.showTagPills === false ? 'off' : 'left';
+  if(vs.attrPillsMode) state.attrPillsMode = vs.attrPillsMode;
+  else state.attrPillsMode = vs.showAttrPills === false ? 'off' : 'left';
   state.hiddenColumns = new Set(Array.isArray(vs.hiddenColumns) ? vs.hiddenColumns : []);
   state.lockedId = null; state.hoverId = null;
   state.selectedEdgeId = null; state.hoverEdgeId = null;
@@ -13250,10 +13805,10 @@ function applyViewState(vs){
   if(ncmSelector) ncmSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.ncm === state.nodeColorMode));
   const edgeLabelSel = document.getElementById('edgeLabelModeSelector');
   if(edgeLabelSel) edgeLabelSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.elm === state.showEdgeLabels));
-  const tagPillsToggle = document.getElementById('showTagPillsToggle');
-  if(tagPillsToggle) tagPillsToggle.checked = state.showTagPills;
-  const attrPillsToggle = document.getElementById('showAttrPillsToggle');
-  if(attrPillsToggle) attrPillsToggle.checked = state.showAttrPills;
+  const tagPillsSel = document.getElementById('tagPillsModeSelector');
+  if(tagPillsSel) tagPillsSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.tpm === (state.tagPillsMode || 'left')));
+  const attrPillsSel = document.getElementById('attrPillsModeSelector');
+  if(attrPillsSel) attrPillsSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.apm === (state.attrPillsMode || 'left')));
 
   renderAll();
   if(Array.isArray(vs.collapsedGroups)){
@@ -13277,7 +13832,8 @@ function applyViewState(vs){
   refreshViewer();
   refreshEdgeColorScheme();
   scheduleArrowsUpdate();
-  if(state.lockedId) scrollIntoView(state.lockedId);
+  if(state.lockedId && state._scrollToSelection) scrollIntoView(state.lockedId);
+  state._scrollToSelection = false;
 }
 
 // ── View dirty checking ──
@@ -13732,7 +14288,7 @@ function _updateViewPill(){
   // Populate select dropdown
   const sel = document.getElementById('viewPillSelect');
   if(sel){
-    sel.innerHTML = cat.map(v => `<option value="${escapeHtml(v.id)}"${v.id===__activeViewId?' selected':''}>${escapeHtml(v.emoji||'')} ${escapeHtml(v.label||v.id)}</option>`).join('');
+    sel.innerHTML = cat.map(v => `<option value="${escapeHtml(v.id)}"${v.id===__activeViewId?' selected':''}>${escapeHtml(_catalogItemLabel(v))}</option>`).join('');
   }
 }
 
@@ -13774,6 +14330,8 @@ function resetViewState(){
   state.selectionDim = 'all';
   state.edgeColorScheme = '';
   state.nodeColorMode = 'all';
+  state.tagPillsMode = 'left';
+  state.attrPillsMode = 'left';
   state.hiddenColumns = new Set();
   __editSnapshot = null;
   __activeViewId = null; __activeViewStateJSON = null;
@@ -13804,6 +14362,10 @@ function resetViewState(){
   if(edgeColorSel) edgeColorSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.scheme === ''));
   const ncmSelector = document.getElementById('nodeColorModeSelector');
   if(ncmSelector) ncmSelector.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.ncm === 'all'));
+  const tagPillsSel = document.getElementById('tagPillsModeSelector');
+  if(tagPillsSel) tagPillsSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.tpm === 'left'));
+  const attrPillsSel = document.getElementById('attrPillsModeSelector');
+  if(attrPillsSel) attrPillsSel.querySelectorAll('.dockOpt').forEach(b => b.classList.toggle('active', b.dataset.apm === 'left'));
 
   // Expand all collapsed groups
   renderAll();
@@ -13873,6 +14435,7 @@ function openKbdShortcuts(){
       [alt+'+Click', 'Chain select (full chain, both directions)'],
       [alt+'+Shift+Click', 'Chain select upstream only (all sources)'],
       [alt+'+'+mod+'+Click', 'Chain select downstream only (all targets)'],
+      ['Right-click node', 'Open context menu (Editor mode)'],
     ]},
     { title: 'Selection — edge click modifiers', shortcuts: [
       ['Click edge', 'Select edge (both endpoints highlighted)'],
@@ -13889,7 +14452,9 @@ function openKbdShortcuts(){
     ]},
     { title: 'Drag-and-drop modifiers (Editor)', shortcuts: [
       ['Drag (no modifier)', 'Move node to new position'],
-      [alt+'+Drag', 'Map — create mapping between fields'],
+      [alt+'+Drag', 'Map — create forward mapping'],
+      [alt+'+Shift+Drag', 'Map ↔ — create bidirectional mapping'],
+      [alt+'+Shift+'+mod+'+Drag', 'Map ··· — create directionless link'],
       [mod+'+Drag', 'Copy — duplicate node at drop position'],
       [mod+'+'+alt+'+Drag', 'Copy+ — copy node with its mappings'],
     ]},
@@ -14065,7 +14630,7 @@ function csvEscape(v){
 if(exportCsvBtn) exportCsvBtn.addEventListener('click', () => {
   if(!state.data) return;
   const rows = [];
-  rows.push(['from','to','fromColumn','toColumn','cardinality','default','transforms','note'].join(','));
+  rows.push(['from','to','fromColumn','toColumn','cardinality','default','transforms','note','direction'].join(','));
   for(const e of IDX.edges){
     if(!isVisibleNodeId(e.from) || !isVisibleNodeId(e.to)) continue;
     if(!edgeScopeVisible(e.from, e.to)) continue;
@@ -14075,7 +14640,8 @@ if(exportCsvBtn) exportCsvBtn.addEventListener('click', () => {
       csvEscape(e.cardinality||''),
       csvEscape(e.default||''),
       csvEscape(formatTransform(e.transform)||''),
-csvEscape(e.note||'')
+csvEscape(e.note||''),
+csvEscape(e.direction||'forward')
     ].join(','));
   }
   downloadText('mappings.csv', 'text/csv;charset=utf-8', rows.join('\n'));
@@ -14186,6 +14752,8 @@ body.brightMode .box.clickable:hover{background: rgba(0,0,0,.05);}
 #dragGhost .chip.copy { border-color:#22c55e; background:rgba(34,197,94,.18); color:#fff; }
 #dragGhost .chip.copyPlus { border-color:#84cc16; background:rgba(132,204,22,.20); color:#fff; }
 #dragGhost .chip.map  { border-color:#f59e0b; background:rgba(245,158,11,.18); color:#fff; }
+#dragGhost .chip.mapBidi { border-color:#a78bfa; background:rgba(167,139,250,.20); color:#e0d4ff; }
+#dragGhost .chip.mapNone { border-color:#94a3b8; background:rgba(148,163,184,.18); color:#cbd5e1; }
 #dragGhost .label { font-weight:900; letter-spacing:.2px; }
 #dragGhost .body  { opacity:.92; }
 #dragGhost .multiBadge {
@@ -14266,7 +14834,7 @@ function openHelp(){
 <h4 style="margin:14px 0 6px;">3. Edit your model</h4>
 <ul style="margin:0 0 0 18px;font-size:12.5px;line-height:1.6">
   <li>Toggle <b>Editor mode</b> (top-right) to unlock editing.</li>
-  <li><b>Add nodes</b>: hover a row to reveal ↳ (add child) and ⫶ (context menu) buttons.</li>
+  <li><b>Add nodes</b>: hover a row to reveal ↳ (add child) and ⫶ (context menu) buttons. You can also <b>right-click</b> any node to open the context menu.</li>
   <li><b>Quick-create (keyboard)</b>: select a node and press <b>Ctrl+↓</b> (Cmd+↓) to insert a field below with inline rename. Type a label and press Enter, or press Ctrl+↓ again to rapid-fire more fields. <b>Ctrl+Alt+↓</b> for groups, <b>Ctrl+→</b> for child nodes.</li>
   <li><b>Navigate</b>: <b>↑/↓</b> arrows move selection between nodes. <b>Shift+↑/↓</b> extends multi-selection. <b>Enter</b> focuses the label editor.</li>
   <li><b>Rearrange</b>: <b>Alt+↑/↓</b> moves node(s) up/down. <b>Alt+→</b> indents (into sibling group above), <b>Alt+←</b> outdents. All work on multi-selections of siblings.</li>
@@ -14276,7 +14844,7 @@ function openHelp(){
   <li><b>Edit properties</b>: click any field/mapping and use the Details pane on the right.</li>
   <li><b>Drag-and-drop</b>: reorder, move, copy, or map nodes using modifier keys:</li>
   <li style="list-style:none;margin-left:4px;font-size:11.5px;line-height:1.5;opacity:.85;">
-    No modifier = Move &nbsp;·&nbsp; Alt/Opt = Map &nbsp;·&nbsp; Ctrl/Cmd = Copy &nbsp;·&nbsp; Ctrl/Cmd+Alt/Opt = Copy with mappings
+    No modifier = Move &nbsp;·&nbsp; Alt/Opt = Map &nbsp;·&nbsp; Ctrl/Cmd = Copy &nbsp;·&nbsp; Ctrl/Cmd+Alt/Opt = Copy with mappings &nbsp;·&nbsp; Alt+Shift = Map ↔ (bidirectional) &nbsp;·&nbsp; Alt+Shift+Ctrl/Cmd = Map ··· (directionless)
   </li>
   <li><b>Multi-select drag</b>: with multiple nodes selected, drag any selected node to bulk Move, Copy, Copy+, or Map all selected nodes at once. Children of selected groups are automatically deduplicated.</li>
   <li><b>Ctrl+Z / Ctrl+Y</b> (Cmd on Mac) to undo and redo any change.</li>
@@ -14357,6 +14925,36 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.7.0',
+    date: '2026-02-27',
+    highlights: 'Scroll-clamped arrows, edge direction system (forward / bidirectional / directionless), center-opposing arrows, drag modifier creation, perspective-aware detail panels',
+    changes: [
+      // Scroll-clamped arrows
+      '<b>Scroll-clamped arrow endpoints</b>: when a mapped node scrolls out of view within its column, the arrow line clamps to the column header edge (scrolled above) or footer edge (scrolled below) with a directional triangle indicator (▲/▼) showing which direction the node is. Clamped endpoints approach vertically for a clean visual. Updates live during scroll',
+      '<b>Z-ordering</b>: highlighted, active, and selected edges are drawn on top of other edges for better visibility',
+      // Edge direction system
+      '<b>Edge direction property</b>: mappings now have a <code>direction</code> field with three values: <b>forward</b> (default, →), <b>bidirectional</b> (↔), and <b>directionless</b> (···). Each has a distinct visual silhouette',
+      '<b>Bidirectional mappings (↔)</b>: a single edge representing a symmetric relationship — same transforms/tags/notes apply both ways. Arrow markers at both ends. Distinct from two separate forward mappings',
+      '<b>Directionless links (···)</b>: associations without implied flow — cross-references, see-also links. Dot markers at both ends, no arrowheads',
+      '<b>Consolidated two-forwards (→←)</b>: when two separate forward mappings exist between the same pair (A→B and B→A), they draw as a single line with opposing arrowhead tips meeting at the center — visually distinct from a true bidirectional edge',
+      '<b>Direction toggle</b>: 3-way button group (→ / ↔ / ···) in the mapping editor between the From/To rows. Active state highlighted in blue',
+      // Drag creation
+      '<b>Modifier key creation</b>: <b>Alt+Shift+Drag</b> creates a bidirectional mapping. <b>Alt+Shift+Ctrl/Cmd+Drag</b> creates a directionless link. Normal <b>Alt+Drag</b> creates a forward mapping as before',
+      '<b>Drag ghost badges</b>: ghost chip shows <b>MAP ↔</b> in purple for bidirectional and <b>MAP ···</b> in slate for directionless, matching the existing MAP (amber) / COPY (green) / COPY+ (lime) color scheme',
+      // Detail panels
+      '<b>Bidirectional in both sections</b>: bidirectional edges appear in both Inbound and Outbound mapping lists (single-select and multi-select) with an ↔ badge',
+      '<b>Linked (directionless) section</b>: new collapsible section in node detail panels for directionless edges, with ··· badge and dedicated stat card',
+      '<b>Perspective-aware display</b>: in mapping lists, the selected node always appears on the correct side — left for outbound, right for inbound — even for bidirectional and directionless edges',
+      '<b>Direction in viewer panel</b>: edge viewer shows direction row for non-forward mappings (↔ Bidirectional or ··· Linked)',
+      // Tooltips & export
+      '<b>Direction in tooltips</b>: edge tooltips show direction label for bidirectional and directionless mappings',
+      '<b>CSV export/import</b>: direction column added to CSV edge export. Import recognizes forward/both/none values',
+      // Sample project & docs
+      '<b>Sample project updated</b>: four new example mappings — two bidirectional (crew sync between Mission Control and Archive) and two directionless (cross-references between Lab and Observatory/Archive)',
+      '<b>Keyboard shortcuts updated</b>: shortcuts reference, quick-start guide, help documentation, and status bar all include the new Alt+Shift and Alt+Shift+Ctrl/Cmd drag modifiers',
+    ]
+  },
   {
     version: '1.6.0',
     date: '2026-02-26',
@@ -17412,11 +18010,11 @@ function _commitImportFields(){
           }
           // Auto-create attribute if not found
           if(!attr){
-            const attrLabel = colName.charAt(0).toUpperCase() + colName.slice(1).replace(/_/g,' ');
+            const attrLabel = colName.replace(/_/g,' ');
             const attrId = idPartFromLabel(colName, {lower:true});
             const existingIds = new Set(attrCat.map(a=>a.id));
             const uniqueId = ensureUniqueId(attrId, existingIds);
-            attr = { id: uniqueId, label: attrLabel, _autoId: true, values: [], priority: attrCat.length + 1 };
+            attr = { id: uniqueId, label: attrLabel, abbr: attrLabel.substring(0,2).toUpperCase(), _autoId: true, values: [], priority: attrCat.length + 1 };
             attrCat.push(attr);
           }
           if(!attr.values) attr.values = [];
@@ -17431,7 +18029,7 @@ function _commitImportFields(){
             const valId = idPartFromLabel(valStr, {lower:true});
             const existingValIds = new Set(attr.values.map(v=>v.id));
             const uniqueValId = ensureUniqueId(valId, existingValIds);
-            val = { id: uniqueValId, label: valStr, _autoId: true, priority: attr.values.length + 1 };
+            val = { id: uniqueValId, label: valStr, abbr: valStr.substring(0,3).toUpperCase(), _autoId: true, priority: attr.values.length + 1 };
             attr.values.push(val);
           }
           // Assign to node
@@ -17832,11 +18430,11 @@ function _commitImportColumns(){
               );
             }
             if(!attr){
-              const attrLabel = colName.charAt(0).toUpperCase() + colName.slice(1).replace(/_/g,' ');
+              const attrLabel = colName.replace(/_/g,' ');
               const attrId = idPartFromLabel(colName, {lower:true});
               const eIds = new Set(attrCat.map(a=>a.id));
               const uniqueId = ensureUniqueId(attrId, eIds);
-              attr = { id: uniqueId, label: attrLabel, _autoId: true, values: [], priority: attrCat.length + 1 };
+              attr = { id: uniqueId, label: attrLabel, abbr: attrLabel.substring(0,2).toUpperCase(), _autoId: true, values: [], priority: attrCat.length + 1 };
               attrCat.push(attr);
             }
             if(!attr.values) attr.values = [];
@@ -17850,7 +18448,7 @@ function _commitImportColumns(){
               const valId = idPartFromLabel(valStr, {lower:true});
               const eValIds = new Set(attr.values.map(v=>v.id));
               const uniqueValId = ensureUniqueId(valId, eValIds);
-              val = { id: uniqueValId, label: valStr, _autoId: true, priority: attr.values.length + 1 };
+              val = { id: uniqueValId, label: valStr, abbr: valStr.substring(0,3).toUpperCase(), _autoId: true, priority: attr.values.length + 1 };
               attr.values.push(val);
             }
             if(!node.customAttributes) node.customAttributes = {};
@@ -18425,7 +19023,7 @@ function _commitImportSql(){
   );
   if(!dataTypeAttr){
     const eIds = new Set(attrCat.map(a=>a.id));
-    dataTypeAttr = { id: ensureUniqueId('data_type', eIds), label: 'Data Type', _autoId: true, values: [], priority: attrCat.length + 1 };
+    dataTypeAttr = { id: ensureUniqueId('data_type', eIds), label: 'Data Type', abbr: 'DT', _autoId: true, values: [], priority: attrCat.length + 1 };
     attrCat.push(dataTypeAttr);
   }
   if(!dataTypeAttr.values) dataTypeAttr.values = [];
@@ -18461,10 +19059,10 @@ function _commitImportSql(){
   if(!nullableAttr){
     const eIds = new Set(attrCat.map(a=>a.id));
     nullableAttr = {
-      id: ensureUniqueId('nullable', eIds), label: 'Nullable', _autoId: true,
+      id: ensureUniqueId('nullable', eIds), label: 'Nullable', abbr: 'NL', _autoId: true,
       values: [
-        { id: 'yes', label: 'Yes', _autoId: true, priority: 1 },
-        { id: 'no', label: 'No', _autoId: true, priority: 2 }
+        { id: 'yes', label: 'Yes', abbr: 'YES', _autoId: true, priority: 1 },
+        { id: 'no', label: 'No', abbr: 'NO', _autoId: true, priority: 2 }
       ],
       priority: attrCat.length + 1
     };
@@ -18479,7 +19077,7 @@ function _commitImportSql(){
     );
     if(!val){
       const eIds = new Set(dataTypeAttr.values.map(v=>v.id));
-      val = { id: ensureUniqueId(idPartFromLabel(dt, {lower:true}) || 'type', eIds), label: dt, _autoId: true, priority: dataTypeAttr.values.length + 1 };
+      val = { id: ensureUniqueId(idPartFromLabel(dt, {lower:true}) || 'type', eIds), label: dt, abbr: dt.substring(0,3).toUpperCase(), _autoId: true, priority: dataTypeAttr.values.length + 1 };
       dataTypeAttr.values.push(val);
     }
     return val.id;
@@ -18889,9 +19487,9 @@ function _commitImportCsvFile(){
       );
     }
     if(!attr){
-      const attrLabel = name.charAt(0).toUpperCase() + name.slice(1);
+      const attrLabel = name;
       const eIds = new Set(attrCat.map(a=>a.id));
-      attr = { id: ensureUniqueId(idPartFromLabel(name, {lower:true}), eIds), label: attrLabel, _autoId: true, values: [], priority: attrCat.length + 1 };
+      attr = { id: ensureUniqueId(idPartFromLabel(name, {lower:true}), eIds), label: attrLabel, abbr: attrLabel.substring(0,2).toUpperCase(), _autoId: true, values: [], priority: attrCat.length + 1 };
       attrCat.push(attr);
     }
     if(!attr.values) attr.values = [];
@@ -18902,7 +19500,7 @@ function _commitImportCsvFile(){
     );
     if(!v){
       const eIds = new Set(attr.values.map(x=>x.id));
-      v = { id: ensureUniqueId(idPartFromLabel(valStr, {lower:true}) || 'val', eIds), label: valStr, _autoId: true, priority: attr.values.length + 1 };
+      v = { id: ensureUniqueId(idPartFromLabel(valStr, {lower:true}) || 'val', eIds), label: valStr, abbr: valStr.substring(0,3).toUpperCase(), _autoId: true, priority: attr.values.length + 1 };
       attr.values.push(v);
     }
     return { attrId: attr.id, valId: v.id };
@@ -19136,7 +19734,7 @@ function _parseMappingsImportText(text){
   // Check if first line is a header row
   const firstCells = sep === ',' ? _parseCSVLine(first, ',') : first.split(sep);
   const headerCandidates = firstCells.map(h => h.trim().toLowerCase());
-  const knownHeaders = ['source','target','from','to','fromcolumn','toColumn','from_column','to_column','cardinality','label','note','default','tag','tags','transform','transforms'];
+  const knownHeaders = ['source','target','from','to','fromcolumn','toColumn','from_column','to_column','cardinality','label','note','default','tag','tags','transform','transforms','direction'];
   const isHeader = headerCandidates.filter(h => knownHeaders.includes(h.replace(/[\s_]/g,''))).length >= 2;
 
   let headers, dataLines;
@@ -19414,7 +20012,8 @@ function _commitImportMappings(){
       note: item.note || '',
       default: item.default || '',
       tags: [],
-      customAttributes: {}
+      customAttributes: {},
+      direction: (item.direction && ['forward','both','none'].includes(item.direction)) ? item.direction : 'forward'
     };
 
     // Resolve tags
@@ -19445,9 +20044,9 @@ function _commitImportMappings(){
           (a.id||'').toLowerCase() === colLower || (a.label||'').toLowerCase() === colName.toLowerCase()
         );
         if(!attr){
-          const attrLabel = colName.charAt(0).toUpperCase() + colName.slice(1).replace(/_/g,' ');
+          const attrLabel = colName.replace(/_/g,' ');
           const eIds = new Set(attrCat.map(a=>a.id));
-          attr = { id: ensureUniqueId(idPartFromLabel(colName, {lower:true}), eIds), label: attrLabel, _autoId: true, values: [], priority: attrCat.length + 1 };
+          attr = { id: ensureUniqueId(idPartFromLabel(colName, {lower:true}), eIds), label: attrLabel, abbr: attrLabel.substring(0,2).toUpperCase(), _autoId: true, values: [], priority: attrCat.length + 1 };
           attrCat.push(attr);
         }
         if(!attr.values) attr.values = [];
@@ -19458,7 +20057,7 @@ function _commitImportMappings(){
         );
         if(!val){
           const eIds = new Set(attr.values.map(v=>v.id));
-          val = { id: ensureUniqueId(idPartFromLabel(valStr, {lower:true}) || 'val', eIds), label: valStr, _autoId: true, priority: attr.values.length + 1 };
+          val = { id: ensureUniqueId(idPartFromLabel(valStr, {lower:true}) || 'val', eIds), label: valStr, abbr: valStr.substring(0,3).toUpperCase(), _autoId: true, priority: attr.values.length + 1 };
           attr.values.push(val);
         }
         mapping.customAttributes[attr.id] = attr.multi ? [val.id] : val.id;
@@ -21198,8 +21797,9 @@ document.addEventListener("keydown", (e) => {
   // Alt+→/←: indent / outdent node(s) (editor mode)
   if(e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
     if(_isInlineInput) return;
-    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    // Always prevent browser default (Alt+Left/Right = back/forward on Windows/Edge)
     e.preventDefault();
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
     if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
       const dir = e.key === 'ArrowDown' ? 1 : -1;
       if(state.multiSelection.size > 0) bulkMove(dir);
@@ -21217,8 +21817,9 @@ document.addEventListener("keydown", (e) => {
   // Tab / Shift+Tab: also indent / outdent (legacy fallback)
   if(e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey){
     if(_isInlineInput){ e.preventDefault(); commitInlineRename(); return; }
-    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
+    // Always prevent browser default (Tab = focus cycling) when not in a text input
     e.preventDefault();
+    if(!state.editorMode || (!state.lockedId && state.multiSelection.size === 0)) return;
     if(state.multiSelection.size > 0){
       if(e.shiftKey) bulkOutdent(); else bulkIndent();
     } else {
@@ -21675,7 +22276,7 @@ function showBulkAttrModal(nodeIds){
         html += `<label style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background .1s;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background=''">
           <input type="checkbox" name="bulkAttrVal" value="${escapeHtml(v.id)}" ${checked?'checked':''} ${indeterminate?'data-indeterminate="1"':''} style="width:16px;height:16px;flex-shrink:0;">
           ${vc}
-          <span style="flex:1;font-size:12.5px;">${escapeHtml(v.label||v.id)}</span>
+          <span style="flex:1;font-size:12.5px;">${escapeHtml(_catalogItemLabel(v))}</span>
           <span style="font-size:10px;opacity:.35;font-family:var(--mono);flex-shrink:0;">${count}/${total}</span>
         </label>`;
       }
@@ -21693,7 +22294,7 @@ function showBulkAttrModal(nodeIds){
         html += `<label style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background .1s;" onmouseenter="this.style.background='rgba(255,255,255,.04)'" onmouseleave="this.style.background=''">
           <input type="radio" name="bulkAttrVal" value="${escapeHtml(v.id)}" ${count===total?'checked':''} style="width:16px;height:16px;flex-shrink:0;">
           ${vc}
-          <span style="flex:1;font-size:12.5px;">${escapeHtml(v.label||v.id)}</span>
+          <span style="flex:1;font-size:12.5px;">${escapeHtml(_catalogItemLabel(v))}</span>
           <span style="font-size:10px;opacity:.35;font-family:var(--mono);flex-shrink:0;">${count}/${total}</span>
         </label>`;
       }
@@ -21809,7 +22410,9 @@ function showBulkAttrModal(nodeIds){
 function showBulkTransformModal(edgeGroups){
   const transforms = ensureTransformCatalog();
   if(!transforms.length){ customAlert('No transforms defined. Create transforms in the Transforms catalog first.'); return; }
-  const allEdges = [...(edgeGroups.internal||[]), ...(edgeGroups.outbound||[]), ...(edgeGroups.inbound||[])];
+  let allEdges = [...(edgeGroups.internal||[]), ...(edgeGroups.outbound||[]), ...(edgeGroups.inbound||[]), ...(edgeGroups.linked||[])];
+  // Deduplicate (bidirectional edges may appear in both in/out)
+  { const _seen = new Set(); allEdges = allEdges.filter(e => { if(_seen.has(e.id)) return false; _seen.add(e.id); return true; }); }
   if(!allEdges.length){ customAlert('No mappings to modify.'); return; }
 
   const mask = _freshMask();
@@ -21823,6 +22426,7 @@ function showBulkTransformModal(edgeGroups){
     { id: 'internal', label: 'Internal', edges: edgeGroups.internal || [] },
     { id: 'inbound', label: 'Inbound', edges: edgeGroups.inbound || [] },
     { id: 'outbound', label: 'Outbound', edges: edgeGroups.outbound || [] },
+    { id: 'linked', label: 'Linked', edges: edgeGroups.linked || [] },
   ].filter(s => s.edges.length > 0);
 
   let _scope = 'all';
@@ -22197,7 +22801,7 @@ function showBulkMapModal(nodeIds){
   _setBulkMaskGuard(mask, (e)=>{ if(e.target===mask){ e.stopImmediatePropagation(); close(); } });
 }
 
-function ensureMapping(fromId, toId){
+function ensureMapping(fromId, toId, direction){
   if(!state.data) return;
   state.data.mappings = state.data.mappings || [];
   for(const m of state.data.mappings){
@@ -22205,8 +22809,17 @@ function ensureMapping(fromId, toId){
     if(m.from===fromId && m.to===toId) return; // Already exists, no change
   }
   recordChange(); // Save BEFORE creating mapping
-  state.data.mappings.push({ from: fromId, to: toId, cardinality:'', transforms: [], label:'', note:'', default:'', tags:[], customAttributes:{} });
+  state.data.mappings.push({ from: fromId, to: toId, cardinality:'', transforms: [], label:'', note:'', default:'', tags:[], customAttributes:{}, direction: direction || 'forward' });
 }
+
+// Determine mapping direction from modifier keys: Alt+Shift = both, Alt+Shift+Ctrl = none
+function _dirFromModifiers(e){
+  if(e && e.altKey && e.shiftKey && e.ctrlKey) return 'none';
+  if(e && e.altKey && e.shiftKey) return 'both';
+  return 'forward';
+}
+// Store last pointer event modifiers for drop handlers that don't have direct event access
+let __lastDragModifiers = null;
 
 
 // removed legacy addColumnAtVisibleIndex + hover zones
@@ -22390,14 +23003,14 @@ function renameColumnFromViewer(colId){
     applyHighlight();
   });
 }
-function openColumnMenu(anchorEl, colId){
+function openColumnMenu(anchorEl, colId, pos){
   const cols = state.data?.columns || [];
   const i = cols.findIndex(c=>c && c.id===colId);
   const canMoveLeft = i>0;
   const canMoveRight = i>=0 && i<cols.length-1;
   openCtxMenu([
     { label:'Edit column',        icon:ICONS.edit,   onClick: ()=> selectColumn(colId) },
-    { type:'label', text:'Add' },
+    { type:'label', text:'Add child' },
     { label:'Field on top',       icon:ICONS.addFieldUp,   onClick: ()=> addChildNode(colId, colId, true,  true) },
     { label:'Field at bottom',    icon:ICONS.addFieldDown, onClick: ()=> addChildNode(colId, colId, true,  false) },
     { label:'Group on top',       icon:ICONS.addGroupUp,   onClick: ()=> addChildNode(colId, colId, false, true) },
@@ -22421,7 +23034,7 @@ function openColumnMenu(anchorEl, colId){
       } },
     { type:'sep' },
     { label:'Delete',      icon:ICONS.trash, danger:true, onClick: ()=> deleteColumnById(colId) },
-  ], anchorEl);
+  ], anchorEl, pos);
   __ctxMenuColId = colId;
 }function selectColumn(colId){
   if(state.editorMode && state.selectedEdgeId){ clearEdgeEditSession({clearSelection:true}); }
@@ -22871,6 +23484,7 @@ function renderSelectedNodeEditor(nodeId){
   const selectedFields = new Set((IDX.nodeFieldDescendants.get(nodeId) || (IDX.fieldIds.has(nodeId) ? [nodeId] : [])));
   const inbound = [];
   const outbound = [];
+  const linked = [];
   const candidates = node.type==='field' ? (IDX.edgesByField.get(nodeId) || []) : IDX.edges;
   const seen = new Set();
   for(const e of candidates){
@@ -22879,24 +23493,46 @@ function renderSelectedNodeEditor(nodeId){
       if(!(selectedFields.has(e.from) || selectedFields.has(e.to))) continue;
     }
     seen.add(e.id);
-    if(selectedFields.has(e.from) && !selectedFields.has(e.to)) outbound.push(e);
-    if(selectedFields.has(e.to) && !selectedFields.has(e.from)) inbound.push(e);
+    const dir = e.direction || 'forward';
+    if(dir === 'none'){
+      if(selectedFields.has(e.from) || selectedFields.has(e.to)) linked.push(e);
+    } else if(dir === 'both'){
+      if(selectedFields.has(e.from) && !selectedFields.has(e.to)){ outbound.push(e); inbound.push(e); }
+      else if(selectedFields.has(e.to) && !selectedFields.has(e.from)){ inbound.push(e); outbound.push(e); }
+    } else {
+      if(selectedFields.has(e.from) && !selectedFields.has(e.to)) outbound.push(e);
+      if(selectedFields.has(e.to) && !selectedFields.has(e.from)) inbound.push(e);
+    }
   }
   inbound.sort(compareEdgesSimple);
   outbound.sort(compareEdgesSimple);
-  const summary = `Inbound: ${inbound.length} • Outbound: ${outbound.length}`;
+  linked.sort(compareEdgesSimple);
+  const summaryParts2 = [`Inbound: ${inbound.length}`, `Outbound: ${outbound.length}`];
+  if(linked.length) summaryParts2.push(`Linked: ${linked.length}`);
+  const summary = summaryParts2.join(' • ');
   function ioItem(edge, dir){
-    const jump = (dir==='out') ? edge.to : edge.from;
+    const jump = dir === 'linked' ? (selectedFields.has(edge.from) ? edge.to : edge.from) : (dir==='out') ? edge.to : edge.from;
     const jumpNode = IDX.nodeById.get(jump);
     const jumpLabel = jumpNode?.label ?? jump;
     const side = columnOf(jump) ?? 'node';
     const title = escapeHtml(edgeTooltip(edge));
-    const route = `${edge.from} → ${edge.to}`;
-    const prefix = (dir==='out') ? 'out' : 'in';
+    const eDir = edge.direction || 'forward';
+    const arrowSym = eDir === 'none' ? '···' : eDir === 'both' ? '↔' : '→';
+    // Perspective-aware route
+    let dFrom = edge.from, dTo = edge.to;
+    if(eDir === 'both' || eDir === 'none'){
+      if(dir === 'out' && !selectedFields.has(edge.from) && selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+      else if(dir === 'in' && selectedFields.has(edge.from) && !selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+      else if(dir === 'linked' && !selectedFields.has(edge.from) && selectedFields.has(edge.to)){ dFrom = edge.to; dTo = edge.from; }
+    }
+    const route = `${dFrom} ${arrowSym} ${dTo}`;
+    const prefix = dir === 'linked' ? '···' : (dir==='out') ? 'out' : 'in';
+    const dirBadge = eDir === 'both' ? '<span class="pill" style="opacity:.6;" title="Bidirectional">↔</span>' : eDir === 'none' ? '<span class="pill" style="opacity:.6;" title="Linked">···</span>' : '';
     return `
       <li class="item" data-jump-id="${escapeHtml(jump)}" data-edge="${escapeHtml(edge.id)}" title="${title}">
         <span class="pill">${escapeHtml(side)}</span>
         <span class="pill">${escapeHtml(prefix)}</span>
+        ${dirBadge}
         <span class="itemActions" aria-hidden="true"><button class="miniBtn" data-act="editMap" title="Edit mapping">✎</button><button class="miniBtn" data-act="goTo" title="Go to mapped node">↗</button><button class="miniBtn danger" data-act="delMap" title="Delete mapping">×</button></span>
  <span class=\"itemBreak\"></span>
         <span class="txt">${escapeHtml(jumpLabel)}</span>
@@ -22918,7 +23554,7 @@ function renderSelectedNodeEditor(nodeId){
       <div class="kv" style="grid-template-columns: 80px 1fr;">
         <div class="k">Label<span class="req">*</span></div><div class="v"><input class="inp" id="ndLabel" value="${escapeHtml(node.label||'')}" placeholder="${escapeHtml(node.id)}"/></div>
         <div class="k">ID <span class="autoTag" id="ndIdAuto">auto</span></div><div class="v" style="display:flex;align-items:center;gap:0;"><span style="font-family:var(--mono);font-size:11px;opacity:.55;white-space:nowrap;">${escapeHtml(idPathPrefix(node.id))}</span><input class="inp" id="ndId" value="${escapeHtml(localIdSegment(node.id))}" style="font-family:var(--mono);font-size:11px;flex:1 1 auto;min-width:80px;"/></div>
-        <div class="k">Summary</div><div class="v"><div class="dtStatRow" style="padding:0;"><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${inbound.length}</span><span class="dtStatL">in</span></span><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${outbound.length}</span><span class="dtStatL">out</span></span></div></div>
+        <div class="k">Summary</div><div class="v"><div class="dtStatRow" style="padding:0;"><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${inbound.length}</span><span class="dtStatL">in</span></span><span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${outbound.length}</span><span class="dtStatL">out</span></span>${linked.length ? `<span class="dtStatChip" style="padding:2px 7px;"><span class="dtStatN" style="font-size:11px;">${linked.length}</span><span class="dtStatL">linked</span></span>` : ''}</div></div>
         <div class="k">Note</div><div class="v"><input class="inp" id="ndNote" value="${escapeHtml(node.note||'')}" placeholder="optional"/></div>
         <div class="k">Color</div><div class="v" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <div id="ndColorSwatches" style="display:flex;gap:3px;flex-wrap:wrap;"></div>
@@ -23001,6 +23637,13 @@ function renderSelectedNodeEditor(nodeId){
       ` : ''}
       </div>
     </div>
+
+    ${linked.length ? `<div class="box detailSection collapsed">
+      <h3 class="detailSectionHead"><span>Linked (directionless)</span><span style="font-family:var(--mono);font-size:11px;opacity:.9;">${linked.length}</span></h3>
+      <div class="detailSectionBody">
+      <ul class="list">${linked.map(e => ioItem(e,'linked')).join('')}</ul>
+      </div>
+    </div>` : ''}
   `;
 
   // Wire collapsible section toggles
@@ -23131,7 +23774,7 @@ function renderSelectedNodeEditor(nodeId){
       if(!vid) return;
       const o = document.createElement('option');
       o.value = vid;
-      o.textContent = (v.label||v.id);
+      o.textContent = _catalogItemLabel(v);
       ndAttrValSel.appendChild(o);
     });
   }
@@ -23359,7 +24002,7 @@ function rebuildTagOptions(){
     const a = customAttrById(aid);
     const vals = (a && Array.isArray(a.values)) ? a.values : [];
     ndAttrValSel.innerHTML = '<option value="">Value…</option>' + vals.map(v=>{
-      return `<option value="${escapeHtml(v.id)}">${escapeHtml(v.label||v.id)}</option>`;
+      return `<option value="${escapeHtml(v.id)}">${escapeHtml(_catalogItemLabel(v))}</option>`;
     }).join('\n') + '<option value="__new__">+ New value…</option>';
   }
   function renderAttrChips(){
@@ -24612,7 +25255,7 @@ function closeCtxMenu(){
   if(__ctxOwnerEl){ try{ __ctxOwnerEl.classList.remove('menuOpen'); }catch{} __ctxOwnerEl=null; }
   __ctxMenuColId = null;
 }
-function openCtxMenu(items, anchorEl){
+function openCtxMenu(items, anchorEl, pos){
   closeCtxMenu();
   // Keep the originating row/header in an active-hover state while the context menu is open
   try{
@@ -24650,17 +25293,23 @@ function openCtxMenu(items, anchorEl){
   });
   document.body.appendChild(menu);
 
-  // position near anchor, clamp to viewport, flip if needed
-  const r = anchorEl.getBoundingClientRect();
+  // position near anchor or at explicit coordinates, clamp to viewport, flip if needed
   const pad = 8;
   const gap = 6;
-  let x = r.left;
-  let y = r.bottom + gap;
+  let x, y;
+  if(pos){
+    x = pos.x;
+    y = pos.y;
+  } else {
+    const r = anchorEl.getBoundingClientRect();
+    x = r.left;
+    y = r.bottom + gap;
+  }
   const mr = menu.getBoundingClientRect();
   if(x + mr.width > window.innerWidth - pad) x = window.innerWidth - pad - mr.width;
   if(x < pad) x = pad;
   if(y + mr.height > window.innerHeight - pad){
-    y = r.top - gap - mr.height;
+    y = (pos ? pos.y : anchorEl.getBoundingClientRect().top) - gap - mr.height;
   }
   if(y < pad) y = pad;
   menu.style.left = `${Math.round(x)}px`;
@@ -24798,6 +25447,14 @@ function addRowActions(){
       applyHighlight();
       scrollIntoView(nodeId);
     }});
+    // Add child items (groups only)
+    if(node && node.type==='group'){
+      menuItems.push({ type:'label', text:'Add child' });
+      menuItems.push({ label:'Field on top', icon:ICONS.addFieldUp, onClick: ()=> addChildNode(nodeId, colId, true, true) });
+      menuItems.push({ label:'Field at bottom', icon:ICONS.addFieldDown, onClick: ()=> addChildNode(nodeId, colId, true, false) });
+      menuItems.push({ label:'Group on top', icon:ICONS.addGroupUp, onClick: ()=> addChildNode(nodeId, colId, false, true) });
+      menuItems.push({ label:'Group at bottom', icon:ICONS.addGroupDown, onClick: ()=> addChildNode(nodeId, colId, false, false) });
+    }
     // Insert siblings
     if(hasParent){
       menuItems.push({ type:'label', text:'Insert' });
@@ -24863,6 +25520,7 @@ function addRowActions(){
       }
       openCtxMenu(menuItems, btnMenu);
     });
+    btnMenu.__menuItems = menuItems;
     actions.appendChild(btnMenu);
 
     row.appendChild(actions);
@@ -24895,7 +25553,8 @@ function addRowActions(){
       if(!(srcNode && srcNode.type==='field' && node && node.type==='field')) return;
       if(row.dataset.columnId === (IDX.rowById.get(src)?.dataset.columnId)) return;
       e.preventDefault();
-      ensureMapping(src, nodeId);
+      const _dropDir = _dirFromModifiers(e);
+      ensureMapping(src, nodeId, _dropDir);
       renderAll();
       const edge = IDX.edges.find(e=>e.from===src && e.to===nodeId);
       if(edge) state.selectedEdgeId = edge.id;
@@ -25193,6 +25852,7 @@ function renderSelectedEdgeEditor(){
     if(!Array.isArray(snap.tags)) snap.tags = [];
     if(!snap.customAttributes || typeof snap.customAttributes !== 'object') snap.customAttributes = {};
     if(!snap.color) delete snap.color;
+    if(!snap.direction) snap.direction = 'forward';
     __edgeEditSession = { edgeId: state.selectedEdgeId, from: edge.from, to: edge.to, ruleRef: snap, draft: deepClone(snap) };
   }
   
@@ -25215,6 +25875,12 @@ function renderSelectedEdgeEditor(){
       <div class="kv" style="grid-template-columns: 80px 1fr;">
         <div class="k">From</div><div class="v"><code>${escapeHtml(edge.from)}</code></div>
         <div class="k">To</div><div class="v"><code>${escapeHtml(edge.to)}</code></div>
+        <div class="k">Direction</div><div class="v" style="display:flex;align-items:center;gap:2px;">
+          <button class="btn edDirBtn ${(draft.direction||'forward')==='forward'?'active':''}" data-dir="forward" title="Forward (source → target)" style="font-size:13px;min-width:36px;padding:2px 8px;" ${isHoverOnly ? 'disabled' : ''}>→</button>
+          <button class="btn edDirBtn ${(draft.direction||'forward')==='both'?'active':''}" data-dir="both" title="Bidirectional (both ways)" style="font-size:13px;min-width:36px;padding:2px 8px;" ${isHoverOnly ? 'disabled' : ''}>↔</button>
+          <button class="btn edDirBtn ${(draft.direction||'forward')==='none'?'active':''}" data-dir="none" title="Directionless (linked)" style="font-size:13px;min-width:36px;padding:2px 8px;" ${isHoverOnly ? 'disabled' : ''}>···</button>
+          <span class="edDirLabel" style="font-size:10px;opacity:.3;margin-left:8px;">${{'forward':'source → target','both':'bidirectional','none':'linked / directionless'}[draft.direction||'forward']}</span>
+        </div>
         <div class="k">Label</div><div class="v" style="display:flex;align-items:center;gap:6px;"><input class="inp" id="edLabel" value="${escapeHtml(edgeLabel)}" placeholder="shown on mapping line" style="flex:1;" ${isHoverOnly ? 'disabled' : ''}/><label style="font-size:11px;cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap;" title="Show label on mapping line"><input type="checkbox" id="edLabelShow" ${!(draft.labelHidden) ? 'checked' : ''} ${isHoverOnly ? 'disabled' : ''}/> Show</label></div>
         <div class="k">Card.</div><div class="v" style="display:flex;align-items:center;gap:0;"><input class="inp" id="edCardL" value="${escapeHtml((card.split(':')[0]||'').trim())}" placeholder="1" style="width:44px;text-align:center;border-radius:8px 0 0 8px;border-right:none;" ${isHoverOnly ? 'disabled' : ''}/><span style="font-size:13px;font-weight:700;opacity:.45;padding:0 1px;user-select:none;flex-shrink:0;">:</span><input class="inp" id="edCardR" value="${escapeHtml((card.split(':')[1]||'').trim())}" placeholder="1" style="width:44px;text-align:center;border-radius:0 8px 8px 0;border-left:none;" ${isHoverOnly ? 'disabled' : ''}/><span style="font-size:10px;opacity:.3;margin-left:8px;white-space:nowrap;">source : target</span></div>
         <div class="k">Default</div><div class="v"><input class="inp" id="edDef" value="${escapeHtml(defv)}" placeholder="optional" ${isHoverOnly ? 'disabled' : ''}/></div>
@@ -25293,6 +25959,7 @@ function renderSelectedEdgeEditor(){
     const colorOn = document.getElementById('edColorOn')?.checked;
     if(colorOn) draft.color = document.getElementById('edColor')?.value || '';
     else delete draft.color;
+    // direction is synced via button click, not input
   }
 
   function rebuildEdgeTransformOptions(){
@@ -25572,6 +26239,19 @@ function renderSelectedEdgeEditor(){
       }
     }
 
+    // ── Direction toggle ──
+    if(!isHoverOnly){
+      detailsBody.querySelectorAll('.edDirBtn').forEach(btn => {
+        btn.addEventListener('click', ()=>{
+          draft.direction = btn.dataset.dir;
+          detailsBody.querySelectorAll('.edDirBtn').forEach(b => b.classList.toggle('active', b.dataset.dir === draft.direction));
+          const lbl = detailsBody.querySelector('.edDirLabel');
+          if(lbl) lbl.textContent = {forward:'source → target', both:'bidirectional', none:'linked / directionless'}[draft.direction] || '';
+          triggerEdgeDirty();
+        });
+      });
+    }
+
     // ── Edge Tags ──
     function rebuildEdgeTagOptions(){
       if(!edTagSel) return;
@@ -25631,7 +26311,7 @@ function renderSelectedEdgeEditor(){
       const a = customAttrById(aid);
       const vals = (a && Array.isArray(a.values)) ? a.values : [];
       edAttrValSel.innerHTML = '<option value="">Value…</option>' + vals.map(v=>{
-        return `<option value="${escapeHtml(v.id)}">${escapeHtml(v.label||v.id)}</option>`;
+        return `<option value="${escapeHtml(v.id)}">${escapeHtml(_catalogItemLabel(v))}</option>`;
       }).join('\n') + '<option value="__new__">+ New value…</option>';
     }
     function renderEdgeAttrChips(){
@@ -25777,6 +26457,7 @@ function renderSelectedEdgeEditor(){
     rule.transforms = Array.isArray(draft.transforms) ? draft.transforms.map(t => typeof t === 'object' ? {...t, params: t.params ? {...t.params} : undefined} : t) : [];
     rule.tags = Array.isArray(draft.tags) ? [...draft.tags] : [];
     rule.customAttributes = draft.customAttributes ? JSON.parse(JSON.stringify(draft.customAttributes)) : {};
+    rule.direction = draft.direction || 'forward';
     // Save color — always remember the picker value
     const __saveColorOn = document.getElementById('edColorOn')?.checked;
     const __savePickerVal = document.getElementById('edColor')?.value || '';
@@ -26294,7 +26975,7 @@ function renderSelectedEdgeViewer(edgeId){
       const vals = Array.isArray(raw) ? raw : [raw];
       const valueTags = vals.map(vid=>{
         const v = customValueById(aid, vid)||{id:vid,label:vid};
-        return `<span class="dtAttrVal">${escapeHtml(v.label||v.id)}</span>`;
+        return `<span class="dtAttrVal">${escapeHtml(_catalogItemLabel(v))}</span>`;
       }).join('');
       return `<div class="dtAttrGroup"><span class="dtAttrLabel">${escapeHtml(a.label||a.id)}</span>${valueTags}</div>`;
     }).join('');
@@ -26358,6 +27039,7 @@ function renderSelectedEdgeViewer(edgeId){
         <span class="dtRowK">To</span>
         <span class="dtRowV"><code style="font-size:11px;">${escapeHtml(edge.to)}</code></span>
       </div>
+      ${(edge.direction && edge.direction !== 'forward') ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Direction</span><span class="dtRowV">${edge.direction === 'both' ? '↔ Bidirectional' : '··· Linked (directionless)'}</span></div>` : ''}
       ${edge.cardinality ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Card.</span><span class="dtRowV">${escapeHtml(edge.cardinality)}</span></div>` : ''}
       ${tLabels ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Transforms</span><span class="dtRowV" style="font-size:11.5px;">${escapeHtml(tLabels)}</span></div>` : ''}
       ${(edge.default!=='' && edge.default!==undefined) ? `<div class="dtRow" style="padding:3px 2px;"><span class="dtRowK">Default</span><span class="dtRowV">${escapeHtml(String(edge.default))}</span></div>` : ''}
@@ -26388,6 +27070,21 @@ function renderAll(){
     }
   }
 
+  // Save column scroll positions before DOM rebuild
+  const scrollPositions = new Map();
+  if(IDX && IDX.columns){
+    for(const col of IDX.columns){
+      const panel = IDX.panelByColumnId?.get(col.id);
+      if(panel){
+        const tree = panel.querySelector('.tree');
+        if(tree && tree.scrollTop > 0) scrollPositions.set(col.id, tree.scrollTop);
+      }
+    }
+  }
+  // Also save outer scroller position
+  const outerScrollLeft = columnsScroller.scrollLeft;
+  const outerScrollTop = columnsScroller.scrollTop;
+
   // rebuild indexes + render columns
   buildIndexes(state.data);
   // Mark bidirectional/consolidated edges
@@ -26408,6 +27105,18 @@ function renderAll(){
 
   applyVisibility();
   applyHighlight();
+
+  // Restore column scroll positions after DOM rebuild
+  for(const [colId, scrollTop] of scrollPositions){
+    const panel = IDX.panelByColumnId?.get(colId);
+    if(panel){
+      const tree = panel.querySelector('.tree');
+      if(tree) tree.scrollTop = scrollTop;
+    }
+  }
+  // Restore outer scroller position
+  columnsScroller.scrollLeft = outerScrollLeft;
+  columnsScroller.scrollTop = outerScrollTop;
 
   // Restore highlight colors from project data
   if(typeof restoreHlColors === 'function') restoreHlColors();
@@ -26592,13 +27301,15 @@ function buildDocs(){
 <h3>Nodes (fields &amp; groups)</h3>
 <ul>
   <li><b>Add nodes</b>: hover a row to reveal action buttons &mdash; &#x21B3; (add child inside group), &#x2AFA; (context menu with insert, move, indent, copy/paste, duplicate, group/ungroup, delete).</li>
-  <li><b>Context menu</b>: click the ⫶ button on any node for insert above/below, move, indent/outdent, copy/paste, duplicate (without mappings), duplicate+ (with mappings), group selection, ungroup, convert type (field ↔ group), and delete.</li>
+  <li><b>Context menu</b>: click the ⫶ button on any node or <b>right-click</b> a node for insert above/below, move, indent/outdent, copy/paste, duplicate (without mappings), duplicate+ (with mappings), group selection, ungroup, convert type (field ↔ group), and delete.</li>
   <li><b>Convert to field/group</b>: available in the context menu. Fields can be converted to empty groups. Groups can be converted to fields only when they have no children.</li>
   <li><b>Edit node properties</b>: click a field to select it, then edit label, ID, note, color, tags, custom attributes, and mappings in the details pane.</li>
   <li><b>Drag-and-drop nodes</b>: drag a field or group to reorder, move between groups, or move to another column. Hold modifier keys during drag for different operations:
     <ul>
       <li><b>No modifier</b> &mdash; <em>Move</em>: relocates the node (removes from source).</li>
       <li><b>Alt / Option</b> &mdash; <em>Map</em>: creates a mapping between the dragged field and the drop target.</li>
+      <li><b>Alt + Shift</b> &mdash; <em>Map ↔</em>: creates a <em>bidirectional</em> mapping (single edge, both directions).</li>
+      <li><b>Alt + Shift + Ctrl / Cmd</b> &mdash; <em>Map ···</em>: creates a <em>directionless</em> (linked) mapping with no implied flow.</li>
       <li><b>Ctrl / Cmd</b> &mdash; <em>Copy</em>: duplicates the node to the drop location (original stays).</li>
       <li><b>Ctrl / Cmd + Alt / Option</b> &mdash; <em>Copy+</em>: duplicates the node and copies all its mappings to the new copy.</li>
     </ul>
@@ -26626,7 +27337,14 @@ function buildDocs(){
   <li><b>Create by drag</b>: hold <b>Alt / Option</b> and drag a field onto a field in another column. Alternatively, drag without modifiers between columns to create a mapping when the drop indicator shows the link icon.</li>
   <li><b>Create from details pane</b>: when a field is selected, use "Add outbound" or "Add inbound".</li>
   <li><b>Edit mapping properties</b>: click an arrow to select the mapping, then edit cardinality, transforms, default value, color, and note.</li>
-  <li><b>Bidirectional mappings</b>: if two mappings exist between the same pair in both directions, they are consolidated into a single arrow with a &#x2194; indicator.</li>
+  <li><b>Mapping direction</b>: each mapping has a direction — <b>Forward</b> (→, default), <b>Bidirectional</b> (↔), or <b>Directionless</b> (···). Set via the 3-way toggle in the mapping editor, or by using modifier keys during drag creation:
+    <ul>
+      <li><b>Alt+Drag</b> — Forward mapping (→)</li>
+      <li><b>Alt+Shift+Drag</b> — Bidirectional mapping (↔) — symmetric relationship, same logic both ways</li>
+      <li><b>Alt+Shift+Ctrl/Cmd+Drag</b> — Directionless link (···) — association without implied flow</li>
+    </ul>
+  </li>
+  <li><b>Two separate forwards vs bidirectional</b>: two forward mappings A→B and B→A are consolidated into a single line with opposing arrows meeting at the center (→←). A single bidirectional mapping (↔) has arrowheads at both endpoints — visually and semantically distinct.</li>
   <li><b>Delete mappings</b>: select a mapping and click the delete button in the details pane.</li>
 </ul>
 
@@ -26799,7 +27517,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.6.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.0", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {
@@ -26912,6 +27630,7 @@ function buildDocs(){
   <li><code>default</code> &mdash; default value when source is null/empty.</li>
   <li><code>note</code> &mdash; free text annotation.</li>
   <li><code>color</code> &mdash; optional hex color for custom arrow coloring.</li>
+  <li><code>direction</code> &mdash; one of: <code>forward</code> (default), <code>both</code> (bidirectional), or <code>none</code> (directionless).</li>
 </ul>
 
 <h3>Catalog items (tags, attributes, transforms)</h3>
@@ -26984,6 +27703,8 @@ function buildDocs(){
 <ul>
   <li><b>No modifier</b> &mdash; Move node (removes from source)</li>
   <li><b>Alt / Option</b> &mdash; Create mapping between source and target</li>
+  <li><b>Alt + Shift</b> &mdash; Create bidirectional mapping (↔) between source and target</li>
+  <li><b>Alt + Shift + Ctrl / Cmd</b> &mdash; Create directionless link (···) between source and target</li>
   <li><b>Ctrl / Cmd</b> &mdash; Copy node to drop location</li>
   <li><b>Ctrl / Cmd + Alt / Option</b> &mdash; Copy node and duplicate all its mappings</li>
 </ul>
@@ -27188,7 +27909,7 @@ init();
     if(!node) return false;
     DND.dragging = { id, colId, type: node.type };
     row.classList.add('dragging');
-    setViewerStatus('Dragging: ' + id + ' — modifiers: Alt=Map, Ctrl=Copy, Ctrl+Alt=COPY+');
+    setViewerStatus('Dragging: ' + id + ' — Alt=Map, Alt+Shift=Map↔, Alt+Shift+Ctrl=Map···, Ctrl=Copy, Ctrl+Alt=COPY+');
     return true;
   }
   function endDrag(){
@@ -27474,7 +28195,7 @@ init();
           return;
         }
         
-        const isMulti = !!(DND.multiIds && DND.multiIds.size >= 2);
+        const isMulti = !!(DND.multiIds && DND.multiIds.size >= 1);
         
         if(isMulti){
           // --- Multi-select bin delete ---
@@ -27635,7 +28356,7 @@ init();
         if(!dominated) roots.add(nid);
         if(node.type === 'field') fields.add(nid);
       }
-      if(roots.size >= 2 || (roots.size === 1 && fields.size >= 2)){
+      if(roots.size >= 1){
         DND.multiIds = roots;
         DND.multiFields = fields;
       }
@@ -27651,7 +28372,7 @@ init();
     // Show drop zones (bin only for move initially, will update in dragover)
     showDropZones(false);
     const multiInfo = DND.multiIds ? ` (${DND.multiIds.size} nodes)` : '';
-    setViewerStatus('Dragging: ' + id + multiInfo + ' — modifiers: Alt=Map, Ctrl=Copy, Ctrl+Alt=COPY+');
+    setViewerStatus('Dragging: ' + id + multiInfo + ' — Alt=Map, Alt+Shift=Map↔, Alt+Shift+Ctrl=Map···, Ctrl=Copy, Ctrl+Alt=COPY+');
     return true;
   }
   function endDrag(){ document.querySelectorAll('.row.dragging').forEach(r=>r.classList.remove('dragging')); try{ if(DND.ghost && DND.ghost.parentNode){ DND.ghost.style.opacity='0'; DND.ghost.style.transform='scale(.98)'; setTimeout(()=>{ try{DND.ghost.remove();}catch(e){} }, 120);} }catch(err){}
@@ -27791,7 +28512,7 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
   function describeIntent(src, intent){
     if(!intent) return '';
     const act = (intent.action==='copy_plus' ? 'COPY+' : intent.action.toUpperCase());
-    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 2);
+    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 1);
     const srcLabel = isMulti ? `[${DND.multiIds.size} nodes]` : src.id;
     if(intent.kind==='map'){
       const mapCount = isMulti ? (DND.multiFields ? DND.multiFields.size : 0) : 1;
@@ -27803,6 +28524,8 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
   }
 
   function computeAction(mod){
+    // Shift+Alt combos = special map types (bidirectional/directionless), even with Ctrl
+    if(mod && mod.altKey && mod.shiftKey) return 'map';
     if(mod && (mod.ctrlKey||mod.metaKey) && mod.altKey) return 'copy_plus';
     if(mod && mod.altKey) return 'map';
     if(mod && (mod.ctrlKey||mod.metaKey)) return 'copy';
@@ -27812,7 +28535,7 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
   function computeIntent(src, targetRow, clientX, clientY, mod){
     if(!targetRow) return null; const tid=targetRow.dataset.nodeId; const tcol=targetRow.dataset.columnId; const tnode = IDX?.nodeById?.get(tid); if(!tid||!tcol||!tnode) return null;
     const action = computeAction(mod);
-    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 2);
+    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 1);
 
     // --- Multi-select validity checks ---
     if(isMulti){
@@ -27881,7 +28604,7 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
 
   function performDrop(src, intent){
     if(!src || !intent) return;
-    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 2);
+    const isMulti = !!(DND.multiIds && DND.multiIds.size >= 1);
 
     // === MULTI-SELECT DROP ===
     if(isMulti){
@@ -27890,12 +28613,13 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
         const fieldIds = DND.multiFields;
         if(!fieldIds || fieldIds.size === 0) return;
         pushUndo();
+        const _multiDir = __lastDragModifiers ? _dirFromModifiers(__lastDragModifiers) : 'forward';
         let created = 0;
         for(const fid of fieldIds){
           const exists = (state.data.mappings||[]).some(m=> m && m.from===fid && m.to===intent.targetId);
           if(!exists){
             state.data.mappings = state.data.mappings || [];
-            state.data.mappings.push({ from: fid, to: intent.targetId, cardinality:'', transforms:[], label:'', note:'', default:'' });
+            state.data.mappings.push({ from: fid, to: intent.targetId, cardinality:'', transforms:[], label:'', note:'', default:'', direction: _multiDir });
             created++;
           }
         }
@@ -28073,10 +28797,11 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
     if(!state.lockedId && !state.selectedEdgeId && state.multiSelection.size === 0){
       state.lockedId = src.id;
     }
-    if(intent.action==='map' && intent.kind==='map'){ hideDropLine && hideDropLine(); ensureMapping(src.id, intent.targetId); renderAll(); const ee=(IDX&&IDX.edges)?IDX.edges.find(e=>e.from===src.id && e.to===intent.targetId):null; if(ee){ selectEdge(ee.id); } else { applyHighlight(); } return; }
+    if(intent.action==='map' && intent.kind==='map'){ hideDropLine && hideDropLine(); const _dir = __lastDragModifiers ? _dirFromModifiers(__lastDragModifiers) : 'forward'; ensureMapping(src.id, intent.targetId, _dir); renderAll(); const ee=(IDX&&IDX.edges)?IDX.edges.find(e=>e.from===src.id && e.to===intent.targetId):null; if(ee){ selectEdge(ee.id); } else { applyHighlight(); } return; }
     if(!src || !intent) return;
     if(intent.action==='map' && intent.kind==='map'){
-      ensureMapping(src.id, intent.targetId);
+      const _dir2 = __lastDragModifiers ? _dirFromModifiers(__lastDragModifiers) : 'forward';
+      ensureMapping(src.id, intent.targetId, _dir2);
       renderAll(); const ee = (IDX && IDX.edges) ? IDX.edges.find(e=>e.from===src.id && e.to===intent.targetId) : null; if(ee){ selectEdge(ee.id); setViewerStatus('Created mapping: '+ee.from+' → '+ee.to);} else { applyHighlight(); }
       return;
     }
@@ -28116,9 +28841,10 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
   function onDrop(e){ if(!state.editorMode || !DND.dragging) return; const row=e.target.closest('.row'); if(!row) return; 
     // Use stored modifiers from dragover on macOS (may not be available in drop event)
     const modifiers = (isMacOS && DND.lastModifiers) ? DND.lastModifiers : {altKey:e.altKey, ctrlKey:e.ctrlKey||e.metaKey, shiftKey:e.shiftKey};
+    __lastDragModifiers = modifiers;
     const intent=computeIntent(DND.dragging, row, e.clientX, e.clientY, modifiers); if(!intent) return; e.preventDefault(); 
     DND.dropHandled = true;
-    DND.intent=intent; performDrop(DND.dragging, intent); endDrag(); }
+    DND.intent=intent; performDrop(DND.dragging, intent); __lastDragModifiers = null; endDrag(); }
 
   // Hook createNodeElement to make rows draggable
   const __orig_createNodeElement = window.createNodeElement;
@@ -28173,17 +28899,30 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
     return ghostEl;
   }
   function setOpChip(evt){
-    const op = ((evt.ctrlKey||evt.metaKey) && evt.altKey) ? 'copyPlus' : (evt.altKey ? 'map' : ((evt.ctrlKey||evt.metaKey) ? 'copy':'move'));
+    let op, chipClass, chipText;
+    if(evt.altKey && evt.shiftKey && (evt.ctrlKey||evt.metaKey)){
+      op = 'map'; chipClass = 'mapNone'; chipText = 'MAP ···';
+    } else if(evt.altKey && evt.shiftKey){
+      op = 'map'; chipClass = 'mapBidi'; chipText = 'MAP ↔';
+    } else if((evt.ctrlKey||evt.metaKey) && evt.altKey){
+      op = 'copyPlus'; chipClass = 'copyPlus'; chipText = 'COPY+';
+    } else if(evt.altKey){
+      op = 'map'; chipClass = 'map'; chipText = 'MAP';
+    } else if(evt.ctrlKey||evt.metaKey){
+      op = 'copy'; chipClass = 'copy'; chipText = 'COPY';
+    } else {
+      op = 'move'; chipClass = 'move'; chipText = 'MOVE';
+    }
     const chip = document.getElementById('ghostOp'); if(!chip) return;
-    chip.className = 'chip ' + op;
-    chip.textContent = (op==='copyPlus' ? 'COPY+' : (op==='map' ? 'MAP' : op.toUpperCase()));
+    chip.className = 'chip ' + chipClass;
+    chip.textContent = chipText;
     // Update multi badge
     const multiBadge = document.getElementById('ghostMulti');
     if(multiBadge){
       const dnd = window.__DND_MULTI || null;
-      const isMulti = dnd && dnd.multiIds && dnd.multiIds.size >= 2;
+      const isMulti = dnd && dnd.multiIds && dnd.multiIds.size >= 1;
       if(isMulti){
-        const count = (op === 'map' && dnd.multiFields) ? dnd.multiFields.size : dnd.multiIds.size;
+        const count = (op === 'map' && dnd.multiFields) ? dnd.multiFields.size : (state.multiSelection ? state.multiSelection.size : dnd.multiIds.size);
         multiBadge.textContent = '×' + count;
         multiBadge.style.display = '';
       } else {
@@ -28199,9 +28938,10 @@ function cloneNodeDeep(node){ return JSON.parse(JSON.stringify(node)); }
     const bodyEl = document.getElementById('ghostBody');
     // Show multi-select summary in ghost body
     const dnd = window.__DND_MULTI || null;
-    if(dnd && dnd.multiIds && dnd.multiIds.size >= 2){
-      const others = dnd.multiIds.size - 1;
-      bodyEl.innerHTML = `<span style="font-size:10px;opacity:.55;">+ ${others} more node${others===1?'':'s'}</span>`;
+    if(dnd && dnd.multiIds && dnd.multiIds.size >= 1){
+      const selCount = state.multiSelection ? state.multiSelection.size : dnd.multiIds.size;
+      const others = selCount - 1;
+      bodyEl.innerHTML = others > 0 ? `<span style="font-size:10px;opacity:.55;">+ ${others} more node${others===1?'':'s'}</span>` : '';
     } else {
       bodyEl.innerHTML = '';
     }
@@ -28297,7 +29037,7 @@ function duplicateEdgesForSubtree(idMap, data) {
   const _mo = new MutationObserver(()=>{ updateEmptyPlaceholders(); });
   try{ _mo.observe(document.getElementById('columnsRow'), {childList:true, subtree:true}); }catch(_){}
   document.addEventListener('DOMContentLoaded', updateEmptyPlaceholders, {once:true});
-  // Populate contact email (split to avoid Cloudflare email obfuscation)
+  // Populate contact email (split to avoid email obfuscation)
   const _ce = document.getElementById('dunnodeContact');
   if(_ce){ _ce.textContent = 'hello' + '\x40' + 'dunnode.com'; _ce.addEventListener('click', ()=>{ location.href = 'mai' + 'lto:' + _ce.textContent; }); }
 
