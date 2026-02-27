@@ -2619,7 +2619,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.7.0</span>
+<span id="appVersionLabel">v1.7.1</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -3065,7 +3065,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.7.1';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -3077,7 +3077,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.7.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.1", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -10794,7 +10794,8 @@ function _clearClampIndicators(path){
 }
 
 // Draw center-opposing arrows (→←) at midpoint of path for consolidated two-forwards
-function _drawMidOpposingArrows(parent, pathEl, color){
+function _drawMidOpposingArrows(parent, pathEl, colorFwd, colorRev){
+  if(!colorRev) colorRev = colorFwd; // fallback to single color
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.classList.add('midArrows');
   try {
@@ -10811,8 +10812,8 @@ function _drawMidOpposingArrows(parent, pathEl, color){
     const baseHalf = 4.4; // half of 8.8
     const tipGap = 1; // tiny gap between the two tips at center
     
-    // Forward arrow (→) — tip points INWARD toward center
-    // Tip is near center, base extends outward (toward target)
+    // Forward arrow (→) — tip points INWARD toward center from target side
+    // This represents the fromId→toId direction
     const fTipX = mid.x + Math.cos(angle) * tipGap;
     const fTipY = mid.y + Math.sin(angle) * tipGap;
     const fBaseCX = mid.x + Math.cos(angle) * (tipGap + arrowLen);
@@ -10822,11 +10823,12 @@ function _drawMidOpposingArrows(parent, pathEl, color){
     
     const tri1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     tri1.setAttribute('points', `${fTipX},${fTipY} ${fBL.x},${fBL.y} ${fBR.x},${fBR.y}`);
-    tri1.setAttribute('fill', color);
+    tri1.setAttribute('fill', colorRev); // target-side arrow = reverse edge color
     tri1.setAttribute('stroke', 'none');
     g.appendChild(tri1);
     
-    // Reverse arrow (←) — tip points INWARD toward center
+    // Reverse arrow (←) — tip points INWARD toward center from source side
+    // This represents the toId→fromId direction
     const rTipX = mid.x - Math.cos(angle) * tipGap;
     const rTipY = mid.y - Math.sin(angle) * tipGap;
     const rBaseCX = mid.x - Math.cos(angle) * (tipGap + arrowLen);
@@ -10836,12 +10838,83 @@ function _drawMidOpposingArrows(parent, pathEl, color){
     
     const tri2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     tri2.setAttribute('points', `${rTipX},${rTipY} ${rBL.x},${rBL.y} ${rBR.x},${rBR.y}`);
-    tri2.setAttribute('fill', color);
+    tri2.setAttribute('fill', colorFwd); // source-side arrow = forward edge color
     tri2.setAttribute('stroke', 'none');
     g.appendChild(tri2);
   } catch(ex) {}
   parent.appendChild(g);
   return g;
+}
+
+// Resolve custom color for a single edge (filter > scheme > custom)
+function _resolveEdgeColor(edge){
+  if(!edge) return '';
+  // Filter color
+  if(hasActiveFilters()){
+    const cat = ensureFilterCatalog();
+    const sorted = [...cat].sort((a,b)=>(typeof a.priority==='number'?a.priority:9999)-(typeof b.priority==='number'?b.priority:9999));
+    const fn = IDX?.nodeById?.get(edge.from);
+    const tn = IDX?.nodeById?.get(edge.to);
+    if(fn && tn){
+      for(const f of sorted){
+        if(!state.activeFilterIds.includes(f.id)) continue;
+        if(!f.highlight?.edgeEnabled || !f.highlight?.edgeColor) continue;
+        if(evaluateFilter(fn, f.id) && evaluateFilter(tn, f.id)) return f.highlight.edgeColor;
+      }
+    }
+  }
+  // Scheme color
+  const sc = getEdgeSchemeColor(edge);
+  if(sc) return sc;
+  // Custom color
+  return edge.color || '';
+}
+
+// Get colors for consolidated two-forward pair: { fwdColor, revColor }
+// fwd = fromId→toId edge, rev = toId→fromId edge
+function _getConsolidatedPairColors(fromId, toId, consolidatedEdges, fallback){
+  let fwdColor = fallback, revColor = fallback;
+  if(consolidatedEdges && consolidatedEdges.length >= 2){
+    for(const ce of consolidatedEdges){
+      const clr = _resolveEdgeColor(ce);
+      if(clr){
+        if(ce.from === fromId && ce.to === toId) fwdColor = clr;
+        else if(ce.from === toId && ce.to === fromId) revColor = clr;
+      }
+    }
+  }
+  return { fwdColor, revColor };
+}
+
+// Create a split gradient for a specific path
+function _applySplitGradient(svg, pathEl, p1, p2, color1, color2){
+  let defs = svg.querySelector('defs');
+  if(!defs){ defs = document.createElementNS('http://www.w3.org/2000/svg','defs'); svg.prepend(defs); }
+  // Clean up previous gradient for this path
+  if(pathEl.__splitGradId){
+    const old = defs.querySelector('#' + pathEl.__splitGradId);
+    if(old) old.remove();
+  }
+  const uid = 'sg_' + (Math.random().toString(36).slice(2,8));
+  const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+  grad.id = uid;
+  grad.setAttribute('gradientUnits','userSpaceOnUse');
+  grad.setAttribute('x1', p1.x); grad.setAttribute('y1', p1.y);
+  grad.setAttribute('x2', p2.x); grad.setAttribute('y2', p2.y);
+  const s1 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+  s1.setAttribute('offset','50%'); s1.setAttribute('stop-color', color1);
+  const s2 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+  s2.setAttribute('offset','50%'); s2.setAttribute('stop-color', color2);
+  grad.appendChild(s1); grad.appendChild(s2);
+  defs.appendChild(grad);
+  pathEl.__splitGradId = uid;
+  return `url(#${uid})`;
+}
+function _clearSplitGradient(pathEl){
+  if(pathEl.__splitGradId){
+    try{ document.getElementById(pathEl.__splitGradId)?.remove(); }catch{}
+    pathEl.__splitGradId = null;
+  }
 }
 
 function _clearMidArrows(path){
@@ -11686,17 +11759,35 @@ function drawArrows(){
       const schemeEdgeColor = !fEdgeColor ? getEdgeSchemeColor(e) : '';
       const customEdgeColor = (!fEdgeColor && !schemeEdgeColor && e.color) ? e.color : '';
       const edgeColor = fEdgeColor || schemeEdgeColor || customEdgeColor;
-      if(edgeColor && !inHL && !inActive){
+      
+      // For consolidated two-forwards: resolve per-edge colors for split rendering
+      _clearSplitGradient(path);
+      let _consFwd = '', _consRev = '';
+      const _isConsSplit = isConsolidatedBidi && !inHL && !inActive && !(state.editorMode && state.selectedEdgeId===e.id);
+      if(_isConsSplit){
+        const _pair = _getConsolidatedPairColors(fromId, toId, consolidatedEdges, '');
+        _consFwd = _pair.fwdColor;
+        _consRev = _pair.revColor;
+        // Fill default line color for edges without custom colors
+        const _defLine = 'rgba(255,255,255,.15)';
+        if(_consFwd && !_consRev) _consRev = _defLine;
+        if(_consRev && !_consFwd) _consFwd = _defLine;
+      }
+      const _doSplit = _isConsSplit && _consFwd && _consRev && _consFwd !== _consRev;
+      
+      if(_doSplit){
+        path.style.stroke = _applySplitGradient(edgesLayer.closest('svg'), path, p1, p2, _consFwd, _consRev);
+      } else if(edgeColor && !inHL && !inActive){
         path.style.stroke = edgeColor;
-        if(isConsolidatedBidi){
-          // No endpoint markers for consolidated — center arrows handle it
-        } else if(edgeDir === 'none'){
-          const dotM = getOrCreateFilterDotMarker(edgeColor);
-          path.setAttribute('marker-start', dotM);
-          path.setAttribute('marker-end', dotM);
-        } else {
-          path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor, false));
-          if(edgeDir === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor, true));
+        if(!isConsolidatedBidi){
+          if(edgeDir === 'none'){
+            const dotM = getOrCreateFilterDotMarker(edgeColor);
+            path.setAttribute('marker-start', dotM);
+            path.setAttribute('marker-end', dotM);
+          } else {
+            path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor, false));
+            if(edgeDir === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor, true));
+          }
         }
       } else { path.style.removeProperty('stroke'); }
       if(isClamped && !inHL && !inActive){
@@ -11706,14 +11797,18 @@ function drawArrows(){
       }
       
       // Clamped endpoint indicators: replace arrowhead with ▲/▼ chevron at column edge
+      // Only show indicator where an arrowhead would normally be:
+      //   forward: target only | both: both ends | none/consolidated: neither
       _clearClampIndicators(path);
-      if(toClamped){
+      const _showClampTo = toClamped && !isConsolidatedBidi && edgeDir !== 'none';
+      const _showClampFrom = fromClamped && edgeDir === 'both';
+      if(_showClampTo){
         path.removeAttribute('marker-end');
         const clrT = (!inHL && !inActive && edgeColor) ? edgeColor : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
         path.__clampTo = _drawClampIndicator(edgesLayer, p2.x, p2.y, toClamped, clrT);
         if(isClamped && !inHL && !inActive) path.__clampTo.style.opacity = '0.4';
       }
-      if(fromClamped){
+      if(_showClampFrom){
         path.removeAttribute('marker-start');
         const clrF = (!inHL && !inActive && edgeColor) ? edgeColor : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
         path.__clampFrom = _drawClampIndicator(edgesLayer, p1.x, p1.y, fromClamped, clrF);
@@ -11724,8 +11819,14 @@ function drawArrows(){
       _clearMidArrows(path);
       if(isConsolidatedBidi){
         const isSelected = !!(state.editorMode && state.selectedEdgeId===e.id);
-        const midClr = (edgeColor && !inHL && !inActive && !isSelected) ? edgeColor : (inActive || isSelected) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
-        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midClr);
+        const _defMidClr = (inActive || isSelected) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
+        // Use per-edge colors when available and not in HL/active/selected state
+        let midFwd = _defMidClr, midRev = _defMidClr;
+        if(!inHL && !inActive && !isSelected){
+          midFwd = _consFwd || edgeColor || _defMidClr;
+          midRev = _consRev || edgeColor || _defMidClr;
+        }
+        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midFwd, midRev);
         if(isClamped && !inHL && !inActive) path.__midArrows.style.opacity = '0.4';
       }
       
@@ -11836,31 +11937,49 @@ function drawArrows(){
       const schemeEdgeColor2 = !fEdgeColor2 ? getEdgeSchemeColor(e) : '';
       const customEdgeColor2 = (!fEdgeColor2 && !schemeEdgeColor2 && e.color) ? e.color : '';
       const edgeColor2 = fEdgeColor2 || schemeEdgeColor2 || customEdgeColor2;
-      if(edgeColor2 && !inHL && !inActive){
+      
+      // Consolidated split colors
+      let _consFwd2 = '', _consRev2 = '';
+      const _isConsSplit2 = isConsolidatedBidi2 && !inHL && !inActive;
+      if(_isConsSplit2){
+        const _pair2 = _getConsolidatedPairColors(fromId, toId, consolidatedEdges, '');
+        _consFwd2 = _pair2.fwdColor;
+        _consRev2 = _pair2.revColor;
+        const _defLine2 = 'rgba(255,255,255,.15)';
+        if(_consFwd2 && !_consRev2) _consRev2 = _defLine2;
+        if(_consRev2 && !_consFwd2) _consFwd2 = _defLine2;
+      }
+      const _doSplit2 = _isConsSplit2 && _consFwd2 && _consRev2 && _consFwd2 !== _consRev2;
+      
+      if(_doSplit2){
+        path.style.stroke = _applySplitGradient(edgesLayer.closest('svg'), path, p1, p2, _consFwd2, _consRev2);
+      } else if(edgeColor2 && !inHL && !inActive){
         path.style.stroke = edgeColor2;
-        if(isConsolidatedBidi2){
-          // No endpoint markers for consolidated
-        } else if(edgeDir2 === 'none'){
-          const dotM2 = getOrCreateFilterDotMarker(edgeColor2);
-          path.setAttribute('marker-start', dotM2);
-          path.setAttribute('marker-end', dotM2);
-        } else {
-          path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor2, false));
-          if(edgeDir2 === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor2, true));
+        if(!isConsolidatedBidi2){
+          if(edgeDir2 === 'none'){
+            const dotM2 = getOrCreateFilterDotMarker(edgeColor2);
+            path.setAttribute('marker-start', dotM2);
+            path.setAttribute('marker-end', dotM2);
+          } else {
+            path.setAttribute('marker-end', getOrCreateFilterMarker(edgeColor2, false));
+            if(edgeDir2 === 'both') path.setAttribute('marker-start', getOrCreateFilterMarker(edgeColor2, true));
+          }
         }
       }
       if(isClamped && !inHL && !inActive){
         path.style.opacity = '0.25';
       }
       
-      // Clamped endpoint indicators: replace arrowhead with ▲/▼ chevron at column edge
-      if(toClamped){
+      // Clamped endpoint indicators: same rules as existing paths
+      const _showClampTo2 = toClamped && !isConsolidatedBidi2 && edgeDir2 !== 'none';
+      const _showClampFrom2 = fromClamped && edgeDir2 === 'both';
+      if(_showClampTo2){
         path.removeAttribute('marker-end');
         const clrT2 = (!inHL && !inActive && edgeColor2) ? edgeColor2 : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
         path.__clampTo = _drawClampIndicator(edgesLayer, p2.x, p2.y, toClamped, clrT2);
         if(isClamped && !inHL && !inActive) path.__clampTo.style.opacity = '0.4';
       }
-      if(fromClamped){
+      if(_showClampFrom2){
         path.removeAttribute('marker-start');
         const clrF2 = (!inHL && !inActive && edgeColor2) ? edgeColor2 : (inActive ? 'rgba(255,208,92,.95)' : (inHL ? 'rgba(59,130,246,.92)' : 'rgba(255,255,255,.25)'));
         path.__clampFrom = _drawClampIndicator(edgesLayer, p1.x, p1.y, fromClamped, clrF2);
@@ -11870,8 +11989,13 @@ function drawArrows(){
       // Center-opposing arrows for consolidated two-forwards (→←)
       if(isConsolidatedBidi2){
         const isSelected2 = !!(state.editorMode && state.selectedEdgeId===e.id);
-        const midClr2 = (edgeColor2 && !inHL && !inActive && !isSelected2) ? edgeColor2 : (inActive || isSelected2) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
-        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midClr2);
+        const _defMidClr2 = (inActive || isSelected2) ? 'rgba(255,208,92,.85)' : inHL ? 'rgba(59,130,246,.85)' : 'rgba(255,255,255,.15)';
+        let midFwd2 = _defMidClr2, midRev2 = _defMidClr2;
+        if(!inHL && !inActive && !isSelected2){
+          midFwd2 = _consFwd2 || edgeColor2 || _defMidClr2;
+          midRev2 = _consRev2 || edgeColor2 || _defMidClr2;
+        }
+        path.__midArrows = _drawMidOpposingArrows(edgesLayer, path, midFwd2, midRev2);
         if(isClamped && !inHL && !inActive) path.__midArrows.style.opacity = '0.4';
       }
 
@@ -14925,6 +15049,16 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.7.1',
+    date: '2026-02-27',
+    highlights: 'Clamped indicator fix, split-color consolidated two-forwards',
+    changes: [
+      '<b>Clamped indicator fix</b>: scroll-clamped triangle indicators (▲/▼) now only appear where an arrowhead would normally be — target end for forward mappings, both ends for bidirectional. Source-only forward edges no longer show a spurious indicator',
+      '<b>Split-color consolidated arrows</b>: when two forward mappings between the same pair have different custom colors, the consolidated line now renders as a half-and-half split at the midpoint — each half matches its respective edge color. The center-opposing arrowheads (→←) also follow the same per-edge coloring',
+      '<b>Split fallback</b>: when only one of the two forward mappings has a custom color, the other half uses the default line color instead of suppressing the split entirely',
+    ]
+  },
   {
     version: '1.7.0',
     date: '2026-02-27',
@@ -27517,7 +27651,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.7.0", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.1", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {

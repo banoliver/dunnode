@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.7.1] – 2026-02-27
+**Highlights:** Clamped indicator fix, split-color consolidated two-forwards
+
+### Fixes
+- **Clamped indicator placement**: scroll-clamped triangle indicators (▲/▼) now only appear where an arrowhead would normally be — target end for forward mappings, both ends for bidirectional. Source-only forward edges no longer show a spurious indicator. Consolidated two-forwards and directionless edges suppress indicators entirely (no arrowheads to replace)
+
+### Split-color consolidated arrows
+- **Half-and-half line split**: when two forward mappings between the same pair have different custom colors (per-edge, filter, or scheme), the consolidated line renders as a sharp split at the midpoint — each half matches its respective edge color
+- **Split arrowheads**: the center-opposing arrowheads (→←) follow the same per-edge coloring — the source-side tip uses the forward edge color, the target-side tip uses the reverse edge color
+- **One-color fallback**: when only one of the two forward mappings has a custom color, the other half uses the default line color (`rgba(255,255,255,.15)`) instead of suppressing the split entirely
+
+---
+
 ## [1.7.0] – 2026-02-27
 **Highlights:** Scroll-clamped arrows, edge direction system (forward / bidirectional / directionless), center-opposing arrows, drag modifier creation, perspective-aware detail panels
 
