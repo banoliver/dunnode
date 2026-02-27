@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 ---
 
+## [1.7.2] – 2026-02-27
+**Highlights:** Highlight performance, seamless node hover, Chromium recommendation
+
+### Performance
+- **Edge transitions removed**: all CSS opacity fade transitions removed from `.edge` lines, markers, and labels. Highlighting and dimming are now instant, eliminating hundreds of concurrent CSS animations during hover/highlight cycles in large projects
+- **Node row transitions removed**: fade transitions on `.row` background, border-color, and opacity removed. Node highlight/dim state changes are now instant
+- **Seamless node hover**: hover-out events are now debounced with a 32ms window. When the mouse crosses the visual gap between node rows, the highlight switches directly to the next row without a flicker — the previous row's clear is cancelled if a new row is entered within the window. Visual spacing is unchanged
+
+### Documentation
+- **Browser recommendation**: README updated to recommend Chromium-based browsers (Chrome, Edge, Brave, Arc, Opera). Firefox and Safari may work but are not officially supported
+
+---
+
 ## [1.7.1] – 2026-02-27
 **Highlights:** Clamped indicator fix, split-color consolidated two-forwards
 

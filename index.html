@@ -1104,7 +1104,7 @@
       cursor: pointer;
       user-select: none;
       border: 1px solid transparent;
-      transition: background .15s ease, border-color .15s ease, opacity .15s ease, transform .05s ease;
+      transition: transform .05s ease;
     }
     .row:hover{ background: rgba(255,255,255,.05); }
     .row:active{ transform: translateY(1px); }
@@ -1351,7 +1351,6 @@ body.brightMode .row .inlineRenameWrap input{ border-bottom-color:rgba(59,130,24
 
     /* SVG edges */
     .edge{
- transition: opacity .14s ease;
  stroke-linecap: round;
  stroke-linejoin: round;
       fill: none;
@@ -1741,7 +1740,7 @@ body.editorMode .node.field .row:active{cursor: grabbing;}
 #svgOverlay{pointer-events:none;}
 body.editorMode #svgOverlay{pointer-events:none;}
 body.editorMode .edge{
- transition: opacity .14s ease;
+
  stroke-linecap: round;
  stroke-linejoin: round;pointer-events:none;}
 body.editorMode .edge.selected{stroke: rgba(255,208,92,.98); stroke-width: 3.0;}
@@ -1763,10 +1762,8 @@ body.editorMode .edge.selected{stroke: rgba(255,208,92,.98); stroke-width: 3.0;}
 /* HIT-TEST OVERRIDES v7_3 */
 #svgOverlay{pointer-events:none !important;}
 #edgesLayer{pointer-events:none;}
-.edge{
- transition: opacity .14s ease;pointer-events:stroke;}
-body.editorMode .edge{
- transition: opacity .14s ease;pointer-events:stroke;}
+.edge{pointer-events:stroke;}
+body.editorMode .edge{pointer-events:stroke;}
 
 .box.clickable{cursor:pointer;}
 .box.clickable:hover{background: rgba(255,255,255,.06);}
@@ -2619,7 +2616,7 @@ Use the Details pane to see <b>Outbound</b> and <b>Inbound</b> mappings for the 
 </main>
 <footer class="appFooter">
 <span>© 2026 Olivér Bán · <a href="#" id="footerLicenseLink">MIT License</a></span>
-<span id="appVersionLabel">v1.7.1</span>
+<span id="appVersionLabel">v1.7.2</span>
 </footer>
 <!-- Permanent DnD overlay — all drag visuals live here to avoid body flex reflow -->
 <div id="dndOverlay" style="position:fixed;inset:0;z-index:9998;pointer-events:none;">
@@ -3065,7 +3062,7 @@ Created by Olivér Bán<br/>
 
    Field IDs MUST start with "<columnId>." so we can infer the column.
 ------------------------------------------------------------------- */
-const APP_VERSION = '1.7.1';
+const APP_VERSION = '1.7.2';
 
 const EXAMPLE_JSON = {
   "title": "Mars Mission Data Integration",
@@ -3077,7 +3074,7 @@ const EXAMPLE_JSON = {
   "url": "https://dunnode.com",
   "projectVersion": "1.0",
   "date": "2026-02-22",
-  "_app": { "name": "Dunnode", "version": "1.7.1", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.2", "schema": 1 },
   "_savedAt": "",
   "columns": [
     {
@@ -10522,6 +10519,7 @@ function lockSelection(nodeId, evt){
 
 function attachTreeInteractions(treeEl){
   // hover preview
+  let _hoverOutTimer = null;
   treeEl.addEventListener("mouseover", (e) => {
     if(state.panMode) return;
     if(state._lassoActive) return;
@@ -10532,6 +10530,7 @@ function attachTreeInteractions(treeEl){
     const id = row.dataset.nodeId;
     if(!id) return;
     if(IDX.elementById.get(id)?.classList.contains("hidden")) return;
+    if(_hoverOutTimer){ clearTimeout(_hoverOutTimer); _hoverOutTimer = null; }
     state.hoverId = id;
     applyHighlight();
   });
@@ -10544,8 +10543,13 @@ function attachTreeInteractions(treeEl){
     if(!row) return;
     const related = e.relatedTarget;
     if(related && row.contains(related)) return;
-    state.hoverId = null;
-    applyHighlight();
+    if(_hoverOutTimer) clearTimeout(_hoverOutTimer);
+    _hoverOutTimer = setTimeout(() => {
+      _hoverOutTimer = null;
+      if(!state.hoverId) return;
+      state.hoverId = null;
+      applyHighlight();
+    }, 32);
   });
 
   // click: caret collapses, row locks selection
@@ -14839,7 +14843,7 @@ body.editorMode .node.field .row:active{cursor: grabbing;}
 #svgOverlay{pointer-events:none;}
 body.editorMode #svgOverlay{pointer-events:none;}
 body.editorMode .edge{
- transition: opacity .14s ease;
+
  stroke-linecap: round;
  stroke-linejoin: round;pointer-events:none;}
 body.editorMode .edge.selected{stroke: rgba(255,208,92,.98); stroke-width: 3.0;}
@@ -15049,6 +15053,16 @@ function openHelp(){
 
 // --- Release notes ---
 const RELEASE_NOTES = [
+  {
+    version: '1.7.2',
+    date: '2026-02-27',
+    highlights: 'Highlight performance, seamless node hover, Chromium recommendation',
+    changes: [
+      '<b>Performance</b>: removed all CSS fade transitions from edge lines and node rows. Highlighting and dimming are now instant, eliminating hundreds of concurrent CSS animations during hover/highlight cycles in large projects',
+      '<b>Seamless node hover</b>: hover-out events are now debounced with a 32ms window. When the mouse crosses the visual gap between rows, the highlight switches directly to the next row without flickering. Visual spacing is unchanged',
+      '<b>Browser recommendation</b>: README updated to recommend Chromium-based browsers (Chrome, Edge, Brave, Arc, Opera). Firefox and Safari may work but are not officially supported',
+    ]
+  },
   {
     version: '1.7.1',
     date: '2026-02-27',
@@ -27651,7 +27665,7 @@ function buildDocs(){
   "url": "...",
   "projectVersion": "1.0",
   "date": "2026-01-15",
-  "_app": { "name": "Dunnode", "version": "1.7.1", "schema": 1 },
+  "_app": { "name": "Dunnode", "version": "1.7.2", "schema": 1 },
   "_savedAt": "2026-02-19T12:00:00.000Z",
   "columns": [
     {

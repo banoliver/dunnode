@@ -29,12 +29,14 @@ Client-side by design. No data leaves your browser.
 
 ## 🚀 Usage
 
-Open `index.html` in any modern browser.
+Open `index.html` in a Chromium-based browser (Chrome, Edge, Brave, Arc, Opera, etc.).
 
 Or visit the live version:
 👉 [dunnode.com](https://dunnode.com)
 
 No build step. No backend. Fully static.
+
+> **Note:** Dunnode is developed and tested on Chromium. Firefox and Safari may work but are not officially supported.
 
 ---
 
